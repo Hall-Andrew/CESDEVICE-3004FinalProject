@@ -1,33 +1,94 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QString>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    displayed = false;
-    initUiElements();
-
+    onOffState = false;
+    time = QTime(0,0);
+    lockState = false;
+    contactState = false;
+    powerState = 100;
+    amps = 0;
+    totalDuration = 0;
+    resetDisplay();
 }
+
+
+
+
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void MainWindow::initUiElements(){
-    connect(ui->helloWorldButton,SIGNAL(pressed()),this,SLOT(printHelloWorld()));
+
+void MainWindow::resetDisplay()
+
+{
+    ui->TextView->setText("");
+    QString timeString = time.toString("hh:mm:ss");
+    QString powerString = QString::number(power);
+    QString ampString = QString::number(amps);
+    QString totalDurationString = QString::number(totalDuration);
+    QString onOffStateString = QString::bool(onOffState);
+  }
+
+
+
+void MainWindow::resetValues()
+{
+    time = QTime(0,0);
+    powerState = 100; //Need to read from Database
+    amps = 100;
+    totalDuration = 0;
 }
 
-void MainWindow::printHelloWorld(){
-    QString text;
-    if(displayed){
-        text= " ";
-        displayed = false;
-    }else{
-        displayed = true;
-        text= "Hello World!";
+
+void MainWindow::on_OnOffButton_released()
+{
+    QString text = ui->OnOffButton->text();
+    if(text == "Turn On")
+    {
+         ui->OnOffButton->setText("Turn Off");
+         onOffState = true;
+         resetValues();
     }
-    ui->textLabel->setText(text);
+       else{
+        ui->OnOffButton->setText("Turn On");
+        onOffState = false;
+    }
+    resetDisplay();
+
+}
+
+void MainWindow::on_TimerButton_released()
+{
+
+}
+
+void MainWindow::on_UpButton_released()
+{
+
+}
+
+void MainWindow::on_DownButton_released()
+{
+
+}
+
+void MainWindow::on_LockButton_released()
+{
+
+}
+
+void MainWindow::on_ContactButton_released()
+{
+
 }
