@@ -90,10 +90,10 @@ void MainWindow::on_TimerButton_released()
 
 void MainWindow::on_UpButton_released()
 {   if(ui->StackedWidget->currentIndex() == 0){
-    int index = ui->menuListWidget->currentRow();
+        int index = ui->menuListWidget->currentRow();
     int  newIndex = index - 1;
     if (newIndex<0)
-     newIndex = 0;
+        newIndex = 0;
     ui->menuListWidget->setCurrentRow(newIndex);
 }
     if(ui->StackedWidget->currentIndex() == 1){
@@ -119,28 +119,27 @@ void MainWindow::on_DownButton_released()
     int index = ui->menuListWidget->currentRow();
     int  newIndex = index + 1;
     if (newIndex >=  ui->menuListWidget->count())
-     return;
+        return;
     ui->menuListWidget->setCurrentRow(newIndex);
-
-}
+  }
 
   if(ui->StackedWidget->currentIndex() == 1){
-        int index = ui->FrequencyListWidget->currentRow();
-        int  newIndex = index + 1;
-        if (newIndex >=  ui->FrequencyListWidget->count())
-         return;
-        ui->FrequencyListWidget->setCurrentRow(newIndex);
-
+    int index = ui->FrequencyListWidget->currentRow();
+    int  newIndex = index + 1;
+    if (newIndex >=  ui->FrequencyListWidget->count())
+        return;
+    ui->FrequencyListWidget->setCurrentRow(newIndex);
   }
+
   if(ui->StackedWidget->currentIndex() == 2){
-        int index = ui->WavelengthListWidget->currentRow();
-        int  newIndex = index + 1;
-        if (newIndex >=  ui->WavelengthListWidget->count())
-         return;
-        ui->WavelengthListWidget->setCurrentRow(newIndex);
+    int index = ui->WavelengthListWidget->currentRow();
+    int  newIndex = index + 1;
+    if (newIndex >=  ui->WavelengthListWidget->count())
+        return;
+    ui->WavelengthListWidget->setCurrentRow(newIndex);
   }
 
-  }
+}
 
 
 
@@ -156,10 +155,10 @@ void MainWindow::on_ContactButton_released()
 
 void MainWindow::on_EnterButton_released()
 {
-  int index = ui->StackedWidget->currentIndex();
+    int index = ui->StackedWidget->currentIndex();
     int nextIndex = index + 1 ;
-    if (nextIndex< ui->StackedWidget->count()){
-        ui->StackedWidget->setCurrentIndex(nextIndex);
+        if (nextIndex< ui->StackedWidget->count()){
+            ui->StackedWidget->setCurrentIndex(nextIndex);
     }
 }
 
