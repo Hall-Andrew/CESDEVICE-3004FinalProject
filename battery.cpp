@@ -6,7 +6,7 @@ Battery::Battery()
     drain=0.5;
     /*sets up the default battery, Life being 100 and Speed being .5,
     These are just arbitray number which are subject to change. Point being:
-    life represents the battery life and, while the battery is on, it will be
+    power represents the batteries charge and, while the battery is on, it will be
     decreasing
     */
 }

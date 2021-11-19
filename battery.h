@@ -13,7 +13,7 @@ private:
     float power;
     float drain; //how fast battery life decays
     float* decay_mod;
-    //the modifier to how the battery decays. I figured it would be better as a pointer but idk.
+    //the modifier to how the battery drains. I figured it would be better as a pointer but idk.
     bool charged;
 };
 
