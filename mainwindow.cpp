@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     totalDuration = 0;
     //resetDisplay();
     createMenu();
-
+    ui->StackedWidget->setCurrentIndex(0);
 }
 
 
@@ -33,6 +33,12 @@ MainWindow::~MainWindow()
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
     ui->menuListWidget->addItem("View Previous Sessions");
+    ui->FrequencyListWidget->addItem("0.5Hz");
+    ui->FrequencyListWidget->addItem("77Hz");
+    ui->FrequencyListWidget->addItem("100Hz");
+    ui->WavelengthListWidget->addItem("Alpha");
+    ui->WavelengthListWidget->addItem("Beta");
+    ui->WavelengthListWidget->addItem("Gamma");
 
 
 }
@@ -83,14 +89,60 @@ void MainWindow::on_TimerButton_released()
 }
 
 void MainWindow::on_UpButton_released()
-{
-
+{   if(ui->StackedWidget->currentIndex() == 0){
+    int index = ui->menuListWidget->currentRow();
+    int  newIndex = index - 1;
+    if (newIndex<0)
+     newIndex = 0;
+    ui->menuListWidget->setCurrentRow(newIndex);
 }
+    if(ui->StackedWidget->currentIndex() == 1){
+        int index = ui->FrequencyListWidget->currentRow();
+        int  newIndex = index - 1;
+        if (newIndex<0)
+         newIndex = 0;
+        ui->FrequencyListWidget->setCurrentRow(newIndex);
+    }
+    if(ui->StackedWidget->currentIndex() == 2){
+        int index = ui->WavelengthListWidget->currentRow();
+        int  newIndex = index - 1;
+        if (newIndex<0)
+         newIndex = 0;
+        ui->WavelengthListWidget->setCurrentRow(newIndex);
+    }
+}
+
 
 void MainWindow::on_DownButton_released()
 {
+  if(ui->StackedWidget->currentIndex() == 0){
+    int index = ui->menuListWidget->currentRow();
+    int  newIndex = index + 1;
+    if (newIndex >=  ui->menuListWidget->count())
+     return;
+    ui->menuListWidget->setCurrentRow(newIndex);
 
 }
+
+  if(ui->StackedWidget->currentIndex() == 1){
+        int index = ui->FrequencyListWidget->currentRow();
+        int  newIndex = index + 1;
+        if (newIndex >=  ui->FrequencyListWidget->count())
+         return;
+        ui->FrequencyListWidget->setCurrentRow(newIndex);
+
+  }
+  if(ui->StackedWidget->currentIndex() == 2){
+        int index = ui->WavelengthListWidget->currentRow();
+        int  newIndex = index + 1;
+        if (newIndex >=  ui->WavelengthListWidget->count())
+         return;
+        ui->WavelengthListWidget->setCurrentRow(newIndex);
+  }
+
+  }
+
+
 
 void MainWindow::on_LockButton_released()
 {
@@ -104,6 +156,18 @@ void MainWindow::on_ContactButton_released()
 
 void MainWindow::on_EnterButton_released()
 {
-    QListWidgetItem* item = ui->menuListWidget->currentItem();
-   // qDebug()<<item->text();
+  int index = ui->StackedWidget->currentIndex();
+    int nextIndex = index + 1 ;
+    if (nextIndex< ui->StackedWidget->count()){
+        ui->StackedWidget->setCurrentIndex(nextIndex);
+    }
+}
+
+void MainWindow::on_BackButton_released()
+{
+    int index = ui->StackedWidget->currentIndex();
+      int prevIndex = index - 1 ;
+      if (prevIndex >= 0){
+          ui->StackedWidget->setCurrentIndex(prevIndex);
+      }
 }
