@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     battery.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    record.cpp
 
 HEADERS += \
     battery.h \
-    mainwindow.h
+    mainwindow.h \
+    record.h
 
 FORMS += \
     mainwindow.ui
