@@ -34,6 +34,8 @@ private slots:
 
 
 
+    void on_BackButton_released();
+
 private:
     Ui::MainWindow *ui;
     bool onOffState;
