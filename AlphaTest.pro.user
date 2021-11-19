@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD:AlphaTest.pro.user
 <!-- Written by QtCreator 4.11.0, 2021-11-13T21:16:56. -->
-=======
-<!-- Written by QtCreator 4.11.0, 2021-11-17T20:09:08. -->
->>>>>>> 12efcb90c72f05b075d61835d225a4fdeebed8e8:CESDEVICE.pro.user
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -301,11 +297,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-<<<<<<< HEAD:AlphaTest.pro.user
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/student/build-AlphaTest-Desktop-Debug</value>
-=======
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
->>>>>>> 12efcb90c72f05b075d61835d225a4fdeebed8e8:CESDEVICE.pro.user
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

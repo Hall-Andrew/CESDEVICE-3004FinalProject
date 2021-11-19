@@ -29,7 +29,7 @@ background-color: rgb(252, 233, 79);</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPlainTextEdit" name="TextView"/>
+      <widget class="QListWidget" name="menuListWidget"/>
      </item>
     </layout>
    </widget>
@@ -111,17 +111,30 @@ background-color: rgb(252, 233, 79);</string>
      <string>Contact</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="EnterButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>40</y>
+      <x>340</x>
+      <y>350</y>
       <width>80</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>HI</string>
+     <string>Enter</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BackButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>350</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Back</string>
     </property>
    </widget>
   </widget>

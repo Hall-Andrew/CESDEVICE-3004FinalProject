@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 #include <QTime>
 #include <QMainWindow>
+#include <QWidget>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +30,10 @@ private slots:
 
     void on_ContactButton_released();
 
+    void on_EnterButton_released();
+
+
+
 private:
     Ui::MainWindow *ui;
     bool onOffState;
@@ -38,6 +44,8 @@ private:
     float amps;
     int totalDuration;
     void resetDisplay();
+    void createMenu();
+    void resetValues();
 
 };
 #endif // MAINWINDOW_H

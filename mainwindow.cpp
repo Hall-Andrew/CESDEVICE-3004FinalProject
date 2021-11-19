@@ -15,23 +15,29 @@ MainWindow::MainWindow(QWidget *parent)
     powerState = 100;
     amps = 0;
     totalDuration = 0;
-    resetDisplay();
+    //resetDisplay();
+    createMenu();
+
 }
 
 
 
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> 12efcb90c72f05b075d61835d225a4fdeebed8e8
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+void MainWindow::createMenu(){
+    ui->menuListWidget->addItem("Start A Session");
+    ui->menuListWidget->addItem("View Previous Sessions");
 
+
+}
+
+/*
 void MainWindow::resetDisplay()
 
 {
@@ -44,7 +50,7 @@ void MainWindow::resetDisplay()
   }
 
 
-
+*/
 void MainWindow::resetValues()
 {
     time = QTime(0,0);
@@ -56,18 +62,18 @@ void MainWindow::resetValues()
 
 void MainWindow::on_OnOffButton_released()
 {
-    QString text = ui->OnOffButton->text();
+    QString text = ui->TurnOnOffButton->text();
     if(text == "Turn On")
     {
-         ui->OnOffButton->setText("Turn Off");
+         ui->TurnOnOffButton->setText("Turn Off");
          onOffState = true;
          resetValues();
     }
        else{
-        ui->OnOffButton->setText("Turn On");
+        ui->TurnOnOffButton->setText("Turn On");
         onOffState = false;
     }
-    resetDisplay();
+   // resetDisplay();
 
 }
 
@@ -94,4 +100,10 @@ void MainWindow::on_LockButton_released()
 void MainWindow::on_ContactButton_released()
 {
 
+}
+
+void MainWindow::on_EnterButton_released()
+{
+    QListWidgetItem* item = ui->menuListWidget->currentItem();
+   // qDebug()<<item->text();
 }
