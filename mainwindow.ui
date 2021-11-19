@@ -14,30 +14,101 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="helloWorldButton">
+   <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>230</y>
+      <x>100</x>
+      <y>80</y>
+      <width>274</width>
+      <height>210</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+background-color: rgb(252, 233, 79);</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPlainTextEdit" name="TextView"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="TurnOnOffButton">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>350</y>
       <width>80</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Yes </string>
+     <string>Turn On</string>
     </property>
    </widget>
-   <widget class="QLabel" name="textLabel">
+   <widget class="QPushButton" name="TimerButton">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>230</y>
-      <width>91</width>
-      <height>31</height>
+      <x>70</x>
+      <y>310</y>
+      <width>80</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>Timer</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="UpButton">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>310</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Up</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DownButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>310</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Down</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LockButton">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>310</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lock</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ContactButton">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>350</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Contact</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
