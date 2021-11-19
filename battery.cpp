@@ -1,8 +1,8 @@
-#include "Battery.h"
+#include "battery.h"
 
 Battery::Battery()
 {
-    life=100;
+    power=100;
     drain=0.5;
     /*sets up the default battery, Life being 100 and Speed being .5,
     These are just arbitray number which are subject to change. Point being:
@@ -15,11 +15,11 @@ Battery::~Battery()
 {
   delete decay_mod;
 }
-Qstring Battery::decay()
+QString Battery::decay()
 {
-  while (life<0)
+  while (power<0)
   {
-    life-=drain;
+    power-=drain;
   }
   charged=false;
   return "Your battery is out of life ";
@@ -30,14 +30,14 @@ of this function, the second takes in a modifier which is needed for when
 the machine is running.
 
 */
-Qstring Battery::decay(int mod)
+QString Battery::decay(int mod)
 {
-  while (life<0)
+  while (power<0)
   {
-    life-=(drain+(drain*mod));
+    power-=(drain+(drain*mod));
   }
   charged=false;
   return "Your battery is out of life ";
 }
-void Battery::charge(){life=100; charged=true;}
+void Battery::charge(){power=100; charged=true;}
 //Basic Funct to reset the battery.

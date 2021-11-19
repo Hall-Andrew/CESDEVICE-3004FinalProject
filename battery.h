@@ -6,11 +6,11 @@ class Battery
 public:
     Battery();
    ~Battery();
-   Qstring Decay(); //default decay method
-   Qstring Decay(int mod);//call for when machine is running
+   QString decay(); //default decay method
+   QString decay(int mod);//call for when machine is running
    void charge();
 private:
-    float life;
+    float power;
     float drain; //how fast battery life decays
     float* decay_mod;
     //the modifier to how the battery decays. I figured it would be better as a pointer but idk.
