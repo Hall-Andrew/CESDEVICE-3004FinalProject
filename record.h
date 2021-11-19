@@ -25,7 +25,7 @@ class Record
     public slots:
 
     signals:
-        QString sendTherapyInfo(QString);
+        void sendTherapyInfo(QString);
 
 };
 
