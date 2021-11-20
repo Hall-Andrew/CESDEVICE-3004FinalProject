@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QTime>
+#include <QTimer>
 #include <QMainWindow>
 #include <QWidget>
 
@@ -31,20 +32,19 @@ private slots:
     void on_ContactButton_released();
 
     void on_EnterButton_released();
-
-
-
+    void updateTimerDisplay();
     void on_BackButton_released();
 
 private:
     Ui::MainWindow *ui;
     bool onOffState;
-    QTime time;
+    int time;
     bool lockState;
     bool contactState;
     double powerState;
     float amps;
     int totalDuration;
+    QTimer *timer;
     void resetDisplay();
     void createMenu();
     void resetValues();

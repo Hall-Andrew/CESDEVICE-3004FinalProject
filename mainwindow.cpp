@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     onOffState = false;
-    time = QTime(0,0);
+    time = 0;
     lockState = false;
     contactState = false;
     powerState = 100;
@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
     //resetDisplay();
     createMenu();
     ui->StackedWidget->setCurrentIndex(0);
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
 }
 
 
@@ -59,7 +61,7 @@ void MainWindow::resetDisplay()
 */
 void MainWindow::resetValues()
 {
-    time = QTime(0,0);
+    time = 0;
     powerState = 100; //Need to read from Database
     amps = 100;
     totalDuration = 0;
@@ -85,6 +87,15 @@ void MainWindow::on_OnOffButton_released()
 
 void MainWindow::on_TimerButton_released()
 {
+      if (!timer->isActive()){
+          timer->setInterval(1000);
+          timer->start();
+      }else
+      {
+          int seconds = time + 20;
+          if(seconds > 60) seconds = 60;
+          time = seconds;
+      }
 
 }
 
@@ -110,7 +121,11 @@ void MainWindow::on_UpButton_released()
          newIndex = 0;
         ui->WavelengthListWidget->setCurrentRow(newIndex);
     }
-}
+    if(ui->StackedWidget->currentIndex() == 3){
+        int currentAmp  = ui->ProgressBarWidget->value();
+        int newAmp =  currentAmp + 50;
+         ui->ProgressBarWidget->setValue(newAmp);
+}}
 
 
 void MainWindow::on_DownButton_released()
@@ -140,6 +155,14 @@ void MainWindow::on_DownButton_released()
         ui->WavelengthListWidget->setCurrentRow(newIndex);
   }
 
+  if(ui->StackedWidget->currentIndex() == 3){
+      int currentAmp  = ui->ProgressBarWidget->value();
+      int newAmp =  currentAmp - 100;
+      if (newAmp < 0)
+          newAmp = 0;
+       ui->ProgressBarWidget->setValue(newAmp);
+}
+
   }
 
 
@@ -161,6 +184,16 @@ void MainWindow::on_EnterButton_released()
     if (nextIndex< ui->StackedWidget->count()){
         ui->StackedWidget->setCurrentIndex(nextIndex);
     }
+
+    if( ui->StackedWidget->currentIndex() == 3){
+        QString text = ui->WavelengthListWidget->currentItem()->text();
+        ui->WaveFormLabel->setText(text);
+        time  = 20;
+        QTime t = QTime(0,time);
+        ui->TimeLabel->setText(t.toString());
+    }
+
+
 }
 
 void MainWindow::on_BackButton_released()
@@ -170,4 +203,15 @@ void MainWindow::on_BackButton_released()
       if (prevIndex >= 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
       }
+}
+
+
+void MainWindow::updateTimerDisplay()
+{
+    time = time - 1;
+    QString timeString = QTime(0, time).toString();
+    ui->TimeLabel->setText(timeString);
+    if(time <= 0){
+        timer->stop();
+    }
 }
