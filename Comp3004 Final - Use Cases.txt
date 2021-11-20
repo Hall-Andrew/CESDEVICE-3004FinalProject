@@ -1,0 +1,210 @@
+﻿General Use Cases:
+ 
+Use Case 1 - Turn the CES device on:
+Primary Actor: The CES device User
+Level: User
+Precondition:
+* Battery level is greater than 2%, CES device has no faults.
+Main Success Scenario:
+1. Device user presses and holds the power button.
+2. Device turns on and is ready to use.
+Post Condition:
+* Device is on the main page and awaiting input actions from the user.
+* Timer starts for auto shut-off. (See Use case 11).
+Extensions:
+2. CES device does not have enough power to turn on.
+2a1. AAA batteries should be taken out of the CES device and replaced or recharged.
+       2b. CES device has a battery level higher than 2% but does not turn on.
+        2b1. All parts of the CES are checked to see if they function. Parts which do not function are replaced.
+        
+
+
+Use Case 2 - Turn CES device off:
+Primary Actor: CES device User
+Level:User
+Precondition:
+* Device is turned on.
+* Timed cycle is not active.
+Main Success Scenario:
+1. Device user presses and holds the power button.
+2. Device and all related systems powered off.
+Post Condition:
+* Device is turned off and is no longer using the battery.
+Extensions:
+1a. Device does not turn off 
+                1a1. Power button is pressed again. If it does not work, batteries can be removed. 
+        
+Use Case 3 - Set new Current:
+Primary Actor: CES device User
+Level:User
+Precondition:
+* CES device is turned on
+Main Success Scenario:
+1.  Current is set to 100 𝜇A on start
+2. Device user can increase the current to their desired current by clicking the up current button. Current will increase by a set 50𝜇A/Second while button is held or 50𝜇A per button press.
+3. Device user can decrease the current to their desired current by clicking the down current button. Current will decrease by a set 100𝜇A/Second while button is held or 100𝜇A per button press.
+Post Condition:
+        -The users desired current has now been set.
+Extensions:
+2. User cannot increase current
+   1. Current is set to the max current of 500 𝜇A, decrease amperage first to use the increase current function (or should this say “Ignore the request”)
+   1. **Can the battery level affect this? Wouldn’t a percentage of 4% or 2% cause this to be not possible?
+[a]
+2. User cannot decrease current
+3. Current is already set to the minimum current of 100 𝜇A… 
+
+
+Use Case 4 - Select time frame:
+Primary Actor: CES device User
+Level:User
+Precondition: Device has been turned on
+Main Success Scenario: 
+        1.  User presses the “Timer” button on the device.
+        2.  Device cycles through 20, 40, and 60 minute options on a loop.
+        3.  Electrodes touch the user's skin, the timer begins counting down[b].
+        4. Timer reaches zero and the device turns itself off.
+Post Condition:
+* Squeeze earclips to open
+* Apply earclips to each ear
+Extensions:
+        1a. User attempts to change the timer after locking it.
+              1a1. The timer does not change as it is locked.
+
+
+Use Case 5 - Select wavelength:
+Primary Actor: CES device User
+Level:User
+Precondition: CES device has been turned on. Timer has been set.
+Main Success Scenario: 
+1. Once the timer has been set, current will default to 1 (100µA).
+2. User presses the increase button, increasing current power, until the ideal current is reached.
+3. Once a sense of Vertigo is felt, user decreases the current until sense of Vertigo is no longer felt.
+4. Afterwards, User presses the lock Button twice in order to keep the current at the same power.
+Post Condition: Timer reaches zero
+Extensions:
+        1a. User experiences, “tapping,” in the ears
+                1a1. Users must decrease voltage immediately. 
+2a. User has a preconditional predisposition for Vertigo and experiences residual Vertigo.
+        2a1. Users should use default settings in order to prevent residual vertigo.
+
+
+
+
+Use Case 6 - Record a therapy:
+Primary Actor: CES device User
+Level:User
+Precondition: A Therapy has occurred.
+Main Success Scenario: 
+Post Condition:
+* Therapy added to stored therapy history
+Extensions:
+
+
+Use Case 7 - Notify 5% battery:[c] (Suggestion: Battery Warning and Shutoff)
+Primary Actor: CES device
+Level:User
+Precondition: The device has power and is turned on
+Main Success Scenario: 
+1. The battery remaining reaches 5%.
+2. Device issues a warning to the user that the battery is low.
+3. Battery falls to 3%[d][e], device issues another warning to the user that the battery is low and the device will shut off soon.
+4. Battery falls to 2% the device shuts off.
+Post Condition:
+Extensions:
+      4a. User attempts to turn on the device after it powers off.
+        4a1. Device displays/flashes an out of power message.
+     4b. Device fails to display warning 
+        4b1. 3% warning activates the alert 
+                4b1a.If the warning does not activate, then device turns off at 2% 
+                4b1b.If none of the warnings activate and the device does not shut off. Then battery life is lost until all power has been spent. This may cause the device not to function as intended.
+Use Case 8 - Set frequency:
+Primary Actor: CES device
+Level:User
+Precondition: CES device is turned on and currently set to change current.
+Main Success Scenario: 
+1. User wants to change frequency presses Timer-Lock-Timer (opposite of muting)
+2. Frequency now changes/cycles between 0.5hz and 100hz.
+3. Display is updated to show this change.
+Post Condition:
+        -The User’s desired frequency has been set.
+Extensions:[f][g]
+
+
+
+
+
+
+
+
+Additional Use Cases:
+Use Case 9 - Lock Settings:
+Primary Actor: CES device
+Precondition: CES device turned on.
+Main Success Scenario:
+1.Press lock button 2 times within 5 seconds to lock or unlock settings 
+   during treatment if desired. 
+Post Condition:
+        The treatment has either been locked or unlocked as desired.
+
+
+Use Case 10 - Mute Audio
+Primary Actor: CES device
+Precondition: CES device turned on.
+Main Success Scenario:
+1.Mute the audio, if desired, with the key sequence: Lock-Timer-Lock. To reinstate the audio alerts press the same key sequence again.
+Post Condition:
+        -The audio has been muted or unmuted as desired.
+Extension:
+1. Wrong sequence entered.
+                 1a1. Re-enter the key sequence.
+
+
+Use Case 11 - Auto Off
+Primary Actor: CES device
+Precondition: CES device turned on.
+Main success Scenario:
+1. Device turns off in 30 mins if not in use.
+Post Condition:
+        -The CES device has been turned off.
+
+
+Safety Feature Use Cases:
+Use Case 12 - Current Overload Shut Off.
+Primary Actor: CES device
+Level: 
+Precondition: CES device has been turned on
+Main Success Scenario:
+        1. Current has exceeded 700𝜇A.
+2. Device sets current to 0𝜇A. (Not listed but probably a good idea) 
+3. Device renders itself permanently inoperable and shuts down.
+Post Condition:
+-The CES device has rendered itself inoperable for the user’s safety.
+Extensions:
+3a.  User attempts to power the CES device on.
+                3a1. The CES device does not turn on.
+           3b. User puts new batteries in the CES device.
+                      3b1. The CES device remains off.
+
+
+Things to think about/Questions:
+Can the user turn off the device during a treatment?[h]
+Should we just make it rechargeable instead of having batteries?
+[i]Can you change the frequency during treatment? The current?
+[j]If they can, should we reset the timer if they do or continue?
+[k]
+           
+
+
+[a]Maybe just causes it to shut down as the increased amperage drains the battery?
+[b]Yes I believe you can, as long as it is not "locked"
+[c]Could be a case, may have worded this weirdly
+[d]the actual percentage the second warning occurs is not listed so I just picked 3%.
+Content of the warning isnt really mentioned
+[e]I think that works, it's a feature that we see that works!
+[f]Cant really seem to find any way listed on implementing this in the Alpha Stim guide so ive just made up a way : )
+We arent supposed to/required to recreate the Alpha-Stim exactly so we could also just add a button which I think is easier
+[g]Since it's cycling between frequencies, maybe it would be better to call the button Cycle?
+[h]Probably? I imagine that since the power button is something you need to hold down to press, that any presses should be intentional.
+[i]Since its a simulator, We can just add a Recharge button to simulate it getting energy
+[j]You can change the current but not the frequency i think
+[k]It appears modifying the current is a part of treatment. The timer should continue
