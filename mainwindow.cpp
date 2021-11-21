@@ -154,7 +154,6 @@ void MainWindow::on_DownButton_released()
     ui->WavelengthListWidget->setCurrentRow(newIndex);
   }
 
-<<<<<<< HEAD
   if(ui->StackedWidget->currentIndex() == 3){
       int currentAmp  = ui->ProgressBarWidget->value();
       int newAmp =  currentAmp - 100;
@@ -164,11 +163,8 @@ void MainWindow::on_DownButton_released()
 }
 
   }
-=======
+
 }
->>>>>>> 6d690e2f275bc1894b78c4e75556676e91103872
-
-
 
 void MainWindow::on_LockButton_released()
 {
