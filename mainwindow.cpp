@@ -97,22 +97,21 @@ void MainWindow::on_TimerButton_released()
           if(seconds > 60) seconds = 60;
           time = seconds;
       }
-
 }
 
 void MainWindow::on_UpButton_released()
 {   if(ui->StackedWidget->currentIndex() == 0){
         int index = ui->menuListWidget->currentRow();
-    int  newIndex = index - 1;
-    if (newIndex<0)
-        newIndex = 0;
-    ui->menuListWidget->setCurrentRow(newIndex);
-}
+        int  newIndex = index - 1;
+        if (newIndex<0)
+            newIndex = 0;
+        ui->menuListWidget->setCurrentRow(newIndex);
+    }
     if(ui->StackedWidget->currentIndex() == 1){
         int index = ui->FrequencyListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
-         newIndex = 0;
+            newIndex = 0;
         ui->FrequencyListWidget->setCurrentRow(newIndex);
     }
     if(ui->StackedWidget->currentIndex() == 2){
@@ -126,7 +125,8 @@ void MainWindow::on_UpButton_released()
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
-}}
+    }
+}
 
 
 void MainWindow::on_DownButton_released()
@@ -163,7 +163,6 @@ void MainWindow::on_DownButton_released()
        ui->ProgressBarWidget->setValue(newAmp);
     }
 }
-
 
 
 
