@@ -24,27 +24,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_OnOffButton_released();
-
-    void on_TimerButton_released();
-
-    void on_UpButton_released();
-
-    void on_DownButton_released();
-
-    void on_LockButton_released();
-
-    void on_ContactButton_released();
-
-    void on_EnterButton_released();
-    void updateTimerDisplay();
-    void on_BackButton_released();
-//new buttons Nov 21
-    void on_Record_released();
-
-    void on_RecordHistory_released();
-
 private:
     Ui::MainWindow *ui;
     bool onOffState;
@@ -65,6 +44,32 @@ private:
      *
      *
     */
+     void setDefaultMenuSelections();
+
+
+
+private slots:
+    void on_OnOffButton_released();
+
+    void on_TimerButton_released();
+
+    void on_UpButton_released();
+
+    void on_DownButton_released();
+
+    void on_LockButton_released();
+
+    void on_ContactButton_released();
+
+    void on_EnterButton_released();
+
+    void updateTimerDisplay();
+
+    void on_BackButton_released();
+//new buttons Nov 21
+    void on_Record_released();
+
+    void on_RecordHistory_released();
 
 };
 #endif // MAINWINDOW_H
