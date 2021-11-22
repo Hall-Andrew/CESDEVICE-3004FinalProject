@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QString>
+#include <iostream>
 
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     waveForm="";
     //resetDisplay();
     createMenu();
+    setDefaultMenuSelections();
     ui->StackedWidget->setCurrentIndex(0);
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
@@ -42,8 +45,12 @@ void MainWindow::createMenu(){
     ui->WavelengthListWidget->addItem("Alpha");
     ui->WavelengthListWidget->addItem("Beta");
     ui->WavelengthListWidget->addItem("Gamma");
+}
 
-
+void MainWindow::setDefaultMenuSelections(){
+    ui->menuListWidget->setCurrentRow(0);
+    ui->FrequencyListWidget->setCurrentRow(0);
+    ui->WavelengthListWidget->setCurrentRow(0);
 }
 
 /*
@@ -191,8 +198,6 @@ void MainWindow::on_EnterButton_released()
         QTime t = QTime(0,time);
         ui->TimeLabel->setText(t.toString());
     }
-
-
 }
 
 void MainWindow::on_BackButton_released()
@@ -217,7 +222,7 @@ void MainWindow::updateTimerDisplay()
 //Buttons for record and record History. Record History could use a menu.
 void MainWindow::on_Record_released()
 {
-    /*
+
     if (waveForm=="")
     {
         ui->ErrorMessage->append("Error! Can't make a record for session that does not exist");
@@ -225,17 +230,17 @@ void MainWindow::on_Record_released()
     }
     else
       {
-        record rec=new record(waveForm,amps,totalDuration,powerState);
+        Record rec=new Record(waveForm,amps,totalDuration,powerState);
         Rec_Hist.append(rec);
     }
-    */
+
 }
 
 void MainWindow::on_RecordHistory_released()
 {
     QString("foo");
-   /* for (int q=0; q<Vec_Hist.size(); q++)
+    for (int q=0; q<Vec_Hist.size(); q++)
     {
         Vec_Hist[q].print();
-    }*/
+    }
 }
