@@ -162,6 +162,7 @@ void MainWindow::on_DownButton_released()
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
     }
+}
 
 
 
@@ -214,9 +215,6 @@ void MainWindow::updateTimerDisplay()
         timer->stop();
     }
 }
-<<<<<<< HEAD
-
-=======
 //Buttons for record and record History. Record History could use a menu.
 void MainWindow::on_Record_released()
 {
@@ -242,4 +240,3 @@ void MainWindow::on_RecordHistory_released()
         Vec_Hist[q].print();
     }*/
 }
->>>>>>> c988d4ec25889d72b425a8873461311f398f6105
