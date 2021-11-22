@@ -4,11 +4,17 @@
 #include <QTimer>
 #include <QMainWindow>
 #include <QWidget>
+#include <QVector>
+#include "record.h"
+
+/*EDITED BY JULIEN NOV 21*/
 
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+class record;
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +40,10 @@ private slots:
     void on_EnterButton_released();
     void updateTimerDisplay();
     void on_BackButton_released();
+//new buttons Nov 21
+    void on_Record_released();
+
+    void on_RecordHistory_released();
 
 private:
     Ui::MainWindow *ui;
@@ -42,12 +52,19 @@ private:
     bool lockState;
     bool contactState;
     double powerState;
+    QString waveForm; //added waveform variable for record.
     float amps;
     int totalDuration;
     QTimer *timer;
     void resetDisplay();
     void createMenu();
     void resetValues();
+    /*The two values which will take in the record. Currently buggy, as apparently record is 'incomplete'
+     * record rec;
+     * QVector<record> Record_History;
+     *
+     *
+    */
 
 };
 #endif // MAINWINDOW_H

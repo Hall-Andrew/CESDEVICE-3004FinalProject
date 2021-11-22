@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     powerState = 100;
     amps = 0;
     totalDuration = 0;
+    waveForm="";
     //resetDisplay();
     createMenu();
     ui->StackedWidget->setCurrentIndex(0);
@@ -164,7 +165,7 @@ void MainWindow::on_DownButton_released()
 
   }
 
-}
+
 
 void MainWindow::on_LockButton_released()
 {
@@ -213,4 +214,29 @@ void MainWindow::updateTimerDisplay()
     if(time <= 0){
         timer->stop();
     }
+}
+//Buttons for record and record History. Record History could use a menu.
+void MainWindow::on_Record_released()
+{
+    /*
+    if (waveForm=="")
+    {
+        ui->ErrorMessage->append("Error! Can't make a record for session that does not exist");
+
+    }
+    else
+      {
+        record rec=new record(waveForm,amps,totalDuration,powerState);
+        Rec_Hist.append(rec);
+    }
+    */
+}
+
+void MainWindow::on_RecordHistory_released()
+{
+    QString("foo");
+   /* for (int q=0; q<Vec_Hist.size(); q++)
+    {
+        Vec_Hist[q].print();
+    }*/
 }
