@@ -47,7 +47,7 @@ int Record::getPowerLevel(){
  * changed it so that it gives a string value which it will return to the screen. /j
  /*/
 QString Record::print(){
-    QString report=("WAVEFORM: %s \n FREQUENCY: %f \n DURATION: %d seconds \n POWER LEVEL: %d",waveform,frequency,duration,powerLevel);
+    QString report=("WAVEFORM: %s \n FREQUENCY: %f \n DURATION: %d seconds \n POWER LEVEL: %d",waveform,frequency,duration,QString::number(powerLevel));
 
     return report;
 
