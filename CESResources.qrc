@@ -3,5 +3,8 @@
         <file>guiAssets/buttonAssets/selectButtonAsset</file>
         <file>guiAssets/buttonAssets/upButton.png</file>
         <file>guiAssets/buttonAssets/downButton.png</file>
+        <file>guiAssets/buttonAssets/timerButton.png</file>
+        <file>guiAssets/buttonAssets/PowerButton.png</file>
+        <file>guiAssets/buttonAssets/lockButton.png</file>
     </qresource>
 </RCC>
