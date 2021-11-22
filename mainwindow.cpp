@@ -10,15 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    onOffState = false;
-    time = 0;
-    lockState = false;
-    contactState = false;
-    powerState = 100;
-    amps = 0;
-    totalDuration = 0;
-    waveForm="";
+
     //resetDisplay();
+    initializeDefaults();
     createMenu();
     setDefaultMenuSelections();
     ui->StackedWidget->setCurrentIndex(0);
@@ -51,6 +45,17 @@ void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
     ui->FrequencyListWidget->setCurrentRow(0);
     ui->WavelengthListWidget->setCurrentRow(0);
+}
+
+void MainWindow::initializeDefaults(){
+    onOffState = false;
+    time = 0;
+    lockState = false;
+    contactState = false;
+    powerState = 100;
+    amps = 0;
+    totalDuration = 0;
+    waveForm="";
 }
 
 /*
@@ -90,7 +95,6 @@ void MainWindow::on_OnOffButton_released()
         onOffState = false;
     }
    // resetDisplay();
-
 }
 
 void MainWindow::on_TimerButton_released()
@@ -193,10 +197,12 @@ void MainWindow::on_EnterButton_released()
 
     if( ui->StackedWidget->currentIndex() == 3){
         QString text = ui->WavelengthListWidget->currentItem()->text();
+        waveForm=text;
         ui->WaveFormLabel->setText(text);
         time  = 20;
         QTime t = QTime(0,time);
         ui->TimeLabel->setText(t.toString());
+
     }
 }
 
@@ -220,6 +226,7 @@ void MainWindow::updateTimerDisplay()
     }
 }
 //Buttons for record and record History. Record History could use a menu.
+//Record isnt hooked up to any data atm see console/ Andrew
 void MainWindow::on_Record_released()
 {
 
@@ -230,8 +237,13 @@ void MainWindow::on_Record_released()
     }
     else
       {
-        Record rec=new Record(waveForm,amps,totalDuration,powerState);
-        Rec_Hist.append(rec);
+        Record* rec=new Record(waveForm,amps,totalDuration,powerState);
+        recordList.append(rec);
+        cout<<"Amps: ";
+        cout<<amps;
+        cout<<" Duration: "<<rec->getDuration();
+        cout<<" PowerState: ";
+        cout<<rec->getPowerLevel()<<endl;
     }
 
 }
@@ -239,8 +251,8 @@ void MainWindow::on_Record_released()
 void MainWindow::on_RecordHistory_released()
 {
     QString("foo");
-    for (int q=0; q<Vec_Hist.size(); q++)
+    for (int q=0; q<recordList.size(); q++)
     {
-        Vec_Hist[q].print();
+        recordList[q]->print();
     }
 }

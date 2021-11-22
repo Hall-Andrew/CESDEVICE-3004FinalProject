@@ -31,10 +31,11 @@ private:
     bool lockState;
     bool contactState;
     double powerState;
-    QString waveForm; //added waveform variable for record.
     float amps;
     int totalDuration;
+    QString waveForm;
     QTimer *timer;
+    QVector<Record*> recordList;
     void resetDisplay();
     void createMenu();
     void resetValues();
@@ -45,6 +46,7 @@ private:
      *
     */
      void setDefaultMenuSelections();
+     void initializeDefaults();
 
 
 
