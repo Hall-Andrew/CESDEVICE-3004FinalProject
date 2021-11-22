@@ -160,11 +160,10 @@ void MainWindow::on_DownButton_released()
       if (newAmp < 0)
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
-}
-
-  }
+    }
 
 }
+
 
 void MainWindow::on_LockButton_released()
 {
@@ -214,3 +213,4 @@ void MainWindow::updateTimerDisplay()
         timer->stop();
     }
 }
+
