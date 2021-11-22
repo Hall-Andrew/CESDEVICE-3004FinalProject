@@ -14,9 +14,13 @@ class Record
         int getDuration();
         int getPowerLevel();
         QString print(); //changed it to string. Gives all the details  of the record
+        void setFrequency(float freq); //added setters because of an possible implementation if they arent used will remove /Andrew
+        void setDuration(int time);
+        void setPowerLevel(int power);
+        void setWaveForm(QString waveform);
 
     private:
-        QString description;//used to be record. Basically it's a quick discription for the record menu
+        QString description;//used to be record. Basically it's a quick description for the record menu
         QString waveform;
         float frequency;
         int duration;
