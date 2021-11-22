@@ -7,13 +7,22 @@ Record::Record(QString wform, float freq,int dur, int power)
     powerLevel=power;
     waveform=wform;
 }
+Record::Record()
+{
+    frequency=0.0;
+    duration=0;
+    powerLevel=0;
+    waveform="";
+
+}
 
 Record::~Record(){
 
 }
 
 QString Record::getRecord(){
-    return record;
+    description=("Session: %s, %d", waveform,duration);
+    return description;
 }
 
 QString Record::getWaveForm(){
@@ -35,7 +44,11 @@ int Record::getPowerLevel(){
 /*/
  * Function: Print()
  * Tentatively planning on it emitting a signal will probably change when we actually go about implementing.
+ * changed it so that it gives a string value which it will return to the screen. /j
  /*/
-void Record::print(){
+QString Record::print(){
+    QString report=("WAVEFORM: %s \n FREQUENCY: %f \n DURATION: %d seconds \n POWER LEVEL: %d",waveform,frequency,duration,powerLevel);
+
+    return report;
 
 }
