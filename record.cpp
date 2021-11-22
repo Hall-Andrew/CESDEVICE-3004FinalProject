@@ -21,7 +21,7 @@ Record::~Record(){
 }
 
 QString Record::getRecord(){
-    description=("Session: %s, %d", waveform,duration);
+    description=("WaveForm: "+waveform+" Total Duration: "+QString::number( duration));
     return description;
 }
 

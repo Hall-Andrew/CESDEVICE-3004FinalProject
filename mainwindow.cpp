@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     setDefaultMenuSelections();
     ui->StackedWidget->setCurrentIndex(0);
     timer = new QTimer(this);
+    UpdateFrequency(Frq_level);
+    UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
 }
 
@@ -53,9 +55,17 @@ void MainWindow::initializeDefaults(){
     lockState = false;
     contactState = false;
     powerState = 100;
-    amps = 0;
     totalDuration = 0;
-    waveForm="";
+    Frq_level=0;
+    Wf_level=0;
+    amps.push_back(AMP_LVL_ONE);
+    amps.push_back(AMP_LVL_TWO);
+    amps.push_back(AMP_LVL_THREE);
+    waveForm.push_back(alpha);
+    waveForm.push_back(betta);
+    waveForm.push_back(gamma);
+
+
 }
 
 /*
@@ -76,7 +86,7 @@ void MainWindow::resetValues()
 {
     time = 0;
     powerState = 100; //Need to read from Database
-    amps = 100;
+    //amps = 100;
     totalDuration = 0;
 }
 
@@ -191,13 +201,14 @@ void MainWindow::on_EnterButton_released()
 {
     int index = ui->StackedWidget->currentIndex();
     int nextIndex = index + 1 ;
-        if (nextIndex< ui->StackedWidget->count()){
+    //I put a -1 here because I added Record_history to the stacked Widget, which messes up the conditional
+        if (nextIndex< ui->StackedWidget->count()-1){
             ui->StackedWidget->setCurrentIndex(nextIndex);
     }
 
     if( ui->StackedWidget->currentIndex() == 3){
         QString text = ui->WavelengthListWidget->currentItem()->text();
-        waveForm=text;
+        //waveForm=text;
         ui->WaveFormLabel->setText(text);
         time  = 20;
         QTime t = QTime(0,time);
@@ -208,8 +219,17 @@ void MainWindow::on_EnterButton_released()
 
 void MainWindow::on_BackButton_released()
 {
+    int prevIndex;
     int index = ui->StackedWidget->currentIndex();
-      int prevIndex = index - 1 ;
+    //modified it so recordHisotry does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
+    if (index>3)
+    {
+        prevIndex=0;
+    }
+    else
+    {
+        prevIndex = index - 1 ;
+    }
       if (prevIndex >= 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
       }
@@ -230,29 +250,61 @@ void MainWindow::updateTimerDisplay()
 void MainWindow::on_Record_released()
 {
 
-    if (waveForm=="")
-    {
-        ui->ErrorMessage->append("Error! Can't make a record for session that does not exist");
-
-    }
-    else
-      {
-        Record* rec=new Record(waveForm,amps,totalDuration,powerState);
+        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,powerState);
         recordList.append(rec);
+
         cout<<"Amps: ";
-        cout<<amps;
+        cout<<rec->getFrequency();
         cout<<" Duration: "<<rec->getDuration();
         cout<<" PowerState: ";
         cout<<rec->getPowerLevel()<<endl;
-    }
+
 
 }
-
+//switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-    QString("foo");
+    ui->StackedWidget->setCurrentIndex(4);
+    ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
     {
-        recordList[q]->print();
+        ui->recordhistory->addItem("Session "+QString::number(q+1)+" "+recordList[q]->getRecord());
     }
+}
+//Functions to update the wavelenght and frequencies
+void MainWindow:: UpdateFrequency(int level)
+{
+    ui->Frequncy->clear();
+    QString dummy= QString::number(amps[level])+" Hz";
+    ui->Frequncy->append(dummy);
+}
+void MainWindow:: UpdateWaveform(int level)
+{
+    ui->Waveform->clear();
+    ui->Waveform->append(waveForm[level]);
+}
+void MainWindow::on_ChangeFrequency_released()
+{
+    if (Frq_level>=2)
+    {
+        Frq_level=0;
+    }
+    else
+    {
+       Frq_level++;
+    }
+    UpdateFrequency(Frq_level);
+}
+
+void MainWindow::on_ChangeWaveform_released()
+{
+    if (Wf_level>=2)
+    {
+        Wf_level=0;
+    }
+    else
+    {
+       Wf_level++;
+    }
+    UpdateWaveform(Wf_level);
 }
