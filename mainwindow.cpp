@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QString>
 #include <iostream>
-#define powerTimeOut 3
+#define powerTimeOut 30
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,7 +60,7 @@ void MainWindow::initializeDefaults(){
     onOffState = false;
     time = 0;
     lockState = false;
-    contactState = false;
+    paused = false;
     powerState = 100;
     totalDuration = 0;
     Frq_level=0;
@@ -91,9 +91,12 @@ void MainWindow:: turnDeviceOff(){
 
 void MainWindow::on_TimerButton_released()
 {
+    bool state = ui->ContactButton->isChecked();
       if (!timer->isActive()){
           timer->setInterval(1000);
+          if(state){
           timer->start();
+          }
       }else
       {
           int seconds = time + 20;
@@ -177,11 +180,12 @@ void MainWindow::on_LockButton_released()
 {
       resetPowerTimer();
 }
-
-void MainWindow::on_ContactButton_released()
+/*
+void MainWindow::on_Button_released()
 {
       resetPowerTimer();
 }
+*/
 
 void MainWindow::on_EnterButton_released()
 {
@@ -316,13 +320,36 @@ void MainWindow::on_OnOffButton_released(){
 
 }
 void MainWindow::startSession(){
+     QString text = ui->WavelengthListWidget->currentItem()->text();
+       ui->WaveFormLabel->setText(text);
+       time  = 20;
+       QTime t = QTime(0,time);
+       ui->TimeLabel->setText(t.toString());
+    if(!ui->ContactButton->isChecked()){
+        return;
+    }
     powerTimer->stop();
-    QString text = ui->WavelengthListWidget->currentItem()->text();
+
     //waveForm=text;
-    ui->WaveFormLabel->setText(text);
-    time  = 20;
-    QTime t = QTime(0,time);
-    ui->TimeLabel->setText(t.toString());
+
+
 
 }
 
+void MainWindow::on_ContactButton_released(){
+
+}
+
+
+
+void MainWindow::on_ContactButton_stateChanged(int arg1)
+{
+    bool state = ui->ContactButton->isChecked();
+    if((timer->isActive()) && (!state)){
+        timer->stop();
+        paused = true;
+    } else if (paused && state){
+        startSession();
+    }
+
+}

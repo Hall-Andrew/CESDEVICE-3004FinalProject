@@ -34,7 +34,7 @@ private:
     int time;
     QTimer *powerTimer;
     bool lockState;
-    bool contactState;
+    bool paused;
     double powerState;
     int totalDuration;
     //these four set the waveform and frequency of the machine. The vectors have hard coded values defined above and we iterate through using Frq_level for Frequency and Wf_Level for waveform
@@ -90,5 +90,6 @@ private slots:
     void on_ChangeWaveform_released();
     void on_TurnOnOffButton_released();
 
+    void on_ContactButton_stateChanged(int arg1);
 };
 #endif // MAINWINDOW_H

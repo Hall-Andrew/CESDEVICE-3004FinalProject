@@ -135,7 +135,7 @@ background-repeat:none;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="ContactButton">
+   <widget class="QCheckBox" name="ContactButton">
     <property name="geometry">
      <rect>
       <x>260</x>
