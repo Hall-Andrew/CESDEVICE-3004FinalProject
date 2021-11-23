@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QString>
 #include <iostream>
-
+#define powerTimeOut 3
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,15 +14,21 @@ MainWindow::MainWindow(QWidget *parent)
     //resetDisplay();
     initializeDefaults();
     createMenu();
-    setDefaultMenuSelections();
     ui->StackedWidget->setCurrentIndex(0);
     timer = new QTimer(this);
+    powerTimer = new QTimer(this);
     UpdateFrequency(Frq_level);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
+    powerTimer->setInterval(powerTimeOut*1000);
+    connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
+
 }
 
-
+void MainWindow::on_PowerTimerFired(){
+   if(!timer->isActive())
+       turnDeviceOff();
+}
 
 
 
@@ -49,6 +55,7 @@ void MainWindow::setDefaultMenuSelections(){
     ui->WavelengthListWidget->setCurrentRow(0);
 }
 
+
 void MainWindow::initializeDefaults(){
     onOffState = false;
     time = 0;
@@ -68,44 +75,19 @@ void MainWindow::initializeDefaults(){
 
 }
 
-/*
-void MainWindow::resetDisplay()
 
-{
-    ui->TextView->setText("");
-    QString timeString = time.toString("hh:mm:ss");
-    QString powerString = QString::number(power);
-    QString ampString = QString::number(amps);
-    QString totalDurationString = QString::number(totalDuration);
-    QString onOffStateString = QString::bool(onOffState);
-  }
-
-
-*/
-void MainWindow::resetValues()
-{
-    time = 0;
-    powerState = 100; //Need to read from Database
-    //amps = 100;
-    totalDuration = 0;
+void MainWindow::turnDeviceOn(){
+    ui->StackedWidget->setCurrentIndex(1);
+    setDefaultMenuSelections();
+    resetPowerTimer();
 }
 
+void MainWindow:: turnDeviceOff(){
+      ui->StackedWidget->setCurrentIndex(0);
+      powerTimer->stop();
+    }
 
-void MainWindow::on_OnOffButton_released()
-{
-    QString text = ui->TurnOnOffButton->text();
-    if(text == "Turn On")
-    {
-         ui->TurnOnOffButton->setText("Turn Off");
-         onOffState = true;
-         resetValues();
-    }
-       else{
-        ui->TurnOnOffButton->setText("Turn On");
-        onOffState = false;
-    }
-   // resetDisplay();
-}
+
 
 void MainWindow::on_TimerButton_released()
 {
@@ -118,6 +100,7 @@ void MainWindow::on_TimerButton_released()
           if(seconds > 60) seconds = 60;
           time = seconds;
       }
+      resetPowerTimer();
 }
 
 void MainWindow::on_UpButton_released()
@@ -147,6 +130,7 @@ void MainWindow::on_UpButton_released()
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
     }
+      resetPowerTimer();
 }
 
 
@@ -183,23 +167,27 @@ void MainWindow::on_DownButton_released()
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
     }
+
+    resetPowerTimer();
 }
 
 
 
 void MainWindow::on_LockButton_released()
 {
-
+      resetPowerTimer();
 }
 
 void MainWindow::on_ContactButton_released()
 {
-
+      resetPowerTimer();
 }
 
 void MainWindow::on_EnterButton_released()
 {
     int index = ui->StackedWidget->currentIndex();
+    if(index == 0)
+        return;
     int nextIndex = index + 1 ;
     //I put a -1 here because I added Record_history to the stacked Widget, which messes up the conditional
         if (nextIndex< ui->StackedWidget->count()-1){
@@ -207,14 +195,11 @@ void MainWindow::on_EnterButton_released()
     }
 
     if( ui->StackedWidget->currentIndex() == 3){
-        QString text = ui->WavelengthListWidget->currentItem()->text();
-        //waveForm=text;
-        ui->WaveFormLabel->setText(text);
-        time  = 20;
-        QTime t = QTime(0,time);
-        ui->TimeLabel->setText(t.toString());
-
+       startSession();
+       return;
     }
+
+      resetPowerTimer();
 }
 
 void MainWindow::on_BackButton_released()
@@ -243,6 +228,7 @@ void MainWindow::updateTimerDisplay()
     ui->TimeLabel->setText(timeString);
     if(time <= 0){
         timer->stop();
+        resetPowerTimer();
     }
 }
 //Buttons for record and record History. Record History could use a menu.
@@ -308,3 +294,35 @@ void MainWindow::on_ChangeWaveform_released()
     }
     UpdateWaveform(Wf_level);
 }
+
+void MainWindow::on_TurnOnOffButton_released()
+{
+    int index = ui->StackedWidget->currentIndex();
+    if  (index == 0 ){
+       turnDeviceOn();
+    }else turnDeviceOff();
+
+}
+
+
+void MainWindow:: resetPowerTimer(){
+    powerTimer->stop();
+    powerTimer->setInterval(powerTimeOut*1000);
+    powerTimer->start();
+}
+
+
+void MainWindow::on_OnOffButton_released(){
+
+}
+void MainWindow::startSession(){
+    powerTimer->stop();
+    QString text = ui->WavelengthListWidget->currentItem()->text();
+    //waveForm=text;
+    ui->WaveFormLabel->setText(text);
+    time  = 20;
+    QTime t = QTime(0,time);
+    ui->TimeLabel->setText(t.toString());
+
+}
+

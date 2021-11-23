@@ -32,6 +32,7 @@ private:
     Ui::MainWindow *ui;
     bool onOffState;
     int time;
+    QTimer *powerTimer;
     bool lockState;
     bool contactState;
     double powerState;
@@ -51,6 +52,10 @@ private:
     void UpdateWaveform(int lvl);//^^ same thing
      void setDefaultMenuSelections();
      void initializeDefaults();
+     void turnDeviceOff();
+     void turnDeviceOn();
+     void resetPowerTimer();
+     void startSession();
 
 
 
@@ -71,6 +76,10 @@ private slots:
 
     void updateTimerDisplay();
 
+    void on_PowerTimerFired();
+
+
+
     void on_BackButton_released();
 //new buttons Nov 21
     void on_Record_released();
@@ -79,5 +88,7 @@ private slots:
 
     void on_ChangeFrequency_released();
     void on_ChangeWaveform_released();
+    void on_TurnOnOffButton_released();
+
 };
 #endif // MAINWINDOW_H
