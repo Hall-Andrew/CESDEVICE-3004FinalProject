@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QVector>
 #include "record.h"
+#include "battery.h"
+
 #define AMP_LVL_ONE .5
 #define AMP_LVL_TWO 77
 #define AMP_LVL_THREE 100
@@ -37,7 +39,10 @@ private:
     bool paused;
     double powerState;
     int totalDuration;
-    //these four set the waveform and frequency of the machine. The vectors have hard coded values defined above and we iterate through using Frq_level for Frequency and Wf_Level for waveform
+    Battery* battery;
+
+    // These four set the waveform and frequency of the machine.
+    // The vectors have hard coded values defined above and we iterate through using Frq_level for Frequency and Wf_Level for waveform
     int Frq_level;
     int Wf_level;
     QVector<double> amps;
@@ -45,11 +50,13 @@ private:
     // Slots used ^^: On_FrqButtonRealeased, On_WFButtonRealeased, updateFreq,updateWF
     QTimer *timer;
     QVector<Record*> recordList;
+
     void resetDisplay();
     void createMenu();
     void resetValues();
-    void UpdateFrequency(int lvl);//takes in the new level and changes the frequency box
+    void UpdateFrequency(int lvl); //takes in the new level and changes the frequency box
     void UpdateWaveform(int lvl);//^^ same thing
+<<<<<<< HEAD
      void setDefaultMenuSelections();
      void initializeDefaults();
      void turnDeviceOff();
@@ -58,6 +65,11 @@ private:
      void startSession();
 
 
+=======
+    void setDefaultMenuSelections();
+    void initializeDefaults();
+    void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
+>>>>>>> 5112d4c9ef5729f187bf25925e91b4720a5a1e9d
 
 private slots:
     void on_OnOffButton_released();
@@ -88,8 +100,12 @@ private slots:
 
     void on_ChangeFrequency_released();
     void on_ChangeWaveform_released();
+<<<<<<< HEAD
     void on_TurnOnOffButton_released();
 
     void on_ContactButton_stateChanged(int arg1);
+=======
+    void on_batteryLevel_valueChanged(int value);
+>>>>>>> 5112d4c9ef5729f187bf25925e91b4720a5a1e9d
 };
 #endif // MAINWINDOW_H

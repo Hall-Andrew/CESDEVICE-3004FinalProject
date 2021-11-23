@@ -9,6 +9,10 @@ public:
    QString decay(); //default decay method
    QString decay(int mod);//call for when machine is running
    void charge();
+
+   float getBatteryLevel();
+   void setBatteryLevel(float newBatteryLevel);
+
 private:
     float power;
     float drain; //how fast battery life decays

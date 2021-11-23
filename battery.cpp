@@ -15,6 +15,7 @@ Battery::~Battery()
 {
   delete decay_mod;
 }
+
 QString Battery::decay()
 {
   while (power<0)
@@ -24,11 +25,11 @@ QString Battery::decay()
   charged=false;
   return "Your battery is out of life ";
 }
+
 /* Basic decay function. Missing a lot of what we need (being able to run in
 the background primarily) but a good starting point. There's two versions
 of this function, the second takes in a modifier which is needed for when
 the machine is running.
-
 */
 QString Battery::decay(int mod)
 {
@@ -41,3 +42,6 @@ QString Battery::decay(int mod)
 }
 void Battery::charge(){power=100; charged=true;}
 //Basic Funct to reset the battery.
+
+float Battery::getBatteryLevel() { return power; }
+void Battery::setBatteryLevel(float newPowerLevel) { power = newPowerLevel; }
