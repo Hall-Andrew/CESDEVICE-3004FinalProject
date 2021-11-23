@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete battery;
     delete ui;
 }
 
@@ -278,11 +279,13 @@ void MainWindow:: UpdateFrequency(int level)
     QString dummy= QString::number(amps[level])+" Hz";
     ui->Frequncy->append(dummy);
 }
+
 void MainWindow:: UpdateWaveform(int level)
 {
     ui->Waveform->clear();
     ui->Waveform->append(waveForm[level]);
 }
+
 void MainWindow::on_ChangeFrequency_released()
 {
     if (Frq_level>=2)
@@ -307,4 +310,43 @@ void MainWindow::on_ChangeWaveform_released()
        Wf_level++;
     }
     UpdateWaveform(Wf_level);
+}
+
+/*
+    When a new battery percentage is set, this function changes the progress
+    bar colour according to its ranges
+*/
+void MainWindow::on_batteryLevel_valueChanged(int value)
+{
+    // If battery level is less than 10 change battery colour to red
+    if(value <= 10) {
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #FF0000; background-color: #FFF;");
+    } else {
+        // otherwise green
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
+    }
+}
+
+/*
+    This function will set the battery level and update the progress bar
+
+    When should this be called:
+        1. When a therapy is active, so a timer will also be active
+        2. From an timer update function, call this function to drain the battery
+           according to the change in time. (assuming that battery percentage drains/ sec)
+        3. Open for suggestion
+
+    Uses the current battery level that was previously set and changes it accordingly to the therapy.
+*/
+void MainWindow::decreaseBatteryPercentage()
+{
+    // Calculate new battery percentage
+        // Will need a way for how to calculate the new value. I believe using the decay?
+    float powerLevel = 0.0f;
+
+    // Set new battery level to ui and the object
+    if(powerLevel <= 100 && powerLevel > 0) {
+        battery->setBatteryLevel(powerLevel);
+        ui->batteryPercentageBar->setValue(int(powerLevel));
+    }
 }
