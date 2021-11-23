@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
-    ui->menuListWidget->addItem("View Previous Sessions");
+   // ui->menuListWidget->addItem("View Previous Sessions"); Technically we have record history for this option
     ui->FrequencyListWidget->addItem("0.5Hz");
     ui->FrequencyListWidget->addItem("77Hz");
     ui->FrequencyListWidget->addItem("100Hz");
@@ -107,28 +107,28 @@ void MainWindow::on_TimerButton_released()
 }
 
 void MainWindow::on_UpButton_released()
-{   if(ui->StackedWidget->currentIndex() == 0){
+{   if(ui->StackedWidget->currentIndex() == 1){
         int index = ui->menuListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
             newIndex = 0;
         ui->menuListWidget->setCurrentRow(newIndex);
     }
-    if(ui->StackedWidget->currentIndex() == 1){
+/*    if(ui->StackedWidget->currentIndex() == 2){
         int index = ui->FrequencyListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
             newIndex = 0;
         ui->FrequencyListWidget->setCurrentRow(newIndex);
     }
-    if(ui->StackedWidget->currentIndex() == 2){
+    if(ui->StackedWidget->currentIndex() == 3){
         int index = ui->WavelengthListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
          newIndex = 0;
         ui->WavelengthListWidget->setCurrentRow(newIndex);
-    }
-    if(ui->StackedWidget->currentIndex() == 3){
+    }*/
+    if(ui->StackedWidget->currentIndex() == 4){
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
@@ -139,7 +139,7 @@ void MainWindow::on_UpButton_released()
 
 void MainWindow::on_DownButton_released()
 {
-  if(ui->StackedWidget->currentIndex() == 0){
+  if(ui->StackedWidget->currentIndex() == 1){
     int index = ui->menuListWidget->currentRow();
     int  newIndex = index + 1;
     if (newIndex >=  ui->menuListWidget->count())
@@ -147,7 +147,7 @@ void MainWindow::on_DownButton_released()
     ui->menuListWidget->setCurrentRow(newIndex);
   }
 
-  if(ui->StackedWidget->currentIndex() == 1){
+ /* if(ui->StackedWidget->currentIndex() == 2){
     int index = ui->FrequencyListWidget->currentRow();
     int  newIndex = index + 1;
     if (newIndex >=  ui->FrequencyListWidget->count())
@@ -155,15 +155,15 @@ void MainWindow::on_DownButton_released()
     ui->FrequencyListWidget->setCurrentRow(newIndex);
   }
 
-  if(ui->StackedWidget->currentIndex() == 2){
+  if(ui->StackedWidget->currentIndex() == 3){
     int index = ui->WavelengthListWidget->currentRow();
     int  newIndex = index + 1;
     if (newIndex >=  ui->WavelengthListWidget->count())
         return;
     ui->WavelengthListWidget->setCurrentRow(newIndex);
   }
-
-  if(ui->StackedWidget->currentIndex() == 3){
+*/
+  if(ui->StackedWidget->currentIndex() == 4){
       int currentAmp  = ui->ProgressBarWidget->value();
       int newAmp =  currentAmp - 100;
       if (newAmp < 0)
@@ -189,7 +189,7 @@ void MainWindow::on_Button_released()
 
 void MainWindow::on_EnterButton_released()
 {
-    int index = ui->StackedWidget->currentIndex();
+   /* int index = ui->StackedWidget->currentIndex();
     if(index == 0)
         return;
     int nextIndex = index + 1 ;
@@ -197,10 +197,14 @@ void MainWindow::on_EnterButton_released()
         if (nextIndex< ui->StackedWidget->count()-1){
             ui->StackedWidget->setCurrentIndex(nextIndex);
     }
-
+*/
     if( ui->StackedWidget->currentIndex() == 3){
        startSession();
        return;
+    }
+    else
+    {
+        ui->StackedWidget->setCurrentIndex(4);
     }
 
       resetPowerTimer();
@@ -208,20 +212,14 @@ void MainWindow::on_EnterButton_released()
 
 void MainWindow::on_BackButton_released()
 {
-    int prevIndex;
+    ui->StackedWidget->setCurrentIndex(1);
+ /*   int prevIndex;
     int index = ui->StackedWidget->currentIndex();
     //modified it so recordHisotry does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
-    if (index>3)
-    {
-        prevIndex=0;
-    }
-    else
-    {
-        prevIndex = index - 1 ;
-    }
+    prevIndex=index-1;
       if (prevIndex >= 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
-      }
+      }*/
 }
 
 
@@ -254,7 +252,7 @@ void MainWindow::on_Record_released()
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-    ui->StackedWidget->setCurrentIndex(4);
+    ui->StackedWidget->setCurrentIndex(5);
     ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
     {
@@ -321,7 +319,7 @@ void MainWindow::on_OnOffButton_released(){
 }
 void MainWindow::startSession(){
      QString text = ui->WavelengthListWidget->currentItem()->text();
-       ui->WaveFormLabel->setText(text);
+       //ui->WaveFormLabel->setText(text);
        time  = 20;
        QTime t = QTime(0,time);
        ui->TimeLabel->setText(t.toString());
@@ -350,6 +348,7 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         paused = true;
     } else if (paused && state){
         startSession();
+
     }
 
 }
