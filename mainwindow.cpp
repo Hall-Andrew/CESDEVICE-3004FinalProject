@@ -300,7 +300,6 @@ void MainWindow::on_ChangeWaveform_released()
     UpdateWaveform(Wf_level);
 }
 
-<<<<<<< HEAD
 void MainWindow::on_TurnOnOffButton_released()
 {
     int index = ui->StackedWidget->currentIndex();
@@ -354,17 +353,20 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         startSession();
 
     }
+}
 
-=======
 /*
     When a new battery percentage is set, this function changes the progress
     bar colour according to its ranges
 */
 void MainWindow::on_batteryLevel_valueChanged(int value)
 {
-    // If battery level is less than 10 change battery colour to red
+    // Change battery colour according to charge level
     if(value <= 10) {
         ui->batteryPercentageBar->setStyleSheet("selection-background-color: #FF0000; background-color: #FFF;");
+    } else if(value <= 20) {
+        // Yellow
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #ffff00; background-color: #FFF;");
     } else {
         // otherwise green
         ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
@@ -388,10 +390,34 @@ void MainWindow::decreaseBatteryPercentage()
         // Will need a way for how to calculate the new value. I believe using the decay?
     float powerLevel = 0.0f;
 
+    // if(therapy) {
+    //     power = battery->decay(some_value)
+    //} else {
+    //     power = battery->decay();
+    //  }
+
     // Set new battery level to ui and the object
     if(powerLevel <= 100 && powerLevel > 0) {
         battery->setBatteryLevel(powerLevel);
         ui->batteryPercentageBar->setValue(int(powerLevel));
     }
->>>>>>> 5112d4c9ef5729f187bf25925e91b4720a5a1e9d
+}
+
+/*
+    This function implements "charging"
+
+    This is activated from a signal sent from a recharge button
+
+    Note: works for now but as we add more things I am sure this will need to be updated
+*/
+void MainWindow::chargeBattery()
+{
+    // Charge the battery
+    battery->charge();
+
+    // Get the new value
+    int newPercent = int(battery->getBatteryLevel());
+
+    // Update the battery percentage bar
+    ui->batteryPercentageBar->setValue(newPercent);
 }

@@ -56,56 +56,36 @@ private:
     void resetValues();
     void UpdateFrequency(int lvl); //takes in the new level and changes the frequency box
     void UpdateWaveform(int lvl);//^^ same thing
-<<<<<<< HEAD
+
      void setDefaultMenuSelections();
      void initializeDefaults();
      void turnDeviceOff();
      void turnDeviceOn();
      void resetPowerTimer();
      void startSession();
-
-
-=======
-    void setDefaultMenuSelections();
-    void initializeDefaults();
-    void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
->>>>>>> 5112d4c9ef5729f187bf25925e91b4720a5a1e9d
+     void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
 
 private slots:
     void on_OnOffButton_released();
-
     void on_TimerButton_released();
-
     void on_UpButton_released();
-
     void on_DownButton_released();
-
     void on_LockButton_released();
-
     void on_ContactButton_released();
-
     void on_EnterButton_released();
-
     void updateTimerDisplay();
-
     void on_PowerTimerFired();
-
-
-
     void on_BackButton_released();
 //new buttons Nov 21
     void on_Record_released();
-
     void on_RecordHistory_released();
-
     void on_ChangeFrequency_released();
     void on_ChangeWaveform_released();
-<<<<<<< HEAD
     void on_TurnOnOffButton_released();
-
     void on_ContactButton_stateChanged(int arg1);
-=======
     void on_batteryLevel_valueChanged(int value);
->>>>>>> 5112d4c9ef5729f187bf25925e91b4720a5a1e9d
+
+    void chargeBattery();
+
 };
 #endif // MAINWINDOW_H
