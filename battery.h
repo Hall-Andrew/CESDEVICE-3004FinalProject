@@ -24,11 +24,13 @@ class Battery : public QObject
         double drainModifier;
         QTimer* timer;
         void drain();
+        bool powerWarning;
 
     private slots:
 
     signals:
          void updateBatteryBar(int);
+         void shutDown();
 };
 
 #endif // BATTERY_H

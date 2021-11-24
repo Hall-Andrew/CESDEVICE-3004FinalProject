@@ -3,9 +3,10 @@
 
 Battery::Battery()
 {
-    power=100;
+    power=49;
     baseDrainAmount=1;
     drainModifier=0.10;
+    powerWarning=false;
     timer = new QTimer(this);
     timer->setInterval(2500);
     connect(timer, &QTimer::timeout, this, &Battery::drain);
@@ -31,14 +32,26 @@ void Battery::setDrainMultiplier(double multi){
 }
 
 void Battery::drain(){
-    if((power-(baseDrainAmount*drainModifier))>0){
-        power=power-(baseDrainAmount*drainModifier);
+    power=power-(baseDrainAmount*drainModifier);
+    if(power<0){
+        power=0;
     }else{
-        power = 0;
+        cout<<power<<endl;
+        if(power <6 && power > 4 && !powerWarning){
+            powerWarning=true;
+            cout<<"5% warning"<<endl;
+        }
+        {
+            if(power<3){
+                cout<<"2% shutdown warning!"<<endl;
+                emit shutDown();
+            }
+        }
     }
+
     emit updateBatteryBar((int)power);
-    cout.precision(2);
-    cout<<fixed<<power<<endl;
+    //cout.precision(2);
+    //cout<<fixed<<power<<endl;
 }
 
 double Battery::getBatteryPercentage(){
