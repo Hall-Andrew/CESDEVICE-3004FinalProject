@@ -88,7 +88,6 @@ private slots:
     void on_ContactButton_stateChanged(int arg1);
 
     void onBatteryLevelChanged(int percentage);
-
-
+    void on_PowerSurgeButton_released();
 };
 #endif // MAINWINDOW_H

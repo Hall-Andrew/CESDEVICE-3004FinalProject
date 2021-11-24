@@ -42,7 +42,6 @@ void MainWindow::on_PowerTimerFired(){
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
   //  ui->menuListWidget->addItem("View Previous Sessions");
-
 }
 
 void MainWindow::setDefaultMenuSelections(){
@@ -81,8 +80,6 @@ void MainWindow:: turnDeviceOff(){
       battery->stopBatteryDrain();
       powerTimer->stop();
 }
-
-
 
 void MainWindow::on_TimerButton_released()
 {
@@ -173,7 +170,7 @@ void MainWindow::on_BackButton_released()
 {
     int prevIndex;
     int index = ui->StackedWidget->currentIndex();
-    //modified it so recordHisotry does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
+    //modified it so recordHistory does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
     if (index>3)
     {
         prevIndex=0;
@@ -182,7 +179,7 @@ void MainWindow::on_BackButton_released()
     {
         prevIndex = index - 1 ;
     }
-      if (prevIndex >= 0){
+      if (prevIndex > 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
       }
 }
@@ -317,6 +314,14 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
        timer->start();
     }
 
+}
+
+void MainWindow::on_PowerSurgeButton_released(){
+    cout<<"this occured"<<endl;
+    ui->centralwidget->setEnabled(false);
+    ui->StackedWidget->setCurrentIndex(4);
+    ui->SurgeLabel->setText("Power Surge Detected. Contact support. \n Device disabled.");
+    battery->stopBatteryDrain();
 }
 
 void MainWindow::onBatteryLevelChanged(int batteryPercentage)
