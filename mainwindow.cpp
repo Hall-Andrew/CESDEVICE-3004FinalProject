@@ -87,19 +87,19 @@ void MainWindow:: turnDeviceOff(){
 void MainWindow::on_TimerButton_released()
 {
     bool state = ui->ContactButton->isChecked();
-      if (!timer->isActive()){
-          timer->setInterval(1000);
-          if(state){
-          timer->start();
-          }
-      }else
-      {
-          int seconds = time + 20;
-          if(seconds > 60) seconds = 60;
-          time = seconds;
-          displayTimer->setTimerNumber(time);//Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew
-      }
-      resetPowerTimer();
+    cout << state << endl;
+    if (!timer->isActive()){
+        timer->setInterval(1000);
+        if(state){
+            timer->start();
+        }
+    } else {
+        int seconds = time + 20;
+        if(seconds > 60) seconds = 60;
+        time = seconds;
+        displayTimer->setTimerNumber(time);//Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew
+    }
+    resetPowerTimer();
 }
 
 void MainWindow::on_UpButton_released()
@@ -333,7 +333,8 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 
 }
 
-void MainWindow::on_PowerSurgeButton_released(){
+void MainWindow::on_PowerSurgeButton_released()
+{
     ui->centralwidget->setEnabled(false);
     ui->StackedWidget->setCurrentIndex(4);
     ui->SurgeLabel->setText("Power Surge Detected. Contact support. \n Device disabled.");
@@ -361,7 +362,7 @@ void MainWindow::chargeBattery()
     // Charge the battery
     battery->charge();
     // Update the battery percentage bar
-   ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
 }
 
 void MainWindow::outOfPower(){
