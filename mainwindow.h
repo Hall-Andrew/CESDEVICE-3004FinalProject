@@ -8,6 +8,7 @@
 #include <time.h>
 #include "record.h"
 #include "battery.h"
+#include "countdownclock.h"
 
 #define AMP_LVL_ONE .5
 #define AMP_LVL_TWO 77
@@ -38,7 +39,7 @@ private:
     QTimer *powerTimer;
     bool lockState;
     bool paused;
-
+    CountDownClock* displayTimer;
     int totalDuration;
     Battery* battery;
 
@@ -86,8 +87,8 @@ private slots:
     void on_ChangeWaveform_released();
     void on_TurnOnOffButton_released();
     void on_ContactButton_stateChanged(int arg1);
-
     void onBatteryLevelChanged(int percentage);
     void on_PowerSurgeButton_released();
+    void outOfPower();
 };
 #endif // MAINWINDOW_H
