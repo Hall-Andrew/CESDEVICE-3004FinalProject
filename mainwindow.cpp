@@ -14,15 +14,12 @@ MainWindow::MainWindow(QWidget *parent)
     //resetDisplay();
     initializeDefaults();
     createMenu();
-    ui->StackedWidget->setCurrentIndex(0);
-    timer = new QTimer(this);
-    powerTimer = new QTimer(this);
     UpdateFrequency(Frq_level);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
-    powerTimer->setInterval(powerTimeOut*1000);
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
+    connect(battery,SIGNAL(shutDown()),this,SLOT(outOfPower()));
 
 }
 
@@ -41,6 +38,7 @@ void MainWindow::on_PowerTimerFired(){
 
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
+    ui->StackedWidget->setCurrentIndex(0);
   //  ui->menuListWidget->addItem("View Previous Sessions");
 }
 
@@ -65,6 +63,11 @@ void MainWindow::initializeDefaults(){
     waveForm.push_back(betta);
     waveForm.push_back(gamma);
     battery= new Battery();
+    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+    timer = new QTimer(this);
+    powerTimer = new QTimer(this);
+    powerTimer->setInterval(powerTimeOut*1000);
+    displayTimer = new CountDownClock(20);
 }
 
 
@@ -94,6 +97,7 @@ void MainWindow::on_TimerButton_released()
           int seconds = time + 20;
           if(seconds > 60) seconds = 60;
           time = seconds;
+          displayTimer->setTimerNumber(time);//Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew
       }
       resetPowerTimer();
 }
@@ -188,9 +192,21 @@ void MainWindow::on_BackButton_released()
 void MainWindow::updateTimerDisplay()
 {
     time = time - 1;
+    displayTimer->countdown();//This should countdown each second properly
+
     QString timeString = QTime(0, time).toString();
-    ui->TimeLabel->setText(timeString);
+    //ui->TimeLabel->setText(timeString); This is your old timer label Ive left cause its late at night and I dunno if my speed implementation is ok so you could theoretically revert/ Andrew
+
+    ui->timeLabel->display(displayTimer->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
+
+    //I didnt touch this either just commented it out/Andrew
+    /*/
     if(time <= 0){
+        timer->stop();
+        resetPowerTimer();
+    }
+    /*/
+    if(displayTimer->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
         timer->stop();
         resetPowerTimer();
     }
@@ -296,7 +312,8 @@ void MainWindow::on_ContactButton_released(){
 
 void MainWindow::resumeSession(){
     QTime t = QTime(0,time);
-    ui->TimeLabel->setText(t.toString());
+    //ui->TimeLabel->setText(t.toString());
+    ui->timeLabel->display(t.toString());
  if(!ui->ContactButton->isChecked()){
      return;
  }
@@ -317,7 +334,6 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 }
 
 void MainWindow::on_PowerSurgeButton_released(){
-    cout<<"this occured"<<endl;
     ui->centralwidget->setEnabled(false);
     ui->StackedWidget->setCurrentIndex(4);
     ui->SurgeLabel->setText("Power Surge Detected. Contact support. \n Device disabled.");
@@ -346,4 +362,8 @@ void MainWindow::chargeBattery()
     battery->charge();
     // Update the battery percentage bar
    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+}
+
+void MainWindow::outOfPower(){
+    turnDeviceOff();
 }

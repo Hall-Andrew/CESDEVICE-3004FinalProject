@@ -17,12 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     battery.cpp \
+    countdownclock.cpp \
     main.cpp \
     mainwindow.cpp \
     record.cpp
 
 HEADERS += \
     battery.h \
+    countdownclock.h \
     mainwindow.h \
     record.h
 
