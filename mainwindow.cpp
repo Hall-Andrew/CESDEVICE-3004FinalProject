@@ -319,7 +319,6 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 
 }
 
-<<<<<<< HEAD
 void MainWindow::updateBatteryLabel(int batteryPercentage){
     ui->batteryPercentageBar->setValue(batteryPercentage);
     on_batteryLevel_valueChanged(batteryPercentage);
@@ -335,12 +334,4 @@ void MainWindow::chargeBattery()
 
     // Update the battery percentage bar
    //ui->batteryPercentageBar->setValue(newPercent);
-=======
-void MainWindow::on_PowerSurgeButton_released()
-{
-    ui->centralwidget->setEnabled(false);
-    ui->StackedWidget->setCurrentIndex(4);
-    ui->SurgeLabel->setText("Power surge detected. Contact support. \nDevice disabled.");
->>>>>>> 63f4b04398e3f575a65766c491d73540d2291070
 }
-
