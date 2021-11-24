@@ -3,14 +3,20 @@
 CountDownClock::CountDownClock(int number)
 {
     minutes = number;
-    sDigitOne=0;
-    sDigitTwo;
-    finished=false;
+    sDigitOne = 0;
+    sDigitTwo = 0;
+    finished = false;
 }
 
-void CountDownClock::setTimerNumber(int newTimerLength){
-    minutes = newTimerLength-1;
-    finished=false;
+void CountDownClock::setMinutes(int newTimerLength)
+{
+    minutes = newTimerLength;
+    finished = false;
+}
+void CountDownClock::setSeconds(int seconds)
+{
+    sDigitTwo = seconds % 10;
+    sDigitOne = seconds/10 - sDigitTwo/10;
 }
 
 void CountDownClock::countdown(){
@@ -33,8 +39,11 @@ QString CountDownClock::getDisplayNumbers(){
 }
 
 bool CountDownClock::isTimerFinished(){
-    if(minutes==0 && sDigitOne==0 && sDigitTwo ==0 ){
-        finished=true;
-    }
-    return finished;
+//    if(minutes==0 && sDigitOne==0 && sDigitTwo ==0 ){
+//        finished=true;
+//    }
+//    return finished;
+
+    // This just seems more clean to me - Aaron
+    return minutes == 0 && sDigitOne == 0 && sDigitTwo == 0;
 }

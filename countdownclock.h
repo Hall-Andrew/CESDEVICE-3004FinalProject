@@ -7,7 +7,8 @@ class CountDownClock
     public:
         CountDownClock(int number);
         void countdown();
-        void setTimerNumber(int newTimerLength);
+        void setMinutes(int newTimerLength);
+        void setSeconds(int seconds);
         QString getDisplayNumbers();
         bool isTimerFinished();
 

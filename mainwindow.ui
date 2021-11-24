@@ -180,8 +180,13 @@ background-repeat:none;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-background-color: rgb(252, 233, 79);</string>
+     <string notr="true">background-color: rgb(252, 233, 79);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
      <number>2</number>
@@ -290,6 +295,9 @@ background-color: rgb(252, 233, 79);</string>
         <width>101</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="intValue" stdset="0">
+       <number>20</number>
       </property>
      </widget>
      <widget class="QProgressBar" name="batteryPercentageBar">

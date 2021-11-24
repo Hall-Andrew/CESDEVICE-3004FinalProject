@@ -36,6 +36,7 @@ private:
     Ui::MainWindow *ui;
     bool onOffState;
     int time;
+    int seconds;
     QTimer *powerTimer;
     bool lockState;
     bool paused;

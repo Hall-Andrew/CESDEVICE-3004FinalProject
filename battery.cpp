@@ -36,7 +36,7 @@ void Battery::drain(){
     if(power<0){
         power=0;
     }else{
-        cout<<power<<endl;
+//        cout<<power<<endl;
         if(power <6 && power > 4 && !powerWarning){
             powerWarning=true;
             cout<<"5% warning"<<endl;

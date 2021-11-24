@@ -30,10 +30,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PowerTimerFired(){
     cout<<"Entered function"<<endl;
-   if(!timer->isActive()){
-       turnDeviceOff();
-   }else{
-   }
+    if(!timer->isActive()) {
+        turnDeviceOff();
+    }else{
+    }
 }
 
 void MainWindow::createMenu(){
@@ -44,13 +44,13 @@ void MainWindow::createMenu(){
 
 void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
-
 }
 
 
 void MainWindow::initializeDefaults(){
     onOffState = false;
     time = 0;
+    seconds = 0;
     lockState = false;
     paused = false;
     totalDuration = 0;
@@ -79,31 +79,36 @@ void MainWindow::turnDeviceOn(){
 }
 
 void MainWindow:: turnDeviceOff(){
-      ui->StackedWidget->setCurrentIndex(0);
       battery->stopBatteryDrain();
       powerTimer->stop();
+      ui->StackedWidget->setCurrentIndex(0);
+      ui->ContactButton->setCheckState(Qt::Unchecked);
+
+      // Delete instance to go back to default setting
+      delete displayTimer;
+
+      // Create new instance for when device is turned on
+      displayTimer = new CountDownClock(20);
 }
 
 void MainWindow::on_TimerButton_released()
 {
-    bool state = ui->ContactButton->isChecked();
-    cout << state << endl;
-    if (!timer->isActive()){
-        timer->setInterval(1000);
-        if(state){
-            timer->start();
-        }
+    // The defaults can be changed here
+    // open to interpretation
+    if(time + 20 > 60) {
+        time = 59;
+        seconds = 60;
     } else {
-        int seconds = time + 20;
-        if(seconds > 60) seconds = 60;
-        time = seconds;
-        displayTimer->setTimerNumber(time);//Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew
+        time = time + 20;
     }
-    resetPowerTimer();
+    //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
+    displayTimer->setMinutes(time);
+    displayTimer->setSeconds(seconds);
+    ui->timeLabel->display(displayTimer->getDisplayNumbers());
 }
-
 void MainWindow::on_UpButton_released()
-{   if(ui->StackedWidget->currentIndex() == 0){
+{
+    if(ui->StackedWidget->currentIndex() == 0){
         int index = ui->menuListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
@@ -191,7 +196,12 @@ void MainWindow::on_BackButton_released()
 
 void MainWindow::updateTimerDisplay()
 {
-    time = time - 1;
+    if(seconds == 0) {
+        time -= 1;
+        seconds = 60;
+    }else{
+        seconds -= 1;
+    }
     displayTimer->countdown();//This should countdown each second properly
 
     QString timeString = QTime(0, time).toString();
@@ -206,8 +216,10 @@ void MainWindow::updateTimerDisplay()
         resetPowerTimer();
     }
     /*/
+
     if(displayTimer->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
         timer->stop();
+
         resetPowerTimer();
     }
 }
@@ -295,6 +307,7 @@ void MainWindow:: resetPowerTimer(){
 void MainWindow::on_OnOffButton_released(){
 
 }
+
 void MainWindow::startSession(){
     ui->StackedWidget->setCurrentIndex(2);
     // QString text = ui->WavelengthListWidget->currentItem()->text();
@@ -307,23 +320,27 @@ void MainWindow::startSession(){
 }
 
 void MainWindow::on_ContactButton_released(){
-
+    // should we even use this? i feel like the state change slot covers this
 }
 
 void MainWindow::resumeSession(){
-    QTime t = QTime(0,time);
-    //ui->TimeLabel->setText(t.toString());
-    ui->timeLabel->display(t.toString());
- if(!ui->ContactButton->isChecked()){
-     return;
- }
-     powerTimer->stop();
+    ui->timeLabel->display(displayTimer->getDisplayNumbers());
+    if(!ui->ContactButton->isChecked()){
+        return;
+    }
+    powerTimer->stop();
 }
 
 void MainWindow::on_ContactButton_stateChanged(int arg1)
 {
     bool state = ui->ContactButton->isChecked();
-    if((timer->isActive()) && (!state)){
+    if (!timer->isActive()){
+        timer->setInterval(1000);
+        if(state){
+            cout << "Timer started" << endl;
+            timer->start();
+        }
+    } else if((timer->isActive()) && (!state)){
         timer->stop();
         paused = true;
     } else if (paused && state){
