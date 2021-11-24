@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     powerTimer->setInterval(powerTimeOut*1000);
 
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
+<<<<<<< HEAD
    // Battery_decay();
 
 }
@@ -30,14 +31,23 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::on_PowerTimerFired(){
    if(!timer->isActive())
        turnDeviceOff();
+=======
+    connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
+>>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc
 }
-
-
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_PowerTimerFired(){
+    cout<<"Entered function"<<endl;
+   if(!timer->isActive()){
+       turnDeviceOff();
+   }else{
+   }
 }
 
 void MainWindow::createMenu(){
@@ -57,7 +67,6 @@ void MainWindow::initializeDefaults(){
     time = 0;
     lockState = false;
     paused = false;
-    powerState = 100;
     totalDuration = 0;
     Frq_level=0;
     Wf_level=0;
@@ -67,8 +76,7 @@ void MainWindow::initializeDefaults(){
     waveForm.push_back(alpha);
     waveForm.push_back(betta);
     waveForm.push_back(gamma);
-
-
+    battery= new Battery();
 }
 
 
@@ -76,12 +84,14 @@ void MainWindow::turnDeviceOn(){
     ui->StackedWidget->setCurrentIndex(1);
     setDefaultMenuSelections();
     resetPowerTimer();
+    battery->startBatteryDrain();
 }
 
 void MainWindow:: turnDeviceOff(){
       ui->StackedWidget->setCurrentIndex(0);
+      battery->stopBatteryDrain();
       powerTimer->stop();
-    }
+}
 
 
 
@@ -204,7 +214,7 @@ void MainWindow::updateTimerDisplay()
 void MainWindow::on_Record_released()
 {
 
-        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,powerState);
+        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
 
         cout<<"Amps: ";
@@ -292,9 +302,6 @@ void MainWindow::startSession(){
 
 
     //waveForm=text;
-
-
-
 }
 
 void MainWindow::on_ContactButton_released(){
@@ -323,11 +330,28 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 
 }
 
-void MainWindow::on_PowerSurgeButton_released()
+void MainWindow::onBatteryLevelChanged(int batteryPercentage)
 {
-    ui->centralwidget->setEnabled(false);
-    ui->StackedWidget->setCurrentIndex(4);
-    ui->SurgeLabel->setText("Power surge detected. Contact support. \nDevice disabled.");
+    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+    // Change battery colour according to charge level
+    if(batteryPercentage <= 10) {
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #FF0000; background-color: #FFF;");
+    } else if(batteryPercentage <= 20) {
+        // Yellow
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #ffff00; background-color: #FFF;");
+    } else {
+        // otherwise green
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
+    }
+
+}
+
+void MainWindow::chargeBattery()
+{
+    // Charge the battery
+    battery->charge();
+    // Update the battery percentage bar
+   ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
 }
 void MainWindow::Battery_decay()
 {

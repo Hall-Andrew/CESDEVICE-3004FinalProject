@@ -1,21 +1,29 @@
 #include "battery.h"
+#include <string.h>
 
 Battery::Battery()
 {
     power=100;
+<<<<<<< HEAD
     drain=10;
     /*sets up the default battery, Life being 100 and Speed being .5,
     These are just arbitray number which are subject to change. Point being:
     power represents the batteries charge and, while the battery is on, it will be
     decreasing
     */
+=======
+    baseDrainAmount=1;
+    drainModifier=0.10;
+    timer = new QTimer(this);
+    timer->setInterval(2500);
+    connect(timer, &QTimer::timeout, this, &Battery::drain);
+>>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc
+}
+Battery::~Battery(){
+
 }
 
-Battery::~Battery()
-{
-  delete decay_mod;
-}
-
+<<<<<<< HEAD
 void Battery::decay()
 {
     power-=drain;
@@ -44,3 +52,31 @@ bool Battery::IsCharge(){return charged;}
 
 float Battery::getBatteryLevel() { return power; }
 void Battery::setBatteryLevel(float newPowerLevel) { power = newPowerLevel; }
+=======
+void Battery::charge(){
+    power = 100;
+}
+
+void Battery::startBatteryDrain(){
+    timer->start();
+}
+
+void Battery::stopBatteryDrain(){
+    timer->stop();
+}
+
+void Battery::setDrainMultiplier(double multi){
+    drainModifier=multi;
+}
+
+void Battery::drain(){
+    power=power-(baseDrainAmount*drainModifier);
+    emit updateBatteryBar((int)power);
+    cout.precision(2);
+    cout<<fixed<<power<<endl;
+}
+
+double Battery::getBatteryPercentage(){
+    return power;
+}
+>>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc

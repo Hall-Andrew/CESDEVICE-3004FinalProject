@@ -446,7 +446,7 @@ background-color: rgb(252, 233, 79);</string>
 background-color: #FFF;</string>
     </property>
     <property name="value">
-     <number>80</number>
+     <number>100</number>
     </property>
     <property name="invertedAppearance">
      <bool>false</bool>

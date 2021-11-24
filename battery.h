@@ -1,24 +1,43 @@
 #ifndef BATTERY_H
 #define BATTERY_H
-#include<QString>
-class Battery
+#include<QLibrary>
+#include<QTimer>
+#include <iostream>
+
+using namespace std;
+class Battery : public QObject
 {
+<<<<<<< HEAD
 public:
     Battery();
    ~Battery();
    void decay(); //default decay method
    void decay(int mod);//call for when machine is running
    bool IsCharge();
+=======
+    Q_OBJECT
+    public :
+        Battery();
+        ~Battery();
+        void charge();
+        void startBatteryDrain();
+        void stopBatteryDrain();
+        void setDrainMultiplier(double);
+        double getBatteryPercentage();
+//        QTimer* getBatteryTimer();
 
-   float getBatteryLevel();
-   void setBatteryLevel(float newBatteryLevel);
+    private:
+        double power;
+        double baseDrainAmount;
+        double drainModifier;
+        QTimer* timer;
+        void drain();
+>>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc
 
-private:
-    float power;
-    float drain; //how fast battery life decays
-    float* decay_mod;
-    //the modifier to how the battery drains. I figured it would be better as a pointer but idk.
-    bool charged;
+    private slots:
+
+    signals:
+         void updateBatteryBar(int);
 };
 
 #endif // BATTERY_H
