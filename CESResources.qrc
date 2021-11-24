@@ -8,6 +8,6 @@
         <file>guiAssets/buttonAssets/lockButton.png</file>
     </qresource>
     <qresource prefix="/">
-        <file>guiAssets/buttonAssets/CRA-Power.png</file>
+        <file>CRA-Power.png</file>
     </qresource>
 </RCC>

@@ -6,9 +6,9 @@ class Battery
 public:
     Battery();
    ~Battery();
-   QString decay(); //default decay method
-   QString decay(int mod);//call for when machine is running
-   void charge();
+   void decay(); //default decay method
+   void decay(int mod);//call for when machine is running
+   bool IsCharge();
 
    float getBatteryLevel();
    void setBatteryLevel(float newBatteryLevel);

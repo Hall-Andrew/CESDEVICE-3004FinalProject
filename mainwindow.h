@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QVector>
+#include <time.h>
 #include "record.h"
 #include "battery.h"
 
@@ -65,6 +66,7 @@ private:
      void startSession();
      void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
     void resumeSession();
+    void Battery_decay();
 private slots:
     void on_OnOffButton_released();
     void on_TimerButton_released();

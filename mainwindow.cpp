@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
     powerTimer->setInterval(powerTimeOut*1000);
+
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
+   // Battery_decay();
 
 }
 
@@ -40,7 +42,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
-    ui->menuListWidget->addItem("View Previous Sessions");
+  //  ui->menuListWidget->addItem("View Previous Sessions");
 
 }
 
@@ -326,4 +328,16 @@ void MainWindow::on_PowerSurgeButton_released()
     ui->centralwidget->setEnabled(false);
     ui->StackedWidget->setCurrentIndex(4);
     ui->SurgeLabel->setText("Power surge detected. Contact support. \nDevice disabled.");
+}
+void MainWindow::Battery_decay()
+{
+    battery = new Battery();
+    while (battery->IsCharge())
+    {
+        battery->decay();
+        ui->ProgressBarWidget->setValue(battery->getBatteryLevel());
+
+    }
+        ui->centralwidget->setEnabled(false);
+        ui->StackedWidget->setCurrentIndex(4);
 }
