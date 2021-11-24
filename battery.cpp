@@ -31,7 +31,11 @@ void Battery::setDrainMultiplier(double multi){
 }
 
 void Battery::drain(){
-    power=power-(baseDrainAmount*drainModifier);
+    if((power-(baseDrainAmount*drainModifier))>0){
+        power=power-(baseDrainAmount*drainModifier);
+    }else{
+        power = 0;
+    }
     emit updateBatteryBar((int)power);
     cout.precision(2);
     cout<<fixed<<power<<endl;
