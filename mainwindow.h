@@ -66,12 +66,8 @@ private:
     void startSession();
     void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
     void resumeSession();
-<<<<<<< HEAD
-    void Battery_decay();
-=======
     void chargeBattery();
 
->>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc
 private slots:
     void on_OnOffButton_released();
     void on_TimerButton_released();

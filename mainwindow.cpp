@@ -21,21 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
     powerTimer->setInterval(powerTimeOut*1000);
-
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
-<<<<<<< HEAD
-   // Battery_decay();
-
-}
-
-void MainWindow::on_PowerTimerFired(){
-   if(!timer->isActive())
-       turnDeviceOff();
-=======
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
->>>>>>> 184913dcbcb00f3b63efe277822daf1d6f7d26dc
-}
 
+}
 
 MainWindow::~MainWindow()
 {
@@ -352,16 +341,4 @@ void MainWindow::chargeBattery()
     battery->charge();
     // Update the battery percentage bar
    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
-}
-void MainWindow::Battery_decay()
-{
-    battery = new Battery();
-    while (battery->IsCharge())
-    {
-        battery->decay();
-        ui->ProgressBarWidget->setValue(battery->getBatteryLevel());
-
-    }
-        ui->centralwidget->setEnabled(false);
-        ui->StackedWidget->setCurrentIndex(4);
 }
