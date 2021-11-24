@@ -19,6 +19,7 @@ void CountDownClock::countdown(){
     }else{
         if(sDigitOne!=0){
             sDigitOne-=1;
+            sDigitTwo=9;
         }else{
             minutes-=1;
             sDigitOne=5;
