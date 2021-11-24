@@ -37,7 +37,7 @@ private:
     QTimer *powerTimer;
     bool lockState;
     bool paused;
-    double powerState;
+
     int totalDuration;
     Battery* battery;
 
@@ -86,6 +86,8 @@ private slots:
     void on_batteryLevel_valueChanged(int value);
 
     void chargeBattery();
+
+    void updateBatteryLabel(int percentage);
 
 };
 #endif // MAINWINDOW_H

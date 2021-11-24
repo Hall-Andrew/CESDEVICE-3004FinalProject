@@ -22,21 +22,22 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
     powerTimer->setInterval(powerTimeOut*1000);
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
-
+    connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(updateBatteryLabel(int)));
 }
-
-void MainWindow::on_PowerTimerFired(){
-   if(!timer->isActive())
-       turnDeviceOff();
-}
-
-
 
 
 MainWindow::~MainWindow()
 {
     delete battery;
     delete ui;
+}
+
+void MainWindow::on_PowerTimerFired(){
+    cout<<"Entered function"<<endl;
+   if(!timer->isActive()){
+       turnDeviceOff();
+   }else{
+   }
 }
 
 void MainWindow::createMenu(){
@@ -62,7 +63,6 @@ void MainWindow::initializeDefaults(){
     time = 0;
     lockState = false;
     paused = false;
-    powerState = 100;
     totalDuration = 0;
     Frq_level=0;
     Wf_level=0;
@@ -72,8 +72,7 @@ void MainWindow::initializeDefaults(){
     waveForm.push_back(alpha);
     waveForm.push_back(betta);
     waveForm.push_back(gamma);
-
-
+    battery= new Battery();
 }
 
 
@@ -81,12 +80,14 @@ void MainWindow::turnDeviceOn(){
     ui->StackedWidget->setCurrentIndex(1);
     setDefaultMenuSelections();
     resetPowerTimer();
+    battery->startBatteryDrain();
 }
 
 void MainWindow:: turnDeviceOff(){
       ui->StackedWidget->setCurrentIndex(0);
+      battery->stopBatteryDrain();
       powerTimer->stop();
-    }
+}
 
 
 
@@ -239,7 +240,7 @@ void MainWindow::updateTimerDisplay()
 void MainWindow::on_Record_released()
 {
 
-        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,powerState);
+        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
 
         cout<<"Amps: ";
@@ -332,9 +333,6 @@ void MainWindow::startSession(){
     powerTimer->stop();
 
     //waveForm=text;
-
-
-
 }
 
 void MainWindow::on_ContactButton_released(){
@@ -373,51 +371,20 @@ void MainWindow::on_batteryLevel_valueChanged(int value)
     }
 }
 
-/*
-    This function will set the battery level and update the progress bar
-
-    When should this be called:
-        1. When a therapy is active, so a timer will also be active
-        2. From an timer update function, call this function to drain the battery
-           according to the change in time. (assuming that battery percentage drains/ sec)
-        3. Open for suggestion
-
-    Uses the current battery level that was previously set and changes it accordingly to the therapy.
-*/
-void MainWindow::decreaseBatteryPercentage()
-{
-    // Calculate new battery percentage
-        // Will need a way for how to calculate the new value. I believe using the decay?
-    float powerLevel = 0.0f;
-
-    // if(therapy) {
-    //     power = battery->decay(some_value)
-    //} else {
-    //     power = battery->decay();
-    //  }
-
-    // Set new battery level to ui and the object
-    if(powerLevel <= 100 && powerLevel > 0) {
-        battery->setBatteryLevel(powerLevel);
-        ui->batteryPercentageBar->setValue(int(powerLevel));
-    }
+void MainWindow::updateBatteryLabel(int batteryPercentage){
+    ui->batteryPercentageBar->setValue(batteryPercentage);
+    on_batteryLevel_valueChanged(batteryPercentage);
 }
 
-/*
-    This function implements "charging"
-
-    This is activated from a signal sent from a recharge button
-
-    Note: works for now but as we add more things I am sure this will need to be updated
-*/
 void MainWindow::chargeBattery()
 {
     // Charge the battery
-    battery->charge();
+    //battery->charge();
 
     // Get the new value
-    int newPercent = int(battery->getBatteryLevel());
+    //int newPercent = int(battery->getBatteryLevel());
 
     // Update the battery percentage bar
-    ui->batteryPercentageBar->setValue(newPercent);
+   //ui->batteryPercentageBar->setValue(newPercent);
 }
+
