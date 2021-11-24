@@ -7,4 +7,7 @@
         <file>guiAssets/buttonAssets/PowerButton.png</file>
         <file>guiAssets/buttonAssets/lockButton.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>guiAssets/buttonAssets/CRA-Power.png</file>
+    </qresource>
 </RCC>
