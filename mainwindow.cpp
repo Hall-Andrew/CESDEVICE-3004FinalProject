@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete battery;
     delete ui;
 }
 
@@ -42,19 +41,13 @@ void MainWindow::on_PowerTimerFired(){
 
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
-   // ui->menuListWidget->addItem("View Previous Sessions"); Technically we have record history for this option
-    ui->FrequencyListWidget->addItem("0.5Hz");
-    ui->FrequencyListWidget->addItem("77Hz");
-    ui->FrequencyListWidget->addItem("100Hz");
-    ui->WavelengthListWidget->addItem("Alpha");
-    ui->WavelengthListWidget->addItem("Beta");
-    ui->WavelengthListWidget->addItem("Gamma");
+    ui->menuListWidget->addItem("View Previous Sessions");
+
 }
 
 void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
-    ui->FrequencyListWidget->setCurrentRow(0);
-    ui->WavelengthListWidget->setCurrentRow(0);
+
 }
 
 
@@ -109,28 +102,15 @@ void MainWindow::on_TimerButton_released()
 }
 
 void MainWindow::on_UpButton_released()
-{   if(ui->StackedWidget->currentIndex() == 1){
+{   if(ui->StackedWidget->currentIndex() == 0){
         int index = ui->menuListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
             newIndex = 0;
         ui->menuListWidget->setCurrentRow(newIndex);
     }
-/*    if(ui->StackedWidget->currentIndex() == 2){
-        int index = ui->FrequencyListWidget->currentRow();
-        int  newIndex = index - 1;
-        if (newIndex<0)
-            newIndex = 0;
-        ui->FrequencyListWidget->setCurrentRow(newIndex);
-    }
-    if(ui->StackedWidget->currentIndex() == 3){
-        int index = ui->WavelengthListWidget->currentRow();
-        int  newIndex = index - 1;
-        if (newIndex<0)
-         newIndex = 0;
-        ui->WavelengthListWidget->setCurrentRow(newIndex);
-    }*/
-    if(ui->StackedWidget->currentIndex() == 4){
+
+    if(ui->StackedWidget->currentIndex() == 2){
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
@@ -141,7 +121,7 @@ void MainWindow::on_UpButton_released()
 
 void MainWindow::on_DownButton_released()
 {
-  if(ui->StackedWidget->currentIndex() == 1){
+  if(ui->StackedWidget->currentIndex() == 0){
     int index = ui->menuListWidget->currentRow();
     int  newIndex = index + 1;
     if (newIndex >=  ui->menuListWidget->count())
@@ -149,23 +129,9 @@ void MainWindow::on_DownButton_released()
     ui->menuListWidget->setCurrentRow(newIndex);
   }
 
- /* if(ui->StackedWidget->currentIndex() == 2){
-    int index = ui->FrequencyListWidget->currentRow();
-    int  newIndex = index + 1;
-    if (newIndex >=  ui->FrequencyListWidget->count())
-        return;
-    ui->FrequencyListWidget->setCurrentRow(newIndex);
-  }
 
-  if(ui->StackedWidget->currentIndex() == 3){
-    int index = ui->WavelengthListWidget->currentRow();
-    int  newIndex = index + 1;
-    if (newIndex >=  ui->WavelengthListWidget->count())
-        return;
-    ui->WavelengthListWidget->setCurrentRow(newIndex);
-  }
-*/
-  if(ui->StackedWidget->currentIndex() == 4){
+
+  if(ui->StackedWidget->currentIndex() == 2){
       int currentAmp  = ui->ProgressBarWidget->value();
       int newAmp =  currentAmp - 100;
       if (newAmp < 0)
@@ -191,22 +157,13 @@ void MainWindow::on_Button_released()
 
 void MainWindow::on_EnterButton_released()
 {
-   /* int index = ui->StackedWidget->currentIndex();
+    int index = ui->StackedWidget->currentIndex();
     if(index == 0)
         return;
-    int nextIndex = index + 1 ;
-    //I put a -1 here because I added Record_history to the stacked Widget, which messes up the conditional
-        if (nextIndex< ui->StackedWidget->count()-1){
-            ui->StackedWidget->setCurrentIndex(nextIndex);
-    }
-*/
-    if( ui->StackedWidget->currentIndex() == 3){
+
+    if( ui->StackedWidget->currentIndex() == 1){
        startSession();
        return;
-    }
-    else
-    {
-        ui->StackedWidget->setCurrentIndex(4);
     }
 
       resetPowerTimer();
@@ -214,14 +171,20 @@ void MainWindow::on_EnterButton_released()
 
 void MainWindow::on_BackButton_released()
 {
-    ui->StackedWidget->setCurrentIndex(1);
- /*   int prevIndex;
+    int prevIndex;
     int index = ui->StackedWidget->currentIndex();
     //modified it so recordHisotry does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
-    prevIndex=index-1;
+    if (index>3)
+    {
+        prevIndex=0;
+    }
+    else
+    {
+        prevIndex = index - 1 ;
+    }
       if (prevIndex >= 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
-      }*/
+      }
 }
 
 
@@ -254,7 +217,7 @@ void MainWindow::on_Record_released()
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-    ui->StackedWidget->setCurrentIndex(5);
+    ui->StackedWidget->setCurrentIndex(4);
     ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
     {
@@ -268,13 +231,11 @@ void MainWindow:: UpdateFrequency(int level)
     QString dummy= QString::number(amps[level])+" Hz";
     ui->Frequncy->append(dummy);
 }
-
 void MainWindow:: UpdateWaveform(int level)
 {
     ui->Waveform->clear();
     ui->Waveform->append(waveForm[level]);
 }
-
 void MainWindow::on_ChangeFrequency_released()
 {
     if (Frq_level>=2)
@@ -322,15 +283,12 @@ void MainWindow::on_OnOffButton_released(){
 
 }
 void MainWindow::startSession(){
-     QString text = ui->WavelengthListWidget->currentItem()->text();
+    ui->StackedWidget->setCurrentIndex(2);
+    // QString text = ui->WavelengthListWidget->currentItem()->text();
        //ui->WaveFormLabel->setText(text);
        time  = 20;
-       QTime t = QTime(0,time);
-       ui->TimeLabel->setText(t.toString());
-    if(!ui->ContactButton->isChecked()){
-        return;
-    }
-    powerTimer->stop();
+    resumeSession();
+
 
     //waveForm=text;
 }
@@ -339,7 +297,14 @@ void MainWindow::on_ContactButton_released(){
 
 }
 
-
+void MainWindow::resumeSession(){
+    QTime t = QTime(0,time);
+    ui->TimeLabel->setText(t.toString());
+ if(!ui->ContactButton->isChecked()){
+     return;
+ }
+     powerTimer->stop();
+}
 
 void MainWindow::on_ContactButton_stateChanged(int arg1)
 {
@@ -348,29 +313,13 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         timer->stop();
         paused = true;
     } else if (paused && state){
-        startSession();
-
+       resumeSession();
+       timer->start();
     }
+
 }
 
-/*
-    When a new battery percentage is set, this function changes the progress
-    bar colour according to its ranges
-*/
-void MainWindow::on_batteryLevel_valueChanged(int value)
-{
-    // Change battery colour according to charge level
-    if(value <= 10) {
-        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #FF0000; background-color: #FFF;");
-    } else if(value <= 20) {
-        // Yellow
-        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #ffff00; background-color: #FFF;");
-    } else {
-        // otherwise green
-        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
-    }
-}
-
+<<<<<<< HEAD
 void MainWindow::updateBatteryLabel(int batteryPercentage){
     ui->batteryPercentageBar->setValue(batteryPercentage);
     on_batteryLevel_valueChanged(batteryPercentage);
@@ -386,5 +335,12 @@ void MainWindow::chargeBattery()
 
     // Update the battery percentage bar
    //ui->batteryPercentageBar->setValue(newPercent);
+=======
+void MainWindow::on_PowerSurgeButton_released()
+{
+    ui->centralwidget->setEnabled(false);
+    ui->StackedWidget->setCurrentIndex(4);
+    ui->SurgeLabel->setText("Power surge detected. Contact support. \nDevice disabled.");
+>>>>>>> 63f4b04398e3f575a65766c491d73540d2291070
 }
 

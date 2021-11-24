@@ -64,7 +64,7 @@ private:
      void resetPowerTimer();
      void startSession();
      void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
-
+    void resumeSession();
 private slots:
     void on_OnOffButton_released();
     void on_TimerButton_released();
@@ -83,11 +83,15 @@ private slots:
     void on_ChangeWaveform_released();
     void on_TurnOnOffButton_released();
     void on_ContactButton_stateChanged(int arg1);
-    void on_batteryLevel_valueChanged(int value);
+    void on_batteryLevel_valueChanged(int value){};
 
-    void chargeBattery();
+    void chargeBattery(){};
 
+<<<<<<< HEAD
     void updateBatteryLabel(int percentage);
 
+=======
+    void on_PowerSurgeButton_released();
+>>>>>>> 63f4b04398e3f575a65766c491d73540d2291070
 };
 #endif // MAINWINDOW_H
