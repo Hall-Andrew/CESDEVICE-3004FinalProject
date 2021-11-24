@@ -319,6 +319,20 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 
 }
 
+void MainWindow::on_batteryLevel_valueChanged(int value)
+{
+    // Change battery colour according to charge level
+    if(value <= 10) {
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #FF0000; background-color: #FFF;");
+    } else if(value <= 20) {
+        // Yellow
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #ffff00; background-color: #FFF;");
+    } else {
+        // otherwise green
+        ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
+    }
+}
+
 void MainWindow::updateBatteryLabel(int batteryPercentage){
     ui->batteryPercentageBar->setValue(batteryPercentage);
     on_batteryLevel_valueChanged(batteryPercentage);
