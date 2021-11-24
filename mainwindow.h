@@ -57,14 +57,16 @@ private:
     void UpdateFrequency(int lvl); //takes in the new level and changes the frequency box
     void UpdateWaveform(int lvl);//^^ same thing
 
-     void setDefaultMenuSelections();
-     void initializeDefaults();
-     void turnDeviceOff();
-     void turnDeviceOn();
-     void resetPowerTimer();
-     void startSession();
-     void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
+    void setDefaultMenuSelections();
+    void initializeDefaults();
+    void turnDeviceOff();
+    void turnDeviceOn();
+    void resetPowerTimer();
+    void startSession();
+    void decreaseBatteryPercentage(); // Could be a slot but as of right now it isn't
     void resumeSession();
+    void chargeBattery();
+
 private slots:
     void on_OnOffButton_released();
     void on_TimerButton_released();
@@ -83,11 +85,9 @@ private slots:
     void on_ChangeWaveform_released();
     void on_TurnOnOffButton_released();
     void on_ContactButton_stateChanged(int arg1);
-    void on_batteryLevel_valueChanged(int value);
 
-    void chargeBattery();
+    void onBatteryLevelChanged(int percentage);
 
-    void updateBatteryLabel(int percentage);
 
 };
 #endif // MAINWINDOW_H
