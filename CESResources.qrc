@@ -1,13 +1,11 @@
 <RCC>
-    <qresource prefix="/buttonAssets">
-        <file>guiAssets/buttonAssets/selectButtonAsset</file>
-        <file>guiAssets/buttonAssets/upButton.png</file>
-        <file>guiAssets/buttonAssets/downButton.png</file>
-        <file>guiAssets/buttonAssets/timerButton.png</file>
-        <file>guiAssets/buttonAssets/PowerButton.png</file>
-        <file>guiAssets/buttonAssets/lockButton.png</file>
-    </qresource>
     <qresource prefix="/">
-        <file>CRA-Power.png</file>
+        <file>buttonAssets/downButton.png</file>
+        <file>buttonAssets/lockButton.png</file>
+        <file>buttonAssets/PowerButton.png</file>
+        <file>buttonAssets/selectButtonAsset</file>
+        <file>buttonAssets/timerButton.png</file>
+        <file>buttonAssets/upButton.png</file>
+        <file>deviceSkinAsset/CRA-Power.png</file>
     </qresource>
 </RCC>
