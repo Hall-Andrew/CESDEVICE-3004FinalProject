@@ -40,7 +40,7 @@ private:
     QTimer *powerTimer;
     bool lockState;
     bool paused;
-    CountDownClock* displayTimer;
+    CountDownClock* displayClock;
     int totalDuration;
     Battery* battery;
 
@@ -91,5 +91,6 @@ private slots:
     void onBatteryLevelChanged(int percentage);
     void on_PowerSurgeButton_released();
     void outOfPower();
+    void warningReciever(QString);
 };
 #endif // MAINWINDOW_H
