@@ -1,0 +1,27 @@
+#ifndef BATTERY_H
+#define BATTERY_H
+#include<QString>
+#include <time.h>
+class Battery
+{
+public:
+    Battery();
+   ~Battery();
+   QString decay(); //default decay method
+   QString decay(int mod);//call for when machine is running
+   clock_t start; // sets orginal time 
+   clock_t difference; //checks how much time has passed
+   void charge();
+
+   float getBatteryLevel();
+   void setBatteryLevel(float newBatteryLevel);
+
+private:
+    float power;
+    float drain; //how fast battery life decays
+    float* decay_mod;
+    //the modifier to how the battery drains. I figured it would be better as a pointer but idk.
+    bool charged;
+};
+
+#endif // BATTERY_H

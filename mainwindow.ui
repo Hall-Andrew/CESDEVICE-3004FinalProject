@@ -264,7 +264,7 @@ background-color: rgb(252, 233, 79);</string>
      <widget class="QLineEdit" name="lineEdit_3">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>230</y>
         <width>101</width>
         <height>25</height>
