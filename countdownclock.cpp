@@ -11,6 +11,8 @@ CountDownClock::CountDownClock(int number)
 void CountDownClock::setMinutes(int newTimerLength)
 {
     minutes = newTimerLength;
+    sDigitOne=0;
+    sDigitTwo=0;
     finished = false;
 }
 void CountDownClock::setSeconds(int seconds)
