@@ -189,7 +189,7 @@ background-repeat:none;
      <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="page_5">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -449,6 +449,18 @@ background-color: #FFF;</string>
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QWidget" name="fullHistory">
+     <widget class="QTextEdit" name="RecordingFull">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>211</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="Record">

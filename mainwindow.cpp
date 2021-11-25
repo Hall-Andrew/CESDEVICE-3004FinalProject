@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     //resetDisplay();
     initializeDefaults();
     createMenu();
+    ui->RecordHistory->setEnabled(false);
     UpdateFrequency(Frq_level);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
@@ -121,6 +122,16 @@ void MainWindow::on_UpButton_released()
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
     }
+    if (ui->StackedWidget->currentIndex()==3)
+    {
+        int index = ui->recordhistory->currentRow();
+        cout<< index <<endl;
+        int  newIndex = index - 1;
+        if (newIndex<0)
+            newIndex = ui->recordhistory->count()-1;
+        ui->recordhistory->setCurrentRow(newIndex);
+
+    }
       resetPowerTimer();
 }
 
@@ -144,6 +155,17 @@ void MainWindow::on_DownButton_released()
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
     }
+  if (ui->StackedWidget->currentIndex()==3)
+  {
+      int index = ui->recordhistory->currentRow();
+      cout<< index <<endl;
+      int  newIndex = index + 1;
+      if (newIndex<0)
+          newIndex = 0;
+      ui->recordhistory->setCurrentRow(newIndex);
+
+
+  }
 
     resetPowerTimer();
 }
@@ -170,6 +192,13 @@ void MainWindow::on_EnterButton_released()
     if( ui->StackedWidget->currentIndex() == 1){
        startSession();
        return;
+    }
+    if (index == 3)
+    {
+        ui->StackedWidget->setCurrentIndex(5);
+        ui->RecordingFull->clear();
+        ui->RecordingFull->append("Session #"+QString::number(ui->recordhistory->currentRow()+1)+"\n");
+        ui->RecordingFull->append(recordList[ui->recordhistory->currentRow()]->print());
     }
 
       resetPowerTimer();
@@ -227,7 +256,7 @@ void MainWindow::updateTimerDisplay()
 //Record isnt hooked up to any data atm see console/ Andrew
 void MainWindow::on_Record_released()
 {
-
+        if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
 
@@ -242,12 +271,17 @@ void MainWindow::on_Record_released()
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-    ui->StackedWidget->setCurrentIndex(4);
+
+    ui->StackedWidget->setCurrentIndex(3);
     ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
     {
         ui->recordhistory->addItem("Session "+QString::number(q+1)+" "+recordList[q]->getRecord());
+
     }
+    int a=ui->recordhistory->count();
+    cout<<a<<endl;
+    ui->recordhistory->setCurrentRow(0);
 }
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
