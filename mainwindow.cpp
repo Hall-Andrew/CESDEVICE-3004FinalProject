@@ -263,8 +263,8 @@ void MainWindow::updateTimerDisplay()
 //Record isnt hooked up to any data atm see console/ Andrew
 void MainWindow::on_Record_released()
 {
-
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
+
         // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
