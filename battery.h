@@ -15,6 +15,7 @@ class Battery : public QObject
         void startBatteryDrain();
         void stopBatteryDrain();
         void setDrainMultiplier(double);
+        bool hasPower();
         double getBatteryPercentage();
         QTimer* getBatteryTimer();
 
@@ -25,12 +26,15 @@ class Battery : public QObject
         QTimer* timer;
         void drain();
         bool powerWarning;
+        bool twoPercentWarning;
+        int turnOffCount;
 
     private slots:
 
     signals:
          void updateBatteryBar(int);
          void shutDown();
+         void batteryMessage(QString message);
 };
 
 #endif // BATTERY_H
