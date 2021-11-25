@@ -84,12 +84,19 @@ void MainWindow:: turnDeviceOff(){
       powerTimer->stop();
       ui->StackedWidget->setCurrentIndex(0);
       ui->ContactButton->setCheckState(Qt::Unchecked);
+      // Delete instance to go back to default setting
+      delete displayTimer;
+
+      // Create new instance for when device is turned on
+      displayTimer = new CountDownClock(20);
+      cout << totalDuration << endl;
 
       // Delete instance to go back to default setting
       delete displayTimer;
 
       // Create new instance for when device is turned on
       displayTimer = new CountDownClock(20);
+      totalDuration = 0;
 }
 
 void MainWindow::on_TimerButton_released()
@@ -99,6 +106,8 @@ void MainWindow::on_TimerButton_released()
     if(time + 20 > 60) {
         time = 59;
         seconds = 60;
+        time = 60;
+        seconds = 0;
     } else {
         time = time + 20;
     }
@@ -231,6 +240,10 @@ void MainWindow::updateTimerDisplay()
     }else{
         seconds -= 1;
     }
+
+    // Duration only increases with each second the update timer updates
+    totalDuration += 1;
+
     displayTimer->countdown();//This should countdown each second properly
 
     QString timeString = QTime(0, time).toString();
@@ -257,6 +270,8 @@ void MainWindow::updateTimerDisplay()
 void MainWindow::on_Record_released()
 {
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
+
+        // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
 
