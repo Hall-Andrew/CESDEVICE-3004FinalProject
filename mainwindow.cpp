@@ -14,15 +14,18 @@ MainWindow::MainWindow(QWidget *parent)
     //resetDisplay();
     initializeDefaults();
     createMenu();
-    ui->RecordHistory->setEnabled(false);
+    ui->StackedWidget->setCurrentIndex(0);
+    timer = new QTimer(this);
+    powerTimer = new QTimer(this);
     UpdateFrequency(Frq_level);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
+    powerTimer->setInterval(powerTimeOut*1000);
+
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
-    connect(battery,SIGNAL(shutDown()),this,SLOT(outOfPower()));
-
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -31,27 +34,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PowerTimerFired(){
     cout<<"Entered function"<<endl;
-    if(!timer->isActive()) {
-        turnDeviceOff();
-    }else{
-    }
+   if(!timer->isActive()){
+       turnDeviceOff();
+   }else{
+   }
 }
 
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
-    ui->StackedWidget->setCurrentIndex(0);
   //  ui->menuListWidget->addItem("View Previous Sessions");
+
 }
 
 void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
+
 }
 
 
 void MainWindow::initializeDefaults(){
     onOffState = false;
     time = 0;
-    seconds = 0;
     lockState = false;
     paused = false;
     totalDuration = 0;
@@ -64,11 +67,6 @@ void MainWindow::initializeDefaults(){
     waveForm.push_back(betta);
     waveForm.push_back(gamma);
     battery= new Battery();
-    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
-    timer = new QTimer(this);
-    powerTimer = new QTimer(this);
-    powerTimer->setInterval(powerTimeOut*1000);
-    displayTimer = new CountDownClock(20);
 }
 
 
@@ -80,39 +78,32 @@ void MainWindow::turnDeviceOn(){
 }
 
 void MainWindow:: turnDeviceOff(){
+      ui->StackedWidget->setCurrentIndex(0);
       battery->stopBatteryDrain();
       powerTimer->stop();
-      ui->StackedWidget->setCurrentIndex(0);
-      ui->ContactButton->setCheckState(Qt::Unchecked);
-
-      cout << totalDuration << endl;
-
-      // Delete instance to go back to default setting
-      delete displayTimer;
-
-      // Create new instance for when device is turned on
-      displayTimer = new CountDownClock(20);
-      totalDuration = 0;
 }
+
+
 
 void MainWindow::on_TimerButton_released()
 {
-    // The defaults can be changed here
-    // open to interpretation
-    if(time + 20 > 60) {
-        time = 60;
-        seconds = 0;
-    } else {
-        time = time + 20;
-    }
-    //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
-    displayTimer->setMinutes(time);
-    displayTimer->setSeconds(seconds);
-    ui->timeLabel->display(displayTimer->getDisplayNumbers());
+    bool state = ui->ContactButton->isChecked();
+      if (!timer->isActive()){
+          timer->setInterval(1000);
+          if(state){
+          timer->start();
+          }
+      }else
+      {
+          int seconds = time + 20;
+          if(seconds > 60) seconds = 60;
+          time = seconds;
+      }
+      resetPowerTimer();
 }
+
 void MainWindow::on_UpButton_released()
-{
-    if(ui->StackedWidget->currentIndex() == 0){
+{   if(ui->StackedWidget->currentIndex() == 0){
         int index = ui->menuListWidget->currentRow();
         int  newIndex = index - 1;
         if (newIndex<0)
@@ -124,16 +115,6 @@ void MainWindow::on_UpButton_released()
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
-    }
-    if (ui->StackedWidget->currentIndex()==3)
-    {
-        int index = ui->recordhistory->currentRow();
-        cout<< index <<endl;
-        int  newIndex = index - 1;
-        if (newIndex<0)
-            newIndex = ui->recordhistory->count()-1;
-        ui->recordhistory->setCurrentRow(newIndex);
-
     }
       resetPowerTimer();
 }
@@ -158,17 +139,6 @@ void MainWindow::on_DownButton_released()
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
     }
-  if (ui->StackedWidget->currentIndex()==3)
-  {
-      int index = ui->recordhistory->currentRow();
-      cout<< index <<endl;
-      int  newIndex = index + 1;
-      if (newIndex<0)
-          newIndex = 0;
-      ui->recordhistory->setCurrentRow(newIndex);
-
-
-  }
 
     resetPowerTimer();
 }
@@ -196,13 +166,6 @@ void MainWindow::on_EnterButton_released()
        startSession();
        return;
     }
-    if (index == 3)
-    {
-        ui->StackedWidget->setCurrentIndex(5);
-        ui->RecordingFull->clear();
-        ui->RecordingFull->append("Session #"+QString::number(ui->recordhistory->currentRow()+1)+"\n");
-        ui->RecordingFull->append(recordList[ui->recordhistory->currentRow()]->print());
-    }
 
       resetPowerTimer();
 }
@@ -211,7 +174,7 @@ void MainWindow::on_BackButton_released()
 {
     int prevIndex;
     int index = ui->StackedWidget->currentIndex();
-    //modified it so recordHistory does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
+    //modified it so recordHisotry does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
     if (index>3)
     {
         prevIndex=0;
@@ -220,7 +183,7 @@ void MainWindow::on_BackButton_released()
     {
         prevIndex = index - 1 ;
     }
-      if (prevIndex > 0){
+      if (prevIndex >= 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
       }
 }
@@ -228,34 +191,11 @@ void MainWindow::on_BackButton_released()
 
 void MainWindow::updateTimerDisplay()
 {
-    if(seconds == 0) {
-        time -= 1;
-        seconds = 60;
-    }else{
-        seconds -= 1;
-    }
-
-    // Duration only increases with each second the update timer updates
-    totalDuration += 1;
-
-    displayTimer->countdown();//This should countdown each second properly
-
+    time = time - 1;
     QString timeString = QTime(0, time).toString();
-    //ui->TimeLabel->setText(timeString); This is your old timer label Ive left cause its late at night and I dunno if my speed implementation is ok so you could theoretically revert/ Andrew
-
-    ui->timeLabel->display(displayTimer->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
-
-    //I didnt touch this either just commented it out/Andrew
-    /*/
+    ui->TimeLabel->setText(timeString);
     if(time <= 0){
         timer->stop();
-        resetPowerTimer();
-    }
-    /*/
-
-    if(displayTimer->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
-        timer->stop();
-
         resetPowerTimer();
     }
 }
@@ -263,11 +203,7 @@ void MainWindow::updateTimerDisplay()
 //Record isnt hooked up to any data atm see console/ Andrew
 void MainWindow::on_Record_released()
 {
-<<<<<<< HEAD
-        if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
-=======
-        // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
->>>>>>> 92d357519aac6981ed58846c8aa0c075c6cd6bde
+
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
         recordList.append(rec);
 
@@ -282,17 +218,12 @@ void MainWindow::on_Record_released()
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-
-    ui->StackedWidget->setCurrentIndex(3);
+    ui->StackedWidget->setCurrentIndex(4);
     ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
     {
         ui->recordhistory->addItem("Session "+QString::number(q+1)+" "+recordList[q]->getRecord());
-
     }
-    int a=ui->recordhistory->count();
-    cout<<a<<endl;
-    ui->recordhistory->setCurrentRow(0);
 }
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
@@ -352,7 +283,6 @@ void MainWindow:: resetPowerTimer(){
 void MainWindow::on_OnOffButton_released(){
 
 }
-
 void MainWindow::startSession(){
     ui->StackedWidget->setCurrentIndex(2);
     // QString text = ui->WavelengthListWidget->currentItem()->text();
@@ -365,27 +295,22 @@ void MainWindow::startSession(){
 }
 
 void MainWindow::on_ContactButton_released(){
-    // should we even use this? i feel like the state change slot covers this
+
 }
 
 void MainWindow::resumeSession(){
-    ui->timeLabel->display(displayTimer->getDisplayNumbers());
-    if(!ui->ContactButton->isChecked()){
-        return;
-    }
-    powerTimer->stop();
+    QTime t = QTime(0,time);
+    ui->TimeLabel->setText(t.toString());
+ if(!ui->ContactButton->isChecked()){
+     return;
+ }
+     powerTimer->stop();
 }
 
 void MainWindow::on_ContactButton_stateChanged(int arg1)
 {
     bool state = ui->ContactButton->isChecked();
-    if (!timer->isActive()){
-        timer->setInterval(1000);
-        if(state){
-            cout << "Timer started" << endl;
-            timer->start();
-        }
-    } else if((timer->isActive()) && (!state)){
+    if((timer->isActive()) && (!state)){
         timer->stop();
         paused = true;
     } else if (paused && state){
@@ -393,14 +318,6 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
        timer->start();
     }
 
-}
-
-void MainWindow::on_PowerSurgeButton_released()
-{
-    ui->centralwidget->setEnabled(false);
-    ui->StackedWidget->setCurrentIndex(4);
-    ui->SurgeLabel->setText("Power Surge Detected. Contact support. \n Device disabled.");
-    battery->stopBatteryDrain();
 }
 
 void MainWindow::onBatteryLevelChanged(int batteryPercentage)
@@ -424,9 +341,17 @@ void MainWindow::chargeBattery()
     // Charge the battery
     battery->charge();
     // Update the battery percentage bar
-    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+   ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
 }
+void MainWindow::Battery_decay()
+{
+    battery = new Battery();
+    while (battery->IsCharge())
+    {
+        battery->decay();
+        ui->ProgressBarWidget->setValue(battery->getBatteryLevel());
 
-void MainWindow::outOfPower(){
-    turnDeviceOff();
+    }
+        ui->centralwidget->setEnabled(false);
+        ui->StackedWidget->setCurrentIndex(4);
 }
