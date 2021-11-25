@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
     connect(battery,SIGNAL(shutDown()),this,SLOT(outOfPower()));
+    connect(battery,SIGNAL(batteryMessage(QString)),this,SLOT(warningReciever(QString)));
 
 }
 
@@ -68,7 +69,7 @@ void MainWindow::initializeDefaults(){
     timer = new QTimer(this);
     powerTimer = new QTimer(this);
     powerTimer->setInterval(powerTimeOut*1000);
-    displayTimer = new CountDownClock(20);
+    displayClock = new CountDownClock(20);
 }
 
 
@@ -77,6 +78,7 @@ void MainWindow::turnDeviceOn(){
     setDefaultMenuSelections();
     resetPowerTimer();
     battery->startBatteryDrain();
+    onOffState=true;
 }
 
 void MainWindow:: turnDeviceOff(){
@@ -85,36 +87,31 @@ void MainWindow:: turnDeviceOff(){
       ui->StackedWidget->setCurrentIndex(0);
       ui->ContactButton->setCheckState(Qt::Unchecked);
       // Delete instance to go back to default setting
-      delete displayTimer;
+      delete displayClock;
 
       // Create new instance for when device is turned on
-      displayTimer = new CountDownClock(20);
+      displayClock = new CountDownClock(20);
       cout << totalDuration << endl;
 
       // Delete instance to go back to default setting
-      delete displayTimer;
+      delete displayClock;
 
       // Create new instance for when device is turned on
-      displayTimer = new CountDownClock(20);
+      displayClock = new CountDownClock(20);
       totalDuration = 0;
+      onOffState=false;
 }
 
 void MainWindow::on_TimerButton_released()
 {
-    // The defaults can be changed here
-    // open to interpretation
-    if(time + 20 > 60) {
-        time = 59;
-        seconds = 60;
-        time = 60;
-        seconds = 0;
-    } else {
-        time = time + 20;
+    time+=20;
+    if(time>60){
+        time = 20;
     }
     //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
-    displayTimer->setMinutes(time);
-    displayTimer->setSeconds(seconds);
-    ui->timeLabel->display(displayTimer->getDisplayNumbers());
+    displayClock->setMinutes(time);
+    //displayClock->setSeconds(seconds);
+    ui->timeLabel->display(displayClock->getDisplayNumbers());
 }
 void MainWindow::on_UpButton_released()
 {
@@ -234,22 +231,22 @@ void MainWindow::on_BackButton_released()
 
 void MainWindow::updateTimerDisplay()
 {
-    if(seconds == 0) {
-        time -= 1;
-        seconds = 60;
-    }else{
-        seconds -= 1;
-    }
+    //if(seconds == 0) {
+    //    time -= 1;
+    //    seconds = 60;
+    //}else{
+    //    seconds -= 1;
+    //}
 
     // Duration only increases with each second the update timer updates
     totalDuration += 1;
 
-    displayTimer->countdown();//This should countdown each second properly
+    displayClock->countdown();//This should countdown each second properly
 
-    QString timeString = QTime(0, time).toString();
+    //QString timeString = QTime(0, time).toString();
     //ui->TimeLabel->setText(timeString); This is your old timer label Ive left cause its late at night and I dunno if my speed implementation is ok so you could theoretically revert/ Andrew
 
-    ui->timeLabel->display(displayTimer->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
+    ui->timeLabel->display(displayClock->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
 
     //I didnt touch this either just commented it out/Andrew
     /*/
@@ -259,9 +256,8 @@ void MainWindow::updateTimerDisplay()
     }
     /*/
 
-    if(displayTimer->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
+    if(displayClock->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
         timer->stop();
-
         resetPowerTimer();
     }
 }
@@ -339,7 +335,7 @@ void MainWindow::on_ChangeWaveform_released()
 void MainWindow::on_TurnOnOffButton_released()
 {
     int index = ui->StackedWidget->currentIndex();
-    if  (index == 0 ){
+    if  (index == 0 && battery->hasPower()){
        turnDeviceOn();
     }else turnDeviceOff();
 
@@ -364,8 +360,6 @@ void MainWindow::startSession(){
        time  = 20;
        totalDuration=0; //added to reset total duration when a session starts
     resumeSession();
-
-
     //waveForm=text;
 }
 
@@ -374,7 +368,7 @@ void MainWindow::on_ContactButton_released(){
 }
 
 void MainWindow::resumeSession(){
-    ui->timeLabel->display(displayTimer->getDisplayNumbers());
+    ui->timeLabel->display(displayClock->getDisplayNumbers());
     if(!ui->ContactButton->isChecked()){
         return;
     }
@@ -384,16 +378,17 @@ void MainWindow::resumeSession(){
 void MainWindow::on_ContactButton_stateChanged(int arg1)
 {
     bool state = ui->ContactButton->isChecked();
-    if (!timer->isActive()){
+    int index = ui->StackedWidget->currentIndex();
+    if (!timer->isActive() && onOffState && index !=1){
         timer->setInterval(1000);
         if(state){
             cout << "Timer started" << endl;
             timer->start();
         }
-    } else if((timer->isActive()) && (!state)){
+    } else if((timer->isActive()) && (!state) && onOffState){
         timer->stop();
         paused = true;
-    } else if (paused && state){
+    } else if (paused && state && onOffState){
        resumeSession();
        timer->start();
     }
@@ -421,7 +416,6 @@ void MainWindow::onBatteryLevelChanged(int batteryPercentage)
         // otherwise green
         ui->batteryPercentageBar->setStyleSheet("selection-background-color: #00b300; background-color: #FFF;");
     }
-
 }
 
 void MainWindow::chargeBattery()
@@ -434,4 +428,8 @@ void MainWindow::chargeBattery()
 
 void MainWindow::outOfPower(){
     turnDeviceOff();
+}
+
+void MainWindow::warningReciever(QString warning){
+    ui->ErrorMessage->setText(warning);
 }
