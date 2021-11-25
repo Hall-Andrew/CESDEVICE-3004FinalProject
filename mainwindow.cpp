@@ -362,6 +362,7 @@ void MainWindow::startSession(){
     // QString text = ui->WavelengthListWidget->currentItem()->text();
        //ui->WaveFormLabel->setText(text);
        time  = 20;
+       totalDuration=0; //added to reset total duration when a session starts
     resumeSession();
 
 
