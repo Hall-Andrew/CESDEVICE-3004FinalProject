@@ -15,10 +15,10 @@ class Battery : public QObject
         void startBatteryDrain();
         void stopBatteryDrain();
         void setDrainMultiplier(double);
+        void setBaseDrainValue(double);
         bool hasPower();
         double getBatteryPercentage();
         QTimer* getBatteryTimer();
-
     private:
         double power;
         double baseDrainAmount;

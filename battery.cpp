@@ -20,6 +20,7 @@ void Battery::charge(){
     power = 100;
     powerWarning=false;
     twoPercentWarning=false;
+    emit updateBatteryBar((int)power);
 }
 
 void Battery::startBatteryDrain(){
@@ -31,7 +32,11 @@ void Battery::stopBatteryDrain(){
 }
 
 void Battery::setDrainMultiplier(double multi){
-    drainModifier=multi;
+    drainModifier=(multi/1000);
+}
+
+void Battery::setBaseDrainValue(double newBaseDrain){
+    baseDrainAmount = newBaseDrain;
 }
 
 bool Battery::hasPower(){
@@ -42,9 +47,10 @@ bool Battery::hasPower(){
     }
 }
 
+
 void Battery::drain(){
     QString warning;
-    power=power-(baseDrainAmount*drainModifier);
+    power-=(baseDrainAmount*drainModifier);
     if(power<0){
         power=0;
     }else{

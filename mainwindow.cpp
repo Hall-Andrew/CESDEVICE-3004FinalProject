@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     initializeDefaults();
     createMenu();
     ui->RecordHistory->setEnabled(false);
+    ui->Record->setEnabled(false);
+    ui->BackButton->setEnabled(false);
     UpdateFrequency(Frq_level);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
@@ -78,6 +80,7 @@ void MainWindow::turnDeviceOn(){
     resetPowerTimer();
     battery->startBatteryDrain();
     onOffState=true;
+    ui->BackButton->setEnabled(true);
 }
 
 void MainWindow:: turnDeviceOff(){
@@ -99,6 +102,7 @@ void MainWindow:: turnDeviceOff(){
       displayClock = new CountDownClock(20);
       totalDuration = 0;
       onOffState=false;
+      ui->BackButton->setEnabled(false);
 }
 
 void MainWindow::on_TimerButton_released()
@@ -126,6 +130,9 @@ void MainWindow::on_UpButton_released()
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
+         if(ui->ContactButton->isChecked()){
+             battery->setDrainMultiplier(newAmp);
+         }
     }
     if (ui->StackedWidget->currentIndex()==3)
     {
@@ -159,6 +166,9 @@ void MainWindow::on_DownButton_released()
       if (newAmp < 0)
           newAmp = 0;
        ui->ProgressBarWidget->setValue(newAmp);
+       if(ui->ContactButton->isChecked()){
+           battery->setDrainMultiplier(newAmp);
+       }
     }
   if (ui->StackedWidget->currentIndex()==3)
   {
@@ -215,52 +225,36 @@ void MainWindow::on_BackButton_released()
     int prevIndex;
     int index = ui->StackedWidget->currentIndex();
     //modified it so recordHistory does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
-    if (index>3)
+    if (index>3 && index !=5)
     {
         prevIndex=0;
     }
     else
     {
-        prevIndex = index - 1 ;
+        if(index == 5){
+            prevIndex = index-2;
+        }else{
+            prevIndex = index - 1 ;
+        }
     }
-      if (prevIndex > 0){
+    if (prevIndex > 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
-      }
+    }
 }
 
 
 void MainWindow::updateTimerDisplay()
 {
-    //if(seconds == 0) {
-    //    time -= 1;
-    //    seconds = 60;
-    //}else{
-    //    seconds -= 1;
-    //}
-
     // Duration only increases with each second the update timer updates
     totalDuration += 1;
-
     displayClock->countdown();//This should countdown each second properly
-
-    //QString timeString = QTime(0, time).toString();
-    //ui->TimeLabel->setText(timeString); This is your old timer label Ive left cause its late at night and I dunno if my speed implementation is ok so you could theoretically revert/ Andrew
-
     ui->timeLabel->display(displayClock->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
-
-    //I didnt touch this either just commented it out/Andrew
-    /*/
-    if(time <= 0){
-        timer->stop();
-        resetPowerTimer();
-    }
-    /*/
-
     if(displayClock->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
         timer->stop();
         resetPowerTimer();
     }
 }
+
 //Buttons for record and record History. Record History could use a menu.
 void MainWindow::on_Record_released()
 {
@@ -291,10 +285,12 @@ void MainWindow:: UpdateFrequency(int level)
     QString dummy="Freq: "+QString::number(amps[level])+" Hz";
     ui->frequencyLabel->setText(dummy);
 }
+
 void MainWindow:: UpdateWaveform(int level)
 {
     ui->waveformLabel->setText("WaveForm: "+waveForm[level]);
 }
+
 void MainWindow::on_ChangeFrequency_released()
 {
     if (Frq_level>=2)
@@ -375,13 +371,19 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         if(state){
             cout << "Timer started" << endl;
             timer->start();
+            battery->setDrainMultiplier(ui->ProgressBarWidget->value());
         }
+        ui->Record->setEnabled(true);
+
     } else if((timer->isActive()) && (!state) && onOffState){
         timer->stop();
         paused = true;
+        ui->Record->setEnabled(false);
+        battery->setDrainMultiplier(100);
     } else if (paused && state && onOffState){
        resumeSession();
        timer->start();
+       battery->setDrainMultiplier(ui->ProgressBarWidget->value());
     }
 
 }

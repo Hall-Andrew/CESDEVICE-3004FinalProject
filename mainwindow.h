@@ -94,5 +94,6 @@ private slots:
     void warningReciever(QString);
     void on_FinishSesh_released();
     void on_ChargeButton_released();
+    void on_RecordButton_released();
 };
 #endif // MAINWINDOW_H

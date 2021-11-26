@@ -189,7 +189,7 @@ background-repeat:none;
      <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_5">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -487,6 +487,9 @@ background-color: #FFF;</string>
     </widget>
    </widget>
    <widget class="QPushButton" name="Record">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>240</x>
