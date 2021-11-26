@@ -92,6 +92,7 @@ private slots:
     void on_PowerSurgeButton_released();
     void outOfPower();
     void warningReciever(QString);
+    void on_FinishSesh_released();
     void on_ChargeButton_released();
 };
 #endif // MAINWINDOW_H
