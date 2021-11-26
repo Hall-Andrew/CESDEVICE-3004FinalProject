@@ -337,7 +337,9 @@ void MainWindow::on_TurnOnOffButton_released()
     int index = ui->StackedWidget->currentIndex();
     if  (index == 0 && battery->hasPower()){
        turnDeviceOn();
-    }else turnDeviceOff();
+    }else if(battery->hasPower()){
+        turnDeviceOff();
+    }
 
 }
 
@@ -440,4 +442,9 @@ void MainWindow::on_FinishSesh_released()
     totalDuration=time*60;
     time=0;
     ui->timeLabel->display(0.0);
+}
+
+void MainWindow::on_ChargeButton_released()
+{
+    battery->charge();
 }
