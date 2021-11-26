@@ -211,6 +211,7 @@ void MainWindow::on_EnterButton_released()
 
 void MainWindow::on_BackButton_released()
 {
+    cout<<ui->StackedWidget->currentIndex()<<endl;
     int prevIndex;
     int index = ui->StackedWidget->currentIndex();
     //modified it so recordHistory does not send you to the start screen.  If the index is 4 (record history), it'll send you back to start
@@ -261,7 +262,6 @@ void MainWindow::updateTimerDisplay()
     }
 }
 //Buttons for record and record History. Record History could use a menu.
-//Record isnt hooked up to any data atm see console/ Andrew
 void MainWindow::on_Record_released()
 {
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
@@ -288,14 +288,12 @@ void MainWindow::on_RecordHistory_released()
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
 {
-    ui->Frequncy->clear();
-    QString dummy= QString::number(amps[level])+" Hz";
-    ui->Frequncy->append(dummy);
+    QString dummy="Freq: "+QString::number(amps[level])+" Hz";
+    ui->frequencyLabel->setText(dummy);
 }
 void MainWindow:: UpdateWaveform(int level)
 {
-    ui->Waveform->clear();
-    ui->Waveform->append(waveForm[level]);
+    ui->waveformLabel->setText("WaveForm: "+waveForm[level]);
 }
 void MainWindow::on_ChangeFrequency_released()
 {
@@ -437,5 +435,6 @@ void MainWindow::on_FinishSesh_released()
 
 void MainWindow::on_ChargeButton_released()
 {
+    ui->ErrorMessage->clear();
     battery->charge();
 }

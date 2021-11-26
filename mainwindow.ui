@@ -189,7 +189,7 @@ background-repeat:none;
      <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="page_5">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -243,48 +243,6 @@ background-color: rgb(252, 233, 79);</string>
       </property>
       <property name="format">
        <string>%v µA</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="TimeLabel">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>100</y>
-        <width>181</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>230</y>
-        <width>101</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Current Control</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>70</y>
-        <width>51</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Timer </string>
       </property>
      </widget>
      <widget class="QLCDNumber" name="timeLabel">
@@ -423,6 +381,71 @@ background-color: #FFF;</string>
        <string>5</string>
       </property>
      </widget>
+     <widget class="QLabel" name="frequencyLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>81</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Freq: 0.5Hz</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>80</y>
+        <width>54</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="text">
+       <string>Timer</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="waveformLabel">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>30</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>WaveForm: Alpha</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="currentLabel">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>230</y>
+        <width>121</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Current Control</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="recor_history">
      <widget class="QListWidget" name="recordhistory">
@@ -497,38 +520,6 @@ background-color: #FFF;</string>
     </property>
     <property name="text">
      <string>History</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>30</y>
-      <width>71</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(136, 138, 133);</string>
-    </property>
-    <property name="text">
-     <string>Frequency</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>30</y>
-      <width>61</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(136, 138, 133);</string>
-    </property>
-    <property name="text">
-     <string>Waveform</string>
     </property>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
@@ -610,9 +601,9 @@ border-radius: 45px;
     <widget class="QPushButton" name="FinishSesh">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>99</x>
        <y>10</y>
-       <width>80</width>
+       <width>91</width>
        <height>25</height>
       </rect>
      </property>
@@ -660,26 +651,6 @@ border-radius: 45px;
      <string>Change Frequency</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="Frequncy">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>30</y>
-      <width>51</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="Waveform">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>30</y>
-      <width>91</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <zorder>graphicsView</zorder>
    <zorder>TurnOnOffButton</zorder>
    <zorder>TimerButton</zorder>
@@ -692,13 +663,9 @@ border-radius: 45px;
    <zorder>Record</zorder>
    <zorder>ErrorMessage</zorder>
    <zorder>RecordHistory</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>lineEdit_2</zorder>
    <zorder>widget_3</zorder>
    <zorder>ChangeWaveform</zorder>
    <zorder>ChangeFrequency</zorder>
-   <zorder>Frequncy</zorder>
-   <zorder>Waveform</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
