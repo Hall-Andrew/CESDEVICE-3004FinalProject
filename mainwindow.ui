@@ -647,6 +647,19 @@ border-radius: 45px;
       <string>Change Frequency</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="ChargeButton">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>130</y>
+       <width>80</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Charge</string>
+     </property>
+    </widget>
    </widget>
    <zorder>graphicsView</zorder>
    <zorder>TurnOnOffButton</zorder>

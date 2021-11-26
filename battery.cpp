@@ -3,7 +3,7 @@
 
 Battery::Battery()
 {
-    power=50;
+    power=3;
     baseDrainAmount=1;
     drainModifier=0.10;
     powerWarning=false;
@@ -11,7 +11,6 @@ Battery::Battery()
     timer = new QTimer(this);
     timer->setInterval(500);
     connect(timer, &QTimer::timeout, this, &Battery::drain);
-    turnOffCount=0;
 }
 Battery::~Battery(){
 
@@ -21,7 +20,6 @@ void Battery::charge(){
     power = 100;
     powerWarning=false;
     twoPercentWarning=false;
-    turnOffCount=0;
 }
 
 void Battery::startBatteryDrain(){
@@ -37,7 +35,7 @@ void Battery::setDrainMultiplier(double multi){
 }
 
 bool Battery::hasPower(){
-    if(power>2){
+    if(power>2.5){
         return true;
     }else{
         return false;
@@ -50,15 +48,12 @@ void Battery::drain(){
     if(power<0){
         power=0;
     }else{
-//        cout<<power<<endl;
         if(power <6 && power > 4 && !powerWarning){
             powerWarning=true;
-            cout<<"5% warning"<<endl;
             warning = "Warning, battery is at 5%, please charge the device!";
             emit batteryMessage(warning);
         }else{
             if(power<3 && !twoPercentWarning){
-                cout<<"2% shutdown warning!"<<endl;
                 twoPercentWarning = true;
                 warning = "Warning, battery is at 2%, the device will shut off shortly if it is not charged!";
                 emit batteryMessage(warning);
@@ -66,14 +61,11 @@ void Battery::drain(){
         }
     }
     if(twoPercentWarning){
-        turnOffCount+=1;
-        if(turnOffCount>3){
+        if(power<2.5){
             emit shutDown();
         }
     }
     emit updateBatteryBar((int)power);
-    //cout.precision(2);
-    //cout<<fixed<<power<<endl;
 }
 
 double Battery::getBatteryPercentage(){

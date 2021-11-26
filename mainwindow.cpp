@@ -337,7 +337,9 @@ void MainWindow::on_TurnOnOffButton_released()
     int index = ui->StackedWidget->currentIndex();
     if  (index == 0 && battery->hasPower()){
        turnDeviceOn();
-    }else turnDeviceOff();
+    }else if(battery->hasPower()){
+        turnDeviceOff();
+    }
 
 }
 
@@ -432,4 +434,9 @@ void MainWindow::outOfPower(){
 
 void MainWindow::warningReciever(QString warning){
     ui->ErrorMessage->setText(warning);
+}
+
+void MainWindow::on_ChargeButton_released()
+{
+    battery->charge();
 }

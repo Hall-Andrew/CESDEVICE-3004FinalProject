@@ -27,7 +27,6 @@ class Battery : public QObject
         void drain();
         bool powerWarning;
         bool twoPercentWarning;
-        int turnOffCount;
 
     private slots:
 
