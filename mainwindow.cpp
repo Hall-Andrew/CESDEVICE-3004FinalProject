@@ -31,7 +31,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_PowerTimerFired(){
-    cout<<"Entered function"<<endl;
     if(!timer->isActive()) {
         turnDeviceOff();
     }else{
@@ -268,16 +267,8 @@ void MainWindow::on_Record_released()
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
 
         // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
-        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,battery->getBatteryPercentage());
+        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value());
         recordList.append(rec);
-
-        cout<<"Amps: ";
-        cout<<rec->getFrequency();
-        cout<<" Duration: "<<rec->getDuration();
-        cout<<" PowerState: ";
-        cout<<rec->getPowerLevel()<<endl;
-
-
 }
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
