@@ -433,3 +433,11 @@ void MainWindow::outOfPower(){
 void MainWindow::warningReciever(QString warning){
     ui->ErrorMessage->setText(warning);
 }
+//should finish a session
+void MainWindow::on_FinishSesh_released()
+{
+    timer->stop();
+    totalDuration=time*60;
+    time=0;
+    ui->timeLabel->display(0.0);
+}
