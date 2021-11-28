@@ -357,14 +357,13 @@ void MainWindow::on_ChangeFrequency_released()
         {
            Frq_level++;
         }
-        UpdateFrequency(Frq_level);
+            UpdateFrequency(Frq_level);
     }
-<<<<<<< HEAD
-    UpdateFrequency(Frq_level);
+
+
+
      resetPowerTimer();
 
-=======
->>>>>>> f7f8813680e1c3656c96d2df3a3111ea82a2c7a6
 }
 
 void MainWindow::on_ChangeWaveform_released()
@@ -380,11 +379,10 @@ void MainWindow::on_ChangeWaveform_released()
         }
         UpdateWaveform(Wf_level);
     }
-<<<<<<< HEAD
-    UpdateWaveform(Wf_level);
+
+
      resetPowerTimer();
-=======
->>>>>>> f7f8813680e1c3656c96d2df3a3111ea82a2c7a6
+
 }
 
 void MainWindow::on_TurnOnOffButton_released()
