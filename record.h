@@ -1,7 +1,30 @@
 #ifndef RECORD_H
 #define RECORD_H
 #include <QLibrary>
-
+/*Record class: contains information for the Record object, which will hold the information of the session.
+ * Variables:
+ * QString description: used to be record. Basically it's a quick description for the record menu
+ *  QString waveform: contatins the waveform of the session
+ *  float frequency: contains the frequency of the session.
+ * int duration: holds the elapsed time of the session
+ * int powerLevel: holds the level of power that the session was at.
+ * Functions:
+ * getRecord(): sets up the desciption variable and then returns it.
+ * getWaveForm():returns the waveform variable
+ * getFrequency(): returns the frequency
+ * getDuration(): returns the duration
+ * getPowerLevel(): returns the powerlevel
+ * print(): creates a Qstring variable which conatins all information from the record.
+ * setFrequency(float freq):sets the frequency
+ * setDuration(int time): sets the duration
+ * setPowerLevel(int power): sets the powerlevel
+ * setWaveForm(QString waveform): sets the waveform.
+ *
+ *
+ *
+ *
+ *
+ * */
 class Record
 {
     public:

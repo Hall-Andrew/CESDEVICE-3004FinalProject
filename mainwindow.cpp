@@ -404,15 +404,8 @@ void MainWindow:: resetPowerTimer(){
     powerTimer->start();
 }
 
-
-void MainWindow::on_OnOffButton_released(){
-
-}
-
 void MainWindow::startSession(){
     ui->StackedWidget->setCurrentIndex(2);
-    // QString text = ui->WavelengthListWidget->currentItem()->text();
-       //ui->WaveFormLabel->setText(text);
        time  = 20;
        totalDuration=0; //added to reset total duration when a session starts
        displayClock->setMinutes(time);
