@@ -127,14 +127,16 @@ void MainWindow:: turnDeviceOff(){
 
 void MainWindow::on_TimerButton_released()
 {
-    time+=20;
-    if(time>60){
-        time = 20;
+    if(!lockState){
+        time+=20;
+        if(time>60){
+            time = 20;
+        }
+        //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
+        displayClock->setMinutes(time);
+        //displayClock->setSeconds(seconds);
+        ui->timeLabel->display(displayClock->getDisplayNumbers());
     }
-    //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
-    displayClock->setMinutes(time);
-    //displayClock->setSeconds(seconds);
-    ui->timeLabel->display(displayClock->getDisplayNumbers());
     resetPowerTimer();
 }
 void MainWindow::on_UpButton_released()
