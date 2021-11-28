@@ -71,6 +71,7 @@ void MainWindow::initializeDefaults(){
     powerTimer = new QTimer(this);
     powerTimer->setInterval(powerTimeOut*1000);
     displayClock = new CountDownClock(20);
+    ui->lockedImage->setVisible(false);
 }
 
 
@@ -103,6 +104,8 @@ void MainWindow:: turnDeviceOff(){
       totalDuration = 0;
       onOffState=false;
       ui->BackButton->setEnabled(false);
+      lockState=false;
+      ui->lockedImage->setVisible(false);
 }
 
 void MainWindow::on_TimerButton_released()
@@ -126,7 +129,7 @@ void MainWindow::on_UpButton_released()
         ui->menuListWidget->setCurrentRow(newIndex);
     }
 
-    if(ui->StackedWidget->currentIndex() == 2){
+    if(ui->StackedWidget->currentIndex() == 2 && !lockState){
         int currentAmp  = ui->ProgressBarWidget->value();
         int newAmp =  currentAmp + 50;
          ui->ProgressBarWidget->setValue(newAmp);
@@ -160,7 +163,7 @@ void MainWindow::on_DownButton_released()
 
 
 
-  if(ui->StackedWidget->currentIndex() == 2){
+  if(ui->StackedWidget->currentIndex() == 2 && !lockState){
       int currentAmp  = ui->ProgressBarWidget->value();
       int newAmp =  currentAmp - 100;
       if (newAmp < 0)
@@ -189,6 +192,13 @@ void MainWindow::on_DownButton_released()
 
 void MainWindow::on_LockButton_released()
 {
+      if(!lockState){
+          lockState=true;
+          ui->lockedImage->setVisible(true);
+      }else{
+          lockState=false;
+          ui->lockedImage->setVisible(false);
+      }
       resetPowerTimer();
 }
 /*
@@ -293,28 +303,32 @@ void MainWindow:: UpdateWaveform(int level)
 
 void MainWindow::on_ChangeFrequency_released()
 {
-    if (Frq_level>=2)
-    {
-        Frq_level=0;
+    if(!lockState){
+        if (Frq_level>=2)
+        {
+            Frq_level=0;
+        }
+        else
+        {
+           Frq_level++;
+        }
+        UpdateFrequency(Frq_level);
     }
-    else
-    {
-       Frq_level++;
-    }
-    UpdateFrequency(Frq_level);
 }
 
 void MainWindow::on_ChangeWaveform_released()
 {
-    if (Wf_level>=2)
-    {
-        Wf_level=0;
+    if(!lockState){
+        if (Wf_level>=2)
+        {
+            Wf_level=0;
+        }
+        else
+        {
+           Wf_level++;
+        }
+        UpdateWaveform(Wf_level);
     }
-    else
-    {
-       Wf_level++;
-    }
-    UpdateWaveform(Wf_level);
 }
 
 void MainWindow::on_TurnOnOffButton_released()
