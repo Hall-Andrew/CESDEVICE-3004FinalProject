@@ -10,6 +10,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //makes edges of stackedwidget round
+    const int radius = 10;
+
+    QPainterPath path;
+    path.addRoundedRect(ui->StackedWidget->rect(), radius, radius);
+    QRegion mask = QRegion(path.toFillPolygon().toPolygon());
+    ui->StackedWidget->setMask(mask);
+
+    ui->StackedWidget->show();
 
     //resetDisplay();
     initializeDefaults();
@@ -18,9 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Record->setEnabled(false);
     ui->BackButton->setEnabled(false);
     UpdateFrequency(Frq_level);
+    ui->ChangeWaveform->setEnabled(false);
+    ui->ChangeFrequency->setEnabled(false);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
     connect(powerTimer, &QTimer::timeout, this, &MainWindow::on_PowerTimerFired);
+    connect(contactTimer, &QTimer::timeout, this, &MainWindow::on_ContactTimerFired);
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
     connect(battery,SIGNAL(shutDown()),this,SLOT(outOfPower()));
     connect(battery,SIGNAL(batteryMessage(QString)),this,SLOT(warningReciever(QString)));
@@ -69,6 +81,7 @@ void MainWindow::initializeDefaults(){
     ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
     timer = new QTimer(this);
     powerTimer = new QTimer(this);
+    contactTimer = new QTimer(this);
     powerTimer->setInterval(powerTimeOut*1000);
     displayClock = new CountDownClock(20);
 }
@@ -76,6 +89,8 @@ void MainWindow::initializeDefaults(){
 
 void MainWindow::turnDeviceOn(){
     ui->StackedWidget->setCurrentIndex(1);
+    ui->ChangeWaveform->setEnabled(true);
+    ui->ChangeFrequency->setEnabled(true);
     setDefaultMenuSelections();
     resetPowerTimer();
     battery->startBatteryDrain();
@@ -90,6 +105,8 @@ void MainWindow:: turnDeviceOff(){
       ui->ContactButton->setCheckState(Qt::Unchecked);
       // Delete instance to go back to default setting
       delete displayClock;
+      ui->ChangeWaveform->setEnabled(false);
+      ui->ChangeFrequency->setEnabled(false);
 
       // Create new instance for when device is turned on
       displayClock = new CountDownClock(20);
@@ -115,6 +132,7 @@ void MainWindow::on_TimerButton_released()
     displayClock->setMinutes(time);
     //displayClock->setSeconds(seconds);
     ui->timeLabel->display(displayClock->getDisplayNumbers());
+    resetPowerTimer();
 }
 void MainWindow::on_UpButton_released()
 {
@@ -143,6 +161,14 @@ void MainWindow::on_UpButton_released()
             newIndex = ui->recordhistory->count()-1;
         ui->recordhistory->setCurrentRow(newIndex);
 
+    }
+    if (ui->StackedWidget->currentIndex()==6){
+        int index = ui->ContactExpireListWidget->currentRow();
+        cout<< index <<endl;
+        int  newIndex = index - 1;
+        if (newIndex<0)
+            newIndex = ui->ContactExpireListWidget->count()-1;
+        ui->ContactExpireListWidget->setCurrentRow(newIndex);
     }
       resetPowerTimer();
 }
@@ -180,8 +206,17 @@ void MainWindow::on_DownButton_released()
       ui->recordhistory->setCurrentRow(newIndex);
 
 
-  }
+  }    if (ui->StackedWidget->currentIndex()==6)
+{
+    int index = ui->ContactExpireListWidget->currentRow();
+    cout<< index <<endl;
+    int  newIndex = index + 1;
+    if (newIndex<0)
+        newIndex = 0;
+    ui->ContactExpireListWidget->setCurrentRow(newIndex);
 
+
+}
     resetPowerTimer();
 }
 
@@ -206,7 +241,6 @@ void MainWindow::on_EnterButton_released()
 
     if( ui->StackedWidget->currentIndex() == 1){
        startSession();
-       return;
     }
     if (index == 3)
     {
@@ -214,8 +248,15 @@ void MainWindow::on_EnterButton_released()
         ui->RecordingFull->clear();
         ui->RecordingFull->append("Session #"+QString::number(ui->recordhistory->currentRow()+1)+"\n");
         ui->RecordingFull->append(recordList[ui->recordhistory->currentRow()]->print());
-    }
 
+    }
+    if (index ==6)
+    { if (ui->ContactExpireListWidget->currentRow()==0){
+            on_Record_released();
+            cout<<"Session recorded"<<endl;
+        }   ui->StackedWidget->setCurrentIndex(1);
+        startSession();
+}
       resetPowerTimer();
 }
 
@@ -240,6 +281,7 @@ void MainWindow::on_BackButton_released()
     if (prevIndex > 0){
           ui->StackedWidget->setCurrentIndex(prevIndex);
     }
+     resetPowerTimer();
 }
 
 
@@ -278,17 +320,20 @@ void MainWindow::on_RecordHistory_released()
     int a=ui->recordhistory->count();
     cout<<a<<endl;
     ui->recordhistory->setCurrentRow(0);
+     resetPowerTimer();
 }
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
 {
     QString dummy="Freq: "+QString::number(amps[level])+" Hz";
     ui->frequencyLabel->setText(dummy);
+
 }
 
 void MainWindow:: UpdateWaveform(int level)
 {
     ui->waveformLabel->setText("WaveForm: "+waveForm[level]);
+
 }
 
 void MainWindow::on_ChangeFrequency_released()
@@ -302,6 +347,8 @@ void MainWindow::on_ChangeFrequency_released()
        Frq_level++;
     }
     UpdateFrequency(Frq_level);
+     resetPowerTimer();
+
 }
 
 void MainWindow::on_ChangeWaveform_released()
@@ -315,6 +362,7 @@ void MainWindow::on_ChangeWaveform_released()
        Wf_level++;
     }
     UpdateWaveform(Wf_level);
+     resetPowerTimer();
 }
 
 void MainWindow::on_TurnOnOffButton_released()
@@ -324,6 +372,7 @@ void MainWindow::on_TurnOnOffButton_released()
        turnDeviceOn();
     }else if(battery->hasPower()){
         turnDeviceOff();
+
     }
 
 }
@@ -346,6 +395,7 @@ void MainWindow::startSession(){
        //ui->WaveFormLabel->setText(text);
        time  = 20;
        totalDuration=0; //added to reset total duration when a session starts
+       displayClock->setMinutes(time);
     resumeSession();
     //waveForm=text;
 }
@@ -356,37 +406,63 @@ void MainWindow::on_ContactButton_released(){
 
 void MainWindow::resumeSession(){
     ui->timeLabel->display(displayClock->getDisplayNumbers());
+    paused = false;
     if(!ui->ContactButton->isChecked()){
         return;
     }
     powerTimer->stop();
+
 }
 
 void MainWindow::on_ContactButton_stateChanged(int arg1)
 {
     bool state = ui->ContactButton->isChecked();
     int index = ui->StackedWidget->currentIndex();
-    if (!timer->isActive() && onOffState && index !=1){
+    bool ax = contactTimer->isActive();
+    int remTime = contactTimer->remainingTime();
+    if (!timer->isActive() && onOffState && index !=1 && !paused){
         timer->setInterval(1000);
         if(state){
             cout << "Timer started" << endl;
             timer->start();
             battery->setDrainMultiplier(ui->ProgressBarWidget->value());
         }
+        powerTimer->stop();
         ui->Record->setEnabled(true);
+        ui->ChangeWaveform->setEnabled(false);
+        ui->ChangeFrequency->setEnabled(false);
 
-    } else if((timer->isActive()) && (!state) && onOffState){
+
+    }else if((timer->isActive()) && (!state) && onOffState){
         timer->stop();
         paused = true;
         ui->Record->setEnabled(false);
         battery->setDrainMultiplier(100);
-    } else if (paused && state && onOffState){
+        contactTimer->setInterval(5000);
+        contactTimer->start();
+        contactTimerFired = false;
+        ui->ChangeWaveform->setEnabled(true);
+        ui->ChangeFrequency->setEnabled(true);
+
+    } else if (paused && state && onOffState && !contactTimerFired){
        resumeSession();
+       contactTimer->stop();
        timer->start();
        battery->setDrainMultiplier(ui->ProgressBarWidget->value());
+       ui->ChangeWaveform->setEnabled(false);
+       ui->ChangeFrequency->setEnabled(false);
     }
+}
+
+void MainWindow::on_ContactTimerFired(){
+    cout<< "Contact expired"<<endl;
+    contactTimerFired = true;
+    ui->StackedWidget->setCurrentIndex(6);
+    contactTimer->stop();
 
 }
+
+
 
 void MainWindow::on_PowerSurgeButton_released()
 {

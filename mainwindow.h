@@ -35,6 +35,7 @@ public:
 private:
     Ui::MainWindow *ui;
     bool onOffState;
+    bool contactTimerFired;
     int time;
     int seconds;
     QTimer *powerTimer;
@@ -53,6 +54,7 @@ private:
     // Slots used ^^: On_FrqButtonRealeased, On_WFButtonRealeased, updateFreq,updateWF
     QTimer *timer;
     QVector<Record*> recordList;
+    QTimer* contactTimer;
 
     void resetDisplay();
     void createMenu();
@@ -70,6 +72,7 @@ private:
     void resumeSession();
     void chargeBattery();
 
+
 private slots:
     void on_OnOffButton_released();
     void on_TimerButton_released();
@@ -77,6 +80,7 @@ private slots:
     void on_DownButton_released();
     void on_LockButton_released();
     void on_ContactButton_released();
+    void on_ContactTimerFired();
     void on_EnterButton_released();
     void updateTimerDisplay();
     void on_PowerTimerFired();
@@ -94,6 +98,6 @@ private slots:
     void warningReciever(QString);
     void on_FinishSesh_released();
     void on_ChargeButton_released();
-    void on_RecordButton_released();
+    void on_RecordButton_released(){};
 };
 #endif // MAINWINDOW_H

@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>440</y>
-      <width>61</width>
-      <height>51</height>
+      <y>490</y>
+      <width>41</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -160,10 +160,10 @@ background-repeat:none;
    <widget class="QPushButton" name="BackButton">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>430</y>
-      <width>80</width>
-      <height>25</height>
+      <x>30</x>
+      <y>460</y>
+      <width>61</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -173,8 +173,8 @@ background-repeat:none;
    <widget class="QStackedWidget" name="StackedWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>70</y>
+      <x>50</x>
+      <y>80</y>
       <width>281</width>
       <height>271</height>
      </rect>
@@ -189,7 +189,7 @@ background-repeat:none;
      <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="page_5">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -485,6 +485,34 @@ background-color: #FFF;</string>
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="page_3">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="ContactExpireLabel">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Would you like to record this session?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="ContactExpireListWidget">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(238, 238, 236);</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Yes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>No</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QPushButton" name="Record">
     <property name="enabled">
@@ -492,8 +520,8 @@ background-color: #FFF;</string>
     </property>
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>470</y>
+      <x>270</x>
+      <y>480</y>
       <width>80</width>
       <height>25</height>
      </rect>
@@ -505,7 +533,7 @@ background-color: #FFF;</string>
    <widget class="QTextBrowser" name="ErrorMessage">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>470</x>
       <y>60</y>
       <width>271</width>
       <height>41</height>
@@ -515,10 +543,10 @@ background-color: #FFF;</string>
    <widget class="QPushButton" name="RecordHistory">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>440</y>
-      <width>80</width>
-      <height>25</height>
+      <x>270</x>
+      <y>450</y>
+      <width>71</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -528,10 +556,10 @@ background-color: #FFF;</string>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
+      <x>20</x>
+      <y>40</y>
       <width>341</width>
-      <height>481</height>
+      <height>501</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -631,10 +659,10 @@ border-radius: 45px;
    <widget class="QPushButton" name="ChangeWaveform">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>460</y>
-      <width>131</width>
-      <height>25</height>
+      <x>250</x>
+      <y>430</y>
+      <width>111</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -644,10 +672,10 @@ border-radius: 45px;
    <widget class="QPushButton" name="ChangeFrequency">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>490</y>
+      <x>30</x>
+      <y>430</y>
       <width>121</width>
-      <height>25</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
