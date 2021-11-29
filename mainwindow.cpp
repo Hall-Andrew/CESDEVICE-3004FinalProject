@@ -179,7 +179,6 @@ void MainWindow::on_UpButton_released()
       resetPowerTimer();
 }
 
-
 void MainWindow::on_DownButton_released()
 {
   if(ui->StackedWidget->currentIndex() == 0){
@@ -278,7 +277,6 @@ void MainWindow::on_BackButton_released()
      resetPowerTimer();
 }
 
-
 void MainWindow::updateTimerDisplay()
 {
     // Duration only increases with each second the update timer updates
@@ -299,6 +297,7 @@ void MainWindow::on_Record_released()
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value(), dateInfo);
         recordList.append(rec);
 }
+
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
@@ -313,6 +312,7 @@ void MainWindow::on_RecordHistory_released()
     ui->recordhistory->setCurrentRow(0);
     resetPowerTimer();
 }
+
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
 {
@@ -436,8 +436,6 @@ void MainWindow::on_ContactTimerFired(){
     ui->StackedWidget->setCurrentIndex(6);
     contactTimer->stop();
 }
-
-
 
 void MainWindow::on_PowerSurgeButton_released()
 {
