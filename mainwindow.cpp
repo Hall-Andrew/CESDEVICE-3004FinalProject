@@ -480,14 +480,16 @@ void MainWindow::warningReciever(QString warning){
 //should finish a session
 void MainWindow::on_FinishSesh_released()
 {
-    timer->stop();
-    totalDuration=time*60;
-    time=0;
-    ui->timeLabel->display(0.0);
-    ui->StackedWidget->setCurrentIndex(6);
-    battery->calcDrainSkipped(totalDuration);
-    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
-    ui->ContactButton->setChecked(false);
+    if(ui->ContactButton->isChecked()){
+        timer->stop();
+        totalDuration=time*60;
+        time=0;
+        ui->timeLabel->display(0.0);
+        ui->StackedWidget->setCurrentIndex(6);
+        battery->calcDrainSkipped(totalDuration);
+        ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+        ui->ContactButton->setChecked(false);
+    }
 }
 
 void MainWindow::on_ChargeButton_released()
