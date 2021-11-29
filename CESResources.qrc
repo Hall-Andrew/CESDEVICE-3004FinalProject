@@ -7,7 +7,6 @@
         <file>buttonAssets/timerButton.png</file>
         <file>buttonAssets/upButton.png</file>
         <file>deviceSkinAsset/CRA-Power.png</file>
-        <file>IconAssets/lockIcon.png</file>
-        <file>IconAssets/lockStatusIcon.jpg</file>
+        <file>IconAssets/lock.png</file>
     </qresource>
 </RCC>

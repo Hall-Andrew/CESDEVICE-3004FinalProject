@@ -43,6 +43,8 @@ class Battery : public QObject
         void setBaseDrainValue(double);
         bool hasPower();
         double getBatteryPercentage();
+        void toggleRealism();
+        void resetPowerDraw();
     private:
         double power;
         double baseDrainAmount;
@@ -51,6 +53,7 @@ class Battery : public QObject
         void drain();
         bool powerWarning;
         bool twoPercentWarning;
+        bool realisticPowerDraw;
 
     private slots:
 

@@ -189,7 +189,7 @@ background-repeat:none;
      <enum>QFrame::Raised</enum>
     </property>
     <property name="currentIndex">
-     <number>6</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_5">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -450,9 +450,9 @@ background-color: #FFF;</string>
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>110</y>
-        <width>41</width>
-        <height>31</height>
+        <y>120</y>
+        <width>21</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -462,7 +462,7 @@ background-color: #FFF;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="CESResources.qrc">:/IconAssets/lockStatusIcon.jpg</pixmap>
+       <pixmap resource="CESResources.qrc">:/IconAssets/lock.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -675,6 +675,19 @@ border-radius: 45px;
      </property>
      <property name="text">
       <string>Charge</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="realisticPowerButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>141</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Realistic Power Draw</string>
      </property>
     </widget>
    </widget>

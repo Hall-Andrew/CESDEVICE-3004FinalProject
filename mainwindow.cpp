@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(battery,SIGNAL(updateBatteryBar(int)),this,SLOT(onBatteryLevelChanged(int)));
     connect(battery,SIGNAL(shutDown()),this,SLOT(outOfPower()));
     connect(battery,SIGNAL(batteryMessage(QString)),this,SLOT(warningReciever(QString)));
-
 }
 
 MainWindow::~MainWindow()
@@ -47,7 +46,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_PowerTimerFired(){
     if(!timer->isActive()) {
         turnDeviceOff();
-    }else{
     }
 }
 
@@ -60,7 +58,6 @@ void MainWindow::createMenu(){
 void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
 }
-
 
 void MainWindow::initializeDefaults(){
     onOffState = false;
@@ -79,6 +76,7 @@ void MainWindow::initializeDefaults(){
     waveForm.push_back(gamma);
     battery= new Battery();
     ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+    ui->realisticPowerButton->setChecked(true);
     timer = new QTimer(this);
     powerTimer = new QTimer(this);
     contactTimer = new QTimer(this);
@@ -188,44 +186,33 @@ void MainWindow::on_DownButton_released()
         return;
     ui->menuListWidget->setCurrentRow(newIndex);
   }
-
-
-
   if(ui->StackedWidget->currentIndex() == 2 && !lockState){
       int currentAmp  = ui->ProgressBarWidget->value();
       int newAmp =  currentAmp - 100;
       if (newAmp < 0)
           newAmp = 0;
-       ui->ProgressBarWidget->setValue(newAmp);
-       if(ui->ContactButton->isChecked()){
-           battery->setDrainMultiplier(newAmp);
-       }
-    }
-  if (ui->StackedWidget->currentIndex()==3)
-  {
+      ui->ProgressBarWidget->setValue(newAmp);
+      if(ui->ContactButton->isChecked()){
+          battery->setDrainMultiplier(newAmp);
+      }
+  }
+  if (ui->StackedWidget->currentIndex()==3){
       int index = ui->recordhistory->currentRow();
       cout<< index <<endl;
       int  newIndex = index + 1;
       if (newIndex<0)
           newIndex = 0;
       ui->recordhistory->setCurrentRow(newIndex);
-
-
-  }    if (ui->StackedWidget->currentIndex()==6)
-{
-    int index = ui->ContactExpireListWidget->currentRow();
-    cout<< index <<endl;
-    int  newIndex = index + 1;
-    if (newIndex<0)
+  }
+  if (ui->StackedWidget->currentIndex()==6){
+     int index = ui->ContactExpireListWidget->currentRow();
+     int  newIndex = index + 1;
+     if (newIndex<0)
         newIndex = 0;
-    ui->ContactExpireListWidget->setCurrentRow(newIndex);
-
-
+     ui->ContactExpireListWidget->setCurrentRow(newIndex);
+  }
+  resetPowerTimer();
 }
-    resetPowerTimer();
-}
-
-
 
 void MainWindow::on_LockButton_released()
 {
@@ -238,19 +225,12 @@ void MainWindow::on_LockButton_released()
       }
       resetPowerTimer();
 }
-/*
-void MainWindow::on_Button_released()
-{
-      resetPowerTimer();
-}
-*/
 
 void MainWindow::on_EnterButton_released()
 {
     int index = ui->StackedWidget->currentIndex();
     if(index == 0)
         return;
-
     if( ui->StackedWidget->currentIndex() == 1){
        startSession();
     }
@@ -260,16 +240,16 @@ void MainWindow::on_EnterButton_released()
         ui->RecordingFull->clear();
         ui->RecordingFull->append("Session #"+QString::number(ui->recordhistory->currentRow()+1)+"\n");
         ui->RecordingFull->append(recordList[ui->recordhistory->currentRow()]->print());
-
     }
     if (index ==6)
-    { if (ui->ContactExpireListWidget->currentRow()==0){
-            on_Record_released();
-            cout<<"Session recorded"<<endl;
-        }   ui->StackedWidget->setCurrentIndex(1);
-        startSession();
-}
-      resetPowerTimer();
+    {
+      if (ui->ContactExpireListWidget->currentRow()==0){
+          on_Record_released();
+      }
+      ui->StackedWidget->setCurrentIndex(1);
+      startSession();
+    }
+    resetPowerTimer();
 }
 
 void MainWindow::on_BackButton_released()
@@ -282,8 +262,7 @@ void MainWindow::on_BackButton_released()
     {
         prevIndex=0;
     }
-    else
-    {
+    else{
         if(index == 5){
             prevIndex = index-2;
         }else{
@@ -313,7 +292,6 @@ void MainWindow::updateTimerDisplay()
 void MainWindow::on_Record_released()
 {
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
-
         // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value());
         recordList.append(rec);
@@ -321,7 +299,6 @@ void MainWindow::on_Record_released()
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
 {
-
     ui->StackedWidget->setCurrentIndex(3);
     ui->recordhistory->clear();
     for (int q=0; q<recordList.size(); q++)
@@ -330,9 +307,8 @@ void MainWindow::on_RecordHistory_released()
 
     }
     int a=ui->recordhistory->count();
-    cout<<a<<endl;
     ui->recordhistory->setCurrentRow(0);
-     resetPowerTimer();
+    resetPowerTimer();
 }
 //Functions to update the wavelenght and frequencies
 void MainWindow:: UpdateFrequency(int level)
@@ -351,40 +327,29 @@ void MainWindow:: UpdateWaveform(int level)
 void MainWindow::on_ChangeFrequency_released()
 {
     if(!lockState){
-        if (Frq_level>=2)
-        {
+        if (Frq_level>=2){
             Frq_level=0;
         }
-        else
-        {
+        else{
            Frq_level++;
         }
-            UpdateFrequency(Frq_level);
+        UpdateFrequency(Frq_level);
     }
-
-
-
-     resetPowerTimer();
-
+    resetPowerTimer();
 }
 
 void MainWindow::on_ChangeWaveform_released()
 {
     if(!lockState){
-        if (Wf_level>=2)
-        {
+        if (Wf_level>=2){
             Wf_level=0;
         }
-        else
-        {
+        else{
            Wf_level++;
         }
         UpdateWaveform(Wf_level);
     }
-
-
-     resetPowerTimer();
-
+    resetPowerTimer();
 }
 
 void MainWindow::on_TurnOnOffButton_released()
@@ -394,9 +359,7 @@ void MainWindow::on_TurnOnOffButton_released()
        turnDeviceOn();
     }else if(battery->hasPower()){
         turnDeviceOff();
-
     }
-
 }
 
 
@@ -408,11 +371,10 @@ void MainWindow:: resetPowerTimer(){
 
 void MainWindow::startSession(){
     ui->StackedWidget->setCurrentIndex(2);
-       time  = 20;
-       totalDuration=0; //added to reset total duration when a session starts
-       displayClock->setMinutes(time);
+    time  = 20;
+    totalDuration=0; //added to reset total duration when a session starts
+    displayClock->setMinutes(time);
     resumeSession();
-    //waveForm=text;
 }
 
 void MainWindow::on_ContactButton_released(){
@@ -426,7 +388,6 @@ void MainWindow::resumeSession(){
         return;
     }
     powerTimer->stop();
-
 }
 
 void MainWindow::on_ContactButton_stateChanged(int arg1)
@@ -438,7 +399,6 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
     if (!timer->isActive() && onOffState && index !=1 && !paused){
         timer->setInterval(1000);
         if(state){
-            cout << "Timer started" << endl;
             timer->start();
             battery->setDrainMultiplier(ui->ProgressBarWidget->value());
         }
@@ -447,12 +407,11 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         ui->ChangeWaveform->setEnabled(false);
         ui->ChangeFrequency->setEnabled(false);
 
-
     }else if((timer->isActive()) && (!state) && onOffState){
         timer->stop();
         paused = true;
         ui->Record->setEnabled(false);
-        battery->setDrainMultiplier(100);
+        battery->resetPowerDraw();
         contactTimer->setInterval(5000);
         contactTimer->start();
         contactTimerFired = false;
@@ -470,11 +429,9 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
 }
 
 void MainWindow::on_ContactTimerFired(){
-    cout<< "Contact expired"<<endl;
     contactTimerFired = true;
     ui->StackedWidget->setCurrentIndex(6);
     contactTimer->stop();
-
 }
 
 
@@ -530,4 +487,12 @@ void MainWindow::on_ChargeButton_released()
 {
     ui->ErrorMessage->clear();
     battery->charge();
+}
+void MainWindow::on_realisticPowerButton_released()
+{
+    battery->toggleRealism();
+    if(ui->ContactButton->isChecked()){
+       battery->setDrainMultiplier(ui->ProgressBarWidget->value());
+    }
+    cout<<ui->ProgressBarWidget->value()<<endl;
 }

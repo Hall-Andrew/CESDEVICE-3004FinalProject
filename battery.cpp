@@ -3,13 +3,14 @@
 
 Battery::Battery()
 {
-    power=3;
+    power=100;
     baseDrainAmount=1;
-    drainModifier=0.10;
+    drainModifier=0.001;
     powerWarning=false;
     twoPercentWarning=false;
+    realisticPowerDraw=true;
     timer = new QTimer(this);
-    timer->setInterval(500);
+    timer->setInterval(1000);
     connect(timer, &QTimer::timeout, this, &Battery::drain);
 }
 Battery::~Battery(){
@@ -32,7 +33,21 @@ void Battery::stopBatteryDrain(){
 }
 
 void Battery::setDrainMultiplier(double multi){
-    drainModifier=(multi/1000);
+    if(realisticPowerDraw){
+        if(multi!=0){
+            drainModifier=(multi/2)/10000;
+            cout<<"realism"<<endl;
+        }else{
+            drainModifier=0.001;
+        }
+    }else{
+        if(multi!=0){
+            drainModifier=(multi)/400;
+            cout<<"not realistic"<<endl;
+        }else{
+            drainModifier=0.01;
+        }
+    }
 }
 
 void Battery::setBaseDrainValue(double newBaseDrain){
@@ -46,7 +61,6 @@ bool Battery::hasPower(){
         return false;
     }
 }
-
 
 void Battery::drain(){
     QString warning;
@@ -72,8 +86,27 @@ void Battery::drain(){
         }
     }
     emit updateBatteryBar((int)power);
+    cout<<power<<endl;
 }
 
 double Battery::getBatteryPercentage(){
     return power;
+}
+
+void Battery::toggleRealism(){
+    if(realisticPowerDraw){
+        realisticPowerDraw=false;
+        drainModifier=0.1;
+    }else{
+        realisticPowerDraw=true;
+        drainModifier=0.001;
+    }
+}
+
+void Battery::resetPowerDraw(){
+    if(realisticPowerDraw){
+        drainModifier=0.001;
+    }else{
+        drainModifier=0.1;
+    }
 }

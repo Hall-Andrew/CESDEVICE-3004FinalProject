@@ -149,5 +149,8 @@ private slots:
     void warningReciever(QString);
     void on_FinishSesh_released();
     void on_ChargeButton_released();
+    void on_realisticPowerButton_stateChanged(int arg1);
+    void on_realisticPowerButton_clicked();
+    void on_realisticPowerButton_released();
 };
 #endif // MAINWINDOW_H
