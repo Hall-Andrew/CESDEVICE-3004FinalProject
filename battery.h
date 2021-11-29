@@ -45,6 +45,7 @@ class Battery : public QObject
         double getBatteryPercentage();
         void toggleRealism();
         void resetPowerDraw();
+        void calcDrainSkipped(int seconds);
     private:
         double power;
         double baseDrainAmount;

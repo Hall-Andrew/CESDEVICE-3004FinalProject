@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     createMenu();
     ui->RecordHistory->setEnabled(false);
     ui->Record->setEnabled(false);
+    ui->Record->setVisible(false);
     ui->BackButton->setEnabled(false);
     UpdateFrequency(Frq_level);
     ui->ChangeWaveform->setEnabled(false);
@@ -57,6 +58,7 @@ void MainWindow::createMenu(){
 
 void MainWindow::setDefaultMenuSelections(){
     ui->menuListWidget->setCurrentRow(0);
+    ui->ContactExpireListWidget->setCurrentRow(0);
 }
 
 void MainWindow::initializeDefaults(){
@@ -100,6 +102,7 @@ void MainWindow::turnDeviceOn(){
 void MainWindow:: turnDeviceOff(){
       battery->stopBatteryDrain();
       powerTimer->stop();
+      timer->stop();
       ui->StackedWidget->setCurrentIndex(0);
       ui->ContactButton->setCheckState(Qt::Unchecked);
       // Delete instance to go back to default setting
@@ -481,6 +484,9 @@ void MainWindow::on_FinishSesh_released()
     totalDuration=time*60;
     time=0;
     ui->timeLabel->display(0.0);
+    ui->StackedWidget->setCurrentIndex(6);
+    battery->calcDrainSkipped(totalDuration);
+    ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
 }
 
 void MainWindow::on_ChargeButton_released()
@@ -488,11 +494,11 @@ void MainWindow::on_ChargeButton_released()
     ui->ErrorMessage->clear();
     battery->charge();
 }
+
 void MainWindow::on_realisticPowerButton_released()
 {
     battery->toggleRealism();
     if(ui->ContactButton->isChecked()){
        battery->setDrainMultiplier(ui->ProgressBarWidget->value());
     }
-    cout<<ui->ProgressBarWidget->value()<<endl;
 }

@@ -110,3 +110,12 @@ void Battery::resetPowerDraw(){
         drainModifier=0.1;
     }
 }
+
+void Battery::calcDrainSkipped(int seconds){
+    power-=baseDrainAmount*drainModifier*seconds;
+    if(power<=0){
+        QString warning = "Warning, battery is at 2%, the device will shut off shortly if it is not charged!";
+        emit batteryMessage(warning);
+        emit shutDown();
+    }
+}
