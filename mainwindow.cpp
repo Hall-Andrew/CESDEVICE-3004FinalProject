@@ -296,7 +296,7 @@ void MainWindow::on_Record_released()
 {
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
         // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
-        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value());
+        Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value(), dateInfo);
         recordList.append(rec);
 }
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
@@ -409,7 +409,7 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         ui->Record->setEnabled(true);
         ui->ChangeWaveform->setEnabled(false);
         ui->ChangeFrequency->setEnabled(false);
-
+        dateInfo = therapyDateInfo.currentDateTime().toString();
     }else if((timer->isActive()) && (!state) && onOffState){
         timer->stop();
         paused = true;
@@ -487,6 +487,7 @@ void MainWindow::on_FinishSesh_released()
     ui->StackedWidget->setCurrentIndex(6);
     battery->calcDrainSkipped(totalDuration);
     ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
+    ui->ContactButton->setChecked(false);
 }
 
 void MainWindow::on_ChargeButton_released()
@@ -502,3 +503,12 @@ void MainWindow::on_realisticPowerButton_released()
        battery->setDrainMultiplier(ui->ProgressBarWidget->value());
     }
 }
+
+void MainWindow::on_realisticPowerButton_stateChanged(int){
+
+}
+
+void MainWindow::on_realisticPowerButton_clicked(){
+
+}
+

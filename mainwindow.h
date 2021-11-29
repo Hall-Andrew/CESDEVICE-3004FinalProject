@@ -109,6 +109,8 @@ private:
     QTimer *timer;
     QVector<Record*> recordList;
     QTimer* contactTimer;
+    QDateTime therapyDateInfo;
+    QString dateInfo;
 
     void resetDisplay();
     void createMenu();

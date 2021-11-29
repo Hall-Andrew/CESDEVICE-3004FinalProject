@@ -1,11 +1,12 @@
 #include "record.h"
 
-Record::Record(QString wform, float freq,int dur, int power)
+Record::Record(QString wform, float freq,int dur, int power, QString dateInfo)
 {
     frequency = freq;
     duration=dur;
     powerLevel=power;
     waveform=wform;
+    startTime = dateInfo;
 }
 
 Record::Record()
@@ -21,7 +22,7 @@ Record::~Record(){
 }
 
 QString Record::getRecord(){
-    description=("WaveForm: "+waveform+" Total Duration: "+QString::number( duration));
+    description=("WaveForm: "+waveform+" Total Duration: "+QString::number( duration)+" Started: "+startTime);
     return description;
 }
 

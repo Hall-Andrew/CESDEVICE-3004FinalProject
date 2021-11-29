@@ -1,6 +1,7 @@
 #ifndef RECORD_H
 #define RECORD_H
 #include <QLibrary>
+#include <QDateTime>
 /*Record class: contains information for the Record object, which will hold the information of the session.
  * Variables:
  * QString description: used to be record. Basically it's a quick description for the record menu
@@ -28,7 +29,7 @@
 class Record
 {
     public:
-        Record(QString wform,float freq,int dur, int power);
+        Record(QString wform,float freq,int dur, int power, QString dateInfo);
         Record();
         ~Record();
         QString getRecord();
@@ -48,6 +49,7 @@ class Record
         float frequency;
         int duration;
         int powerLevel;
+        QString startTime;
 
 
     public slots:
