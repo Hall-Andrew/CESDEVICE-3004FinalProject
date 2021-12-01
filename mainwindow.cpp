@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Record->setVisible(false);
     ui->BackButton->setEnabled(false);
     UpdateFrequency(Frq_level);
-    ui->ChangeWaveform->setEnabled(false);
+    ui->WaveformButton->setEnabled(false);
     ui->ChangeFrequency->setEnabled(false);
     UpdateWaveform(Wf_level);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTimerDisplay);
@@ -90,7 +90,7 @@ void MainWindow::initializeDefaults(){
 
 void MainWindow::turnDeviceOn(){
     ui->StackedWidget->setCurrentIndex(1);
-    ui->ChangeWaveform->setEnabled(true);
+    ui->WaveformButton->setEnabled(true);
     ui->ChangeFrequency->setEnabled(true);
     setDefaultMenuSelections();
     resetPowerTimer();
@@ -107,7 +107,7 @@ void MainWindow:: turnDeviceOff(){
       ui->ContactButton->setCheckState(Qt::Unchecked);
       // Delete instance to go back to default setting
       delete displayClock;
-      ui->ChangeWaveform->setEnabled(false);
+      ui->WaveformButton->setEnabled(false);
       ui->ChangeFrequency->setEnabled(false);
 
       // Create new instance for when device is turned on
@@ -341,7 +341,7 @@ void MainWindow::on_ChangeFrequency_released()
     resetPowerTimer();
 }
 
-void MainWindow::on_ChangeWaveform_released()
+void MainWindow::on_WaveformButton_released()
 {
     if(!lockState){
         if (Wf_level>=2){
@@ -354,6 +354,7 @@ void MainWindow::on_ChangeWaveform_released()
     }
     resetPowerTimer();
 }
+
 
 void MainWindow::on_TurnOnOffButton_released()
 {
@@ -407,7 +408,7 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         }
         powerTimer->stop();
         ui->Record->setEnabled(true);
-        ui->ChangeWaveform->setEnabled(false);
+        ui->WaveformButton->setEnabled(false);
         ui->ChangeFrequency->setEnabled(false);
         dateInfo = therapyDateInfo.currentDateTime().toString();
     }else if((timer->isActive()) && (!state) && onOffState){
@@ -418,7 +419,7 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
         contactTimer->setInterval(5000);
         contactTimer->start();
         contactTimerFired = false;
-        ui->ChangeWaveform->setEnabled(true);
+        ui->WaveformButton->setEnabled(true);
         ui->ChangeFrequency->setEnabled(true);
 
     } else if (paused && state && onOffState && !contactTimerFired){
@@ -426,7 +427,7 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
        contactTimer->stop();
        timer->start();
        battery->setDrainMultiplier(ui->ProgressBarWidget->value());
-       ui->ChangeWaveform->setEnabled(false);
+       ui->WaveformButton->setEnabled(false);
        ui->ChangeFrequency->setEnabled(false);
     }
 }

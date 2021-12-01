@@ -146,7 +146,7 @@ private slots:
     void on_Record_released();
     void on_RecordHistory_released();
     void on_ChangeFrequency_released();
-    void on_ChangeWaveform_released();
+    void on_WaveformButton_released();
     void on_TurnOnOffButton_released();
     void on_ContactButton_stateChanged(int arg1);
     void onBatteryLevelChanged(int percentage);
@@ -158,5 +158,6 @@ private slots:
     void on_realisticPowerButton_stateChanged(int arg1);
     void on_realisticPowerButton_clicked();
     void on_realisticPowerButton_released();
+
 };
 #endif // MAINWINDOW_H
