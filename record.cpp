@@ -64,6 +64,6 @@ void Record::setWaveForm(QString wForm){
  * changed it so that it gives a string value which it will return to the screen. /j
  /*/
 QString Record::print(){
-    QString report=("WAVEFORM: "+waveform+" \nFREQUENCY: "+ QString::number(frequency)+ "Hz\nDURATION: "+QString::number(duration)+ " seconds \nPOWER LEVEL: "+QString::number(powerLevel)+"µA\n");
+    QString report=("Time: "+startTime+"\nWAVEFORM: "+waveform+" \nFREQUENCY: "+ QString::number(frequency)+ "Hz\nDURATION: "+QString::number(duration)+ " seconds \nPOWER LEVEL: "+QString::number(powerLevel)+"µA\n");
     return report;
 }
