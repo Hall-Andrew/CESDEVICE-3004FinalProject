@@ -133,7 +133,6 @@ void MainWindow::on_TimerButton_released()
         }
         //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
         displayClock->setMinutes(time);
-        //displayClock->setSeconds(seconds);
         ui->timeLabel->display(displayClock->getDisplayNumbers());
     }
     resetPowerTimer();
@@ -284,6 +283,7 @@ void MainWindow::updateTimerDisplay()
     if(displayClock->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
         timer->stop();
         resetPowerTimer();
+        ui->StackedWidget->setCurrentIndex(6);
     }
 }
 
@@ -474,6 +474,7 @@ void MainWindow::on_FinishSesh_released()
         timer->stop();
         totalDuration=time*60;
         time=0;
+        displayClock->setMinutes(20);
         ui->timeLabel->display(0.0);
         ui->StackedWidget->setCurrentIndex(6);
         battery->calcDrainSkipped(totalDuration);

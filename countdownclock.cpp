@@ -41,11 +41,6 @@ QString CountDownClock::getDisplayNumbers(){
 }
 
 bool CountDownClock::isTimerFinished(){
-//    if(minutes==0 && sDigitOne==0 && sDigitTwo ==0 ){
-//        finished=true;
-//    }
-//    return finished;
-
     // This just seems more clean to me - Aaron
     return minutes == 0 && sDigitOne == 0 && sDigitTwo == 0;
 }
