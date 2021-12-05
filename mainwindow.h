@@ -71,7 +71,6 @@
  *      on_ChangeFrequency_released(): changes Frq_lvl by 1 and then calls update_Frequency(Frq_lvl).
  *      on_ChangeWaveform_released(): changes Wf_lvl by 1 and then calls update_waveForm(Wf_lvl)
  *      on_TurnOnOffButton_released(): toggles the powerstate, as well as shutting off/turning on the device
- *      on_ContactButton_stateChanged(int arg1): Changes contact to true/false depedning on it's prior state. If on session page as well, this will set the button to true.
  *      onBatteryLevelChanged(int percentage): updates the battery life based on the percentage
  *      on_PowerSurgeButton_released(): simulates a powersurge, shutting off the device permanently.
  *      outOfPower(): turns the device off when battery returns empty.
@@ -148,16 +147,12 @@ private slots:
     void on_ChangeFrequency_released();
     void on_WaveformButton_released();
     void on_TurnOnOffButton_released();
-    void on_ContactButton_stateChanged(int arg1);
     void onBatteryLevelChanged(int percentage);
     void on_PowerSurgeButton_released();
     void outOfPower();
     void warningReciever(QString);
     void on_FinishSesh_released();
     void on_ChargeButton_released();
-    void on_realisticPowerButton_stateChanged(int arg1);
-    void on_realisticPowerButton_clicked();
     void on_realisticPowerButton_released();
-
 };
 #endif // MAINWINDOW_H
