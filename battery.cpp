@@ -36,14 +36,12 @@ void Battery::setDrainMultiplier(double multi){
     if(realisticPowerDraw){
         if(multi!=0){
             drainModifier=(multi/2)/10000;
-            cout<<"realism"<<endl;
         }else{
             drainModifier=0.001;
         }
     }else{
         if(multi!=0){
             drainModifier=(multi)/400;
-            cout<<"not realistic"<<endl;
         }else{
             drainModifier=0.01;
         }
@@ -86,7 +84,6 @@ void Battery::drain(){
         }
     }
     emit updateBatteryBar((int)power);
-    cout<<power<<endl;
 }
 
 double Battery::getBatteryPercentage(){

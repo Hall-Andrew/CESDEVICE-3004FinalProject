@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->StackedWidget->setMask(mask);
 
     ui->StackedWidget->show();
-
-    //resetDisplay();
     initializeDefaults();
     createMenu();
     ui->RecordHistory->setEnabled(false);
@@ -382,24 +380,8 @@ void MainWindow::startSession(){
 }
 
 void MainWindow::on_ContactButton_released(){
-    // should we even use this? i feel like the state change slot covers this
-}
-
-void MainWindow::resumeSession(){
-    ui->timeLabel->display(displayClock->getDisplayNumbers());
-    paused = false;
-    if(!ui->ContactButton->isChecked()){
-        return;
-    }
-    powerTimer->stop();
-}
-
-void MainWindow::on_ContactButton_stateChanged(int arg1)
-{
     bool state = ui->ContactButton->isChecked();
     int index = ui->StackedWidget->currentIndex();
-    bool ax = contactTimer->isActive();
-    int remTime = contactTimer->remainingTime();
     if (!timer->isActive() && onOffState && index !=1 && !paused){
         timer->setInterval(1000);
         if(state){
@@ -430,6 +412,15 @@ void MainWindow::on_ContactButton_stateChanged(int arg1)
        ui->WaveformButton->setEnabled(false);
        ui->ChangeFrequency->setEnabled(false);
     }
+}
+
+void MainWindow::resumeSession(){
+    ui->timeLabel->display(displayClock->getDisplayNumbers());
+    paused = false;
+    if(!ui->ContactButton->isChecked()){
+        return;
+    }
+    powerTimer->stop();
 }
 
 void MainWindow::on_ContactTimerFired(){
@@ -504,12 +495,3 @@ void MainWindow::on_realisticPowerButton_released()
        battery->setDrainMultiplier(ui->ProgressBarWidget->value());
     }
 }
-
-void MainWindow::on_realisticPowerButton_stateChanged(int){
-
-}
-
-void MainWindow::on_realisticPowerButton_clicked(){
-
-}
-
