@@ -271,7 +271,9 @@ void MainWindow::on_BackButton_released()
         }
     }
     if (prevIndex > 0){
-          ui->StackedWidget->setCurrentIndex(prevIndex);
+        if(!lockState){
+            ui->StackedWidget->setCurrentIndex(prevIndex);
+          }
     }
      resetPowerTimer();
 }
@@ -300,17 +302,18 @@ void MainWindow::on_Record_released()
 
 //switchs to page 4 of the stackedWidet and should create a page with all recording sessions
 void MainWindow::on_RecordHistory_released()
-{
-    ui->StackedWidget->setCurrentIndex(3);
-    ui->recordhistory->clear();
-    for (int q=0; q<recordList.size(); q++)
-    {
-        ui->recordhistory->addItem("Session "+QString::number(q+1)+" "+recordList[q]->getRecord());
+{   if(!lockState){
+        ui->StackedWidget->setCurrentIndex(3);
+        ui->recordhistory->clear();
+        for (int q=0; q<recordList.size(); q++)
+        {
+            ui->recordhistory->addItem("Session "+QString::number(q+1)+" "+recordList[q]->getRecord());
 
+        }
+        int a=ui->recordhistory->count();
+        ui->recordhistory->setCurrentRow(0);
     }
-    int a=ui->recordhistory->count();
-    ui->recordhistory->setCurrentRow(0);
-    resetPowerTimer();
+   resetPowerTimer();
 }
 
 //Functions to update the wavelenght and frequencies
@@ -329,7 +332,7 @@ void MainWindow:: UpdateWaveform(int level)
 
 void MainWindow::on_ChangeFrequency_released()
 {
-    if(!lockState){
+    if(!lockState && ui->StackedWidget->currentIndex()==2){
         if (Frq_level>=2){
             Frq_level=0;
         }
@@ -343,7 +346,7 @@ void MainWindow::on_ChangeFrequency_released()
 
 void MainWindow::on_WaveformButton_released()
 {
-    if(!lockState){
+    if(!lockState && ui->StackedWidget->currentIndex()==2){
         if (Wf_level>=2){
             Wf_level=0;
         }
