@@ -41,6 +41,9 @@ QString CountDownClock::getDisplayNumbers(){
 }
 
 bool CountDownClock::isTimerFinished(){
-    // This just seems more clean to me - Aaron
     return minutes == 0 && sDigitOne == 0 && sDigitTwo == 0;
+}
+
+int CountDownClock::getSecondsRemaining(){
+    return (minutes*60) + sDigitOne +sDigitTwo;
 }

@@ -62,7 +62,9 @@ bool Battery::hasPower(){
 
 void Battery::drain(){
     QString warning;
+    cout<<"drain rate:"<<baseDrainAmount*drainModifier<<endl;
     power-=(baseDrainAmount*drainModifier);
+    cout<<power<<endl;
     if(power<0){
         power=0;
     }else{
@@ -109,6 +111,7 @@ void Battery::resetPowerDraw(){
 }
 
 void Battery::calcDrainSkipped(int seconds){
+    cout<<baseDrainAmount*drainModifier<<endl;
     power-=baseDrainAmount*drainModifier*seconds;
     if(power<=0){
         QString warning = "Warning, battery is at 2%, the device will shut off shortly if it is not charged!";
