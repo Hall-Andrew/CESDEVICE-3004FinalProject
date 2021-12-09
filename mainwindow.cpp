@@ -149,11 +149,13 @@ void MainWindow::on_UpButton_released()
 
     if(ui->StackedWidget->currentIndex() == 2 && !lockState){
         int currentAmp  = ui->ProgressBarWidget->value();
-        int newAmp =  currentAmp + 50;
-         ui->ProgressBarWidget->setValue(newAmp);
-         if(ui->ContactButton->isChecked()){
-             battery->setDrainMultiplier(newAmp);
-         }
+        if(currentAmp!=500){
+            int newAmp =  currentAmp + 50;
+             ui->ProgressBarWidget->setValue(newAmp);
+             if(ui->ContactButton->isChecked()){
+                 battery->setDrainMultiplier(newAmp);
+             }
+        }
     }
     if (ui->StackedWidget->currentIndex()==3)
     {
@@ -474,10 +476,10 @@ void MainWindow::on_FinishSesh_released()
         timer->stop();
         totalDuration=time*60;
         time=0;
-        displayClock->setMinutes(20);
         ui->timeLabel->display(0.0);
         ui->StackedWidget->setCurrentIndex(6);
-        battery->calcDrainSkipped(totalDuration);
+        battery->calcDrainSkipped(displayClock->getSecondsRemaining());
+        displayClock->setMinutes(20);
         ui->batteryPercentageBar->setValue(battery->getBatteryPercentage());
         ui->ContactButton->setChecked(false);
     }
