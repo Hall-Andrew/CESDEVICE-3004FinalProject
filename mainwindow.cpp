@@ -51,7 +51,6 @@ void MainWindow::on_PowerTimerFired(){
 void MainWindow::createMenu(){
     ui->menuListWidget->addItem("Start A Session");
     ui->StackedWidget->setCurrentIndex(0);
-  //  ui->menuListWidget->addItem("View Previous Sessions");
 }
 
 void MainWindow::setDefaultMenuSelections(){
@@ -107,14 +106,6 @@ void MainWindow:: turnDeviceOff(){
       delete displayClock;
       ui->WaveformButton->setEnabled(false);
       ui->ChangeFrequency->setEnabled(false);
-
-      // Create new instance for when device is turned on
-      displayClock = new CountDownClock(20);
-      cout << totalDuration << endl;
-
-      // Delete instance to go back to default setting
-      delete displayClock;
-
       // Create new instance for when device is turned on
       displayClock = new CountDownClock(20);
       totalDuration = 0;
@@ -131,7 +122,6 @@ void MainWindow::on_TimerButton_released()
         if(time>60){
             time = 20;
         }
-        //Added for implementation of nicer looking timer, number input is "minute length" feel free to fix this if ive put in some other value /Andrew-
         displayClock->setMinutes(time);
         ui->timeLabel->display(displayClock->getDisplayNumbers());
     }
@@ -160,7 +150,6 @@ void MainWindow::on_UpButton_released()
     if (ui->StackedWidget->currentIndex()==3)
     {
         int index = ui->recordhistory->currentRow();
-        cout<< index <<endl;
         int  newIndex = index - 1;
         if (newIndex<0)
             newIndex = ui->recordhistory->count()-1;
@@ -169,7 +158,6 @@ void MainWindow::on_UpButton_released()
     }
     if (ui->StackedWidget->currentIndex()==6){
         int index = ui->ContactExpireListWidget->currentRow();
-        cout<< index <<endl;
         int  newIndex = index - 1;
         if (newIndex<0)
             newIndex = ui->ContactExpireListWidget->count()-1;
@@ -282,20 +270,19 @@ void MainWindow::updateTimerDisplay()
 {
     // Duration only increases with each second the update timer updates
     totalDuration += 1;
-    displayClock->countdown();//This should countdown each second properly
-    ui->timeLabel->display(displayClock->getDisplayNumbers()); //This gets the proper number to be displayed from the class/ Andrew
-    if(displayClock->isTimerFinished()){ //Literally yours but uses my stop boolean instead /Andrew
+    displayClock->countdown();//This will countdown each minute and second of a therapy properly
+    ui->timeLabel->display(displayClock->getDisplayNumbers());
+    if(displayClock->isTimerFinished()){
         timer->stop();
         resetPowerTimer();
         ui->StackedWidget->setCurrentIndex(6);
     }
 }
 
-//Buttons for record and record History. Record History could use a menu.
+
 void MainWindow::on_Record_released()
 {
         if(ui->RecordHistory->isEnabled()==false){ui->RecordHistory->setEnabled(true);}
-        // Total duration is stored as seconds, could change it to minutes but you have to change it here - Aaron
         Record* rec=new Record(waveForm[Wf_level],amps[Frq_level],totalDuration,ui->ProgressBarWidget->value(), dateInfo);
         recordList.append(rec);
 }

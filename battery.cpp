@@ -62,9 +62,7 @@ bool Battery::hasPower(){
 
 void Battery::drain(){
     QString warning;
-    cout<<"drain rate:"<<baseDrainAmount*drainModifier<<endl;
     power-=(baseDrainAmount*drainModifier);
-    cout<<power<<endl;
     if(power<0){
         power=0;
     }else{
