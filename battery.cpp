@@ -79,7 +79,7 @@ void Battery::drain(){
         }
     }
     if(twoPercentWarning){
-        if(power<2.5){
+        if(power<=2.5){
             emit shutDown();
         }
     }
