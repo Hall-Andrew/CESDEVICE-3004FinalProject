@@ -87,12 +87,12 @@ void MainWindow::initializeDefaults(){
 
 
 void MainWindow::turnDeviceOn(){
+    battery->startBatteryDrain();
     ui->StackedWidget->setCurrentIndex(1);
     ui->WaveformButton->setEnabled(true);
     ui->ChangeFrequency->setEnabled(true);
     setDefaultMenuSelections();
     resetPowerTimer();
-    battery->startBatteryDrain();
     onOffState=true;
     ui->BackButton->setEnabled(true);
 }
