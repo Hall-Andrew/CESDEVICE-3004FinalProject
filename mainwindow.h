@@ -17,17 +17,17 @@
 #define betta "Beta"
 #define gamma "Gamma"
 /*
- * The main function of the program, acts as the recipient for signals and sends out the apporpriate response.
+ * The main section of the program, acts as the recipient for signals and sends out the apporpriate response.
  *
  * Variables:
  *      bool onOffState: boolean which tracks if the device is "on" or "off
- *      bool contactTimerFired: boolean which tracks how long contact object has been active. Sets it to false if enough time has passed.
+ *      bool contactTimerFired: boolean which tracks how long contact object has been active. It is set to false if enough time has passed.
  *      int time: holds the value which is passed to countdownclock to set up the time.
  *      int seconds: holds the number of seconds required for totalDuration.
  *      QTimer* powerTimer: timer for the "time out" feature of the device.
  *      bool lockstate: tracks if the device is "locked"
  *      bool paused: tracks if the device is "paused"
- *      countDownClock displayClock: countdownCLock object which is the primary timer for sessions.
+ *      countDownClock displayClock: countdownCLock object which handles proper the proper time of the therapy.
  *      int totalDuration: holds the value of the time elasped during a session.
  *      Battery* battery: battery object.
  *      int Frq_level: Holds a value which is meant to access a value in amps.
