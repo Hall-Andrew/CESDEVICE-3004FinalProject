@@ -10,7 +10,7 @@ Files Included:
 QT: mainwindow.ui, CESDEVICE.pro, AlphaTest.pro, AlphaTest.pro.user, guiAssets.qrc
 Headers: mainwindow.h, battery.h, countdownclock.h, record.h
 CPP: main.cpp, mainwindow.cpp, countdownclock.cpp, battery.cpp, record.cpp.
-Special Files: 12 sequence diagrams, 1 UML diagram, this readme, testcases pdf, usecases pdf.
+Special Files: 12 sequence diagrams, 1 UML diagram, this readme, testcases pdf, usecases pdf, 2 Traceability Matrix pdfs.
 auto_off_SequenceDiagram.pdf, batteryDrain_SequenceDiagram.pdf, lockSequence_SequenceDiagram.pdf, OverLoadShutoff_SequenceDiagram.pdf, record_therapy_SequenceDiagram.pdf, SelectFrequencySequenceDiagram.pdf, select_wavelength_SequenceDiagram.pdf, set_current_SequenceDiagram.pdf, StartSession_SequenceDiagram.pdf, TherapyTimer_SequenceDiagram.pdf, turn_Device_off_SequenceDiagram.pdf, turn_device_on_SequenceDiagram.pdf,
 UML_CRA_F.pdf
 
@@ -38,7 +38,9 @@ We opted for the therapy history to store the last active current used in the th
 The autoshut off is set to 30 seconds instead of 30mins so as to not waste your time.
 
 A power overload will put the device in an irrecoverable state and you will need to relaunch the program if 
-you want to continue after an overload. This was intended as the device is being simualted to have shorted itself internally.
+you want to continue after an overload. This was intended as the device is being simulated to have shorted itself internally.
+
+Therapies are recorded and saved only for each instance, if the program is closed they are not saved, nor are they shared if you launch multiple versions of the same program.
 
 
 
