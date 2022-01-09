@@ -1,4 +1,4 @@
-# 3004FinalProject
+# 3004FinalProject CES DEVICE
 Team 18: TA Deen
 Authors:
 Julien Rougerie 101067032
