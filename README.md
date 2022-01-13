@@ -42,6 +42,7 @@ you want to continue after an overload. This was intended as the device is being
 
 Therapies are recorded and saved only for each instance, if the program is closed they are not saved, nor are they shared if you launch multiple versions of the same program.
 
+![image](https://user-images.githubusercontent.com/59775217/149415197-d7b31b1f-b5eb-4e8d-83f5-5bf63b766d03.png)
 
 
 
